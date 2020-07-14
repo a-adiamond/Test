@@ -70,8 +70,8 @@
         .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
-                for (var i in response.result) {
-                  var getDraft = response.result[i].message.id;
+                for (var i in response.result.drafts) {
+                  var getDraft = response.result.drafts[i].message.id;
                   //
                   drafts[getDraft] = {"Testing" : "That's all"};
                 }
