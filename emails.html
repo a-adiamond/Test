@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.6</h2>
+          <h2>V0.0.8.7</h2>
         </header>
 
         <hr>
@@ -47,7 +47,7 @@
    * See instructions for running APIs Explorer code samples locally:
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
-  var drafts = {},
+  var drafts,
       draftEl =document.getElementById("draft");
   
   function authenticate() {
@@ -80,15 +80,15 @@
                   getInfo(getDraft);
                 }
                 document.getElementById("loadDrafts").style.display="none";
-      console.log("drafts",drafts);
-/*                for (x in drafts) {
+                console.log("drafts",drafts);
+                for (id in drafts) {
                   console.log("id",id);
                   console.log("drafts[id]",drafts[id]);
                   var option = document.createElement("option");
                   option.value = id;
                   option.text = id.subj;
                   draftEl.add(option);
-                }*/
+                }
                 draftEl.style.display = "inherit";
                 document.getElementById("preview").style.display = "inherit";
               },
