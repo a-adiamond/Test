@@ -102,7 +102,7 @@ header h2 {
   margin-bottom: 40px;
 }
 
-a.button {
+a.button,button {
   display: block;
   float: left;
   width: fit-content;
@@ -146,7 +146,7 @@ a.button:hover {
   border-left: solid 1px #b3b3b3;
 }
 
-a.button span {
+a.button span,button span {
   display: block;
   height: 23px;
   padding-left: 8px;
