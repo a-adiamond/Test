@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.2</h2>
+          <h2>V0.0.8.3</h2>
         </header>
 
         <hr>
@@ -79,9 +79,10 @@
                   var getDraft = response.result.drafts[i].message.id;
                   getInfo(getDraft);
                 }
-                console.log("Drafts",drafts);
                 document.getElementById("loadDrafts").style.display="none";
                 for (var id in drafts) {
+                  console.log("id",id);
+                  console.log("drafts[id]",drafts[id]);
                   var option = document.createElement("option");
                   option.value = id;
                   option.text = id.subj;
