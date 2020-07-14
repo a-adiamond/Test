@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.8</h2>
+          <h2>V0.0.8.8.1</h2>
         </header>
 
         <hr>
@@ -77,7 +77,7 @@
                 //console.log("Response", response);
                 for (var i in response.result.drafts) {
                   var getDraft = response.result.drafts[i].message.id;
-                  getInfo(getDraft);
+                  getInfo(getDraft).then(console.log("woo forced timers"));
                 }
                 document.getElementById("loadDrafts").style.display="none";
                 console.log("drafts",drafts);
