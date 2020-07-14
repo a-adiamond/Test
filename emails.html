@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.8.1</h2>
+          <h2>V0.0.8.8.2</h2>
         </header>
 
         <hr>
@@ -77,7 +77,7 @@
                 //console.log("Response", response);
                 for (var i in response.result.drafts) {
                   var getDraft = response.result.drafts[i].message.id;
-                  getInfo(getDraft).then(console.log("woo forced timers"));
+                  getInfo(getDraft).then(console.log(drafts.length));
                 }
                 document.getElementById("loadDrafts").style.display="none";
                 console.log("drafts",drafts);
@@ -96,15 +96,15 @@
   }
   
   function getInfo(draftId) {
-    return gapi.client.gmail.users.messages.get({
+    var response = gapi.client.gmail.users.messages.get({
                     "userId":"deancasbigbangmod@gmail.com",
                     "id":draftId,
-                    "format":"full"})
-    .then(function(response) {
+                    "format":"full"});
+//    .then(function(response) {
       drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
                         "parts" : response.result.payload.parts};
-    },
-          function(err) { console.error("Execute error", err); });
+    //}
+  return response;
   }
   
   gapi.load("client:auth2", function() {
