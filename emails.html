@@ -28,6 +28,18 @@
           <button id="signIn" onclick="authenticate().then(loadClient)"><span>Sign in</span></button>
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
           
+          <form id="draft" onsubmit="event.preventDefault(); testFunction(this)" style="display:none">
+           <div style="width: 50%; float:left"><h1>Which draft?</h1>
+            <select name="draft" id="draft" onchange="updatePreview()">
+            <option value="none" selected disabled hidden></option> 
+            </select><input type="submit" id="continue" value="Continue" style="display:none"></div>
+            <div style="border: thin solid black; width:50%; float:left" id="preview" style="display:none">Preview will show here</div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </body>
+          
     <script src="https://apis.google.com/js/api.js"></script>
 <script>
   /**
@@ -36,6 +48,9 @@
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
 
+  var drafts = {},
+      draftEl = document.getElementById("drafts");
+  
   function authenticate() {
     return gapi.auth2.getAuthInstance()
         .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.readonly"})
@@ -58,6 +73,14 @@
         .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
+                for (var i in response.result) {
+                  var getDraft = response.result[i].message.id;
+                  drafts = {getDraft = {"Testing":"That's all"}};
+                }
+                console.log("Drafts",drafts);
+                document.getElementById("loadDrafts").style.display="none";                
+                draftEl.style.display = "inherit";
+                document.getElementById("preview").style.display = "inherit";}
               },
               function(err) { console.error("Execute error", err); });
   }
@@ -66,10 +89,6 @@
   });
 </script>
 
-        </section>
-
         
-      </div>
-    </div>
-  </body>
+
 </html>
