@@ -47,6 +47,7 @@
    * See instructions for running APIs Explorer code samples locally:
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
+  var drafts;
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -72,7 +73,7 @@
                 console.log("Response", response);
                 for (var i in response.result.drafts) {
                   var getDraft = response.result.drafts[i].message.id;
-                  //
+                  console.log("getDraft",getDraft);
                   drafts[getDraft] = {"Testing" : "That's all"};
                 }
                 console.log("Drafts",drafts);
