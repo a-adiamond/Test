@@ -72,7 +72,8 @@
                 console.log("Response", response);
                 for (var i in response.result) {
                   var getDraft = response.result[i].message.id;
-                  drafts = { getDraft = {"Testing":"That's all"}};
+                  //
+                  drafts[getDraft] = {"Testing" : "That's all"};
                 }
                 console.log("Drafts",drafts);
                 document.getElementById("loadDrafts").style.display="none";                
