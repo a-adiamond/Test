@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8</h2>
+          <h2>V0.0.8.1</h2>
         </header>
 
         <hr>
@@ -74,12 +74,10 @@
     })
         .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
-                console.log("Response", response);
+                //console.log("Response", response);
                 for (var i in response.result.drafts) {
                   var getDraft = response.result.drafts[i].message.id;
                   getInfo(getDraft);
-                  console.log("draftInfo",draftInfo);
-//                  drafts[getDraft] = {"Testing" : "That's all"};
                 }
                 console.log("Drafts",drafts);
                 document.getElementById("loadDrafts").style.display="none";                
@@ -95,7 +93,7 @@
                     "id":draftId,
                     "format":"full"})
     .then(function(response) {
-      console.log("Response", response);
+      //console.log("Response", response);
       drafts[draftId] = {"Subj" : response.result.payload.headers[3].value,
                         "Parts?" : response.result.payload.parts};    
     },
