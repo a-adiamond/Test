@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.6</h2>
+          <h2>V0.0.7</h2>
         </header>
 
         <hr>
@@ -33,7 +33,7 @@
             <select name="draft" id="draft" onchange="updatePreview()">
             <option value="none" selected disabled hidden></option> 
             </select><input type="submit" id="continue" value="Continue" style="display:none"></div>
-            <div style="border: thin solid black; width:50%; float:left" id="preview" style="display:none">Preview will show here</div>
+            <div style="border: thin solid black; width:50%; float:right" id="preview" style="display:none">Preview will show here</div>
           </form>
         </section>
       </div>
@@ -53,15 +53,18 @@
   function authenticate() {
     return gapi.auth2.getAuthInstance()
         .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.readonly"})
-        .then(function() { console.log("Sign-in successful"); },
+        .then(function() { 
+          //console.log("Sign-in successful"); 
+        }, 
               function(err) { console.error("Error signing in", err); });
   }
   function loadClient() {
     gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
     return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
-        .then(function() { console.log("GAPI client loaded for API");
-                           document.getElementById("signIn").style.display="none";
-                           document.getElementById("loadDrafts").style.display = "block";},
+        .then(function() {
+                 //console.log("GAPI client loaded for API");
+                 document.getElementById("signIn").style.display="none";
+                 document.getElementById("loadDrafts").style.display = "block";},
               function(err) { console.error("Error loading GAPI client for API", err); });
   }
   // Make sure the client is loaded and sign-in is complete before calling this method.
@@ -74,9 +77,7 @@
                 console.log("Response", response);
                 for (var i in response.result.drafts) {
                   var getDraft = response.result.drafts[i].message.id;
-                  var draftInfo = gapi.client.gmail.users.messages.get({
-                    "userId":"deancasbigbangmod@gmail.com",
-                    "id":getDraft});
+                  var draftInfo = getInfo(getDraft);
                   console.log("draftInfo",draftInfo);
 //                  drafts[getDraft] = {"Testing" : "That's all"};
                 }
@@ -87,6 +88,13 @@
               },
               function(err) { console.error("Execute error", err); });
   }
+  
+  function getInfo(draftId) {
+    return gapi.client.gmail.users.messages.get({
+                    "userId":"deancasbigbangmod@gmail.com",
+                    "id":getDraft});
+  }
+  
   gapi.load("client:auth2", function() {
     gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
   });
