@@ -25,7 +25,9 @@
         <hr>
 
         <section id="main_content">
-          <p>
+          <button onclick="authenticate().then(loadClient)"><span>authorize and load</span></button>
+          <button onclick="execute()">execute</button>
+          
     <script src="https://apis.google.com/js/api.js"></script>
 <script>
   /**
@@ -61,8 +63,6 @@
     gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
   });
 </script>
-<button onclick="authenticate().then(loadClient)">authorize and load</button>
-<button onclick="execute()">execute</button>
 
         </section>
 
