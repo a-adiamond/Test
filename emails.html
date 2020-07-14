@@ -26,7 +26,7 @@
 
         <section id="main_content">
           <button id="signIn" onclick="authenticate().then(loadClient)"><span>Sign in</span></button>
-          <button id="loadDrafts" onclick="execute()" hidden><span>Load Drafts</span></button>
+          <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
           
     <script src="https://apis.google.com/js/api.js"></script>
 <script>
@@ -46,8 +46,8 @@
     gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
     return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
         .then(function() { console.log("GAPI client loaded for API");
-                           document.getElementById("signIn").hidden = true;
-                           document.getElementById("loadDrafts").hidden = false;},
+                           document.getElementById("signIn").style.display="none";
+                           document.getElementById("loadDrafts").style.display = "block";},
               function(err) { console.error("Error loading GAPI client for API", err); });
   }
   // Make sure the client is loaded and sign-in is complete before calling this method.
