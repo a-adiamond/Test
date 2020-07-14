@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.7</h2>
+          <h2>V0.0.7.2</h2>
         </header>
 
         <hr>
@@ -92,7 +92,7 @@
   function getInfo(draftId) {
     return gapi.client.gmail.users.messages.get({
                     "userId":"deancasbigbangmod@gmail.com",
-                    "id":getDraft});
+                    "id":draftId});
   }
   
   gapi.load("client:auth2", function() {
