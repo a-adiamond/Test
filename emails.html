@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.7</h2>
+          <h2>V0.0.8.7.1</h2>
         </header>
 
         <hr>
@@ -47,8 +47,8 @@
    * See instructions for running APIs Explorer code samples locally:
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
-  var drafts,
-      draftEl =document.getElementById("draft");
+  var drafts = {},
+      draftEl = document.getElementById("draft");
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -81,6 +81,8 @@
                 }
                 document.getElementById("loadDrafts").style.display="none";
                 console.log("drafts",drafts);
+                var test = { "1" : {"name":"1","test":"yes"},"2":{"name":"2","test":"no"}};
+                console.log("test",test);
                 for (id in drafts) {
                   console.log("id",id);
                   console.log("drafts[id]",drafts[id]);
@@ -102,7 +104,7 @@
                     "format":"full"})
     .then(function(response) {
       //console.log("Response", response);
-      drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
+      drafts.draftId = {"subj" : response.result.payload.headers[3].value,
                         "parts" : response.result.payload.parts};    
     },
           function(err) { console.error("Execute error", err); });
