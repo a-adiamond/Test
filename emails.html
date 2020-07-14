@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.7.2</h2>
+          <h2>V0.0.8.7.3</h2>
         </header>
 
         <hr>
@@ -30,7 +30,7 @@
           
           <form id="draft" onsubmit="event.preventDefault(); testFunction(this)" style="display:none">
            <div style="width: 50%; float:left"><h1>Which draft?</h1>
-            <select name="draft" id="draft" onchange="updatePreview()">
+            <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
             <option value="none" selected disabled hidden></option> 
             </select><input type="submit" id="continue" value="Continue" style="display:none"></div>
             <div style="border: thin solid black; width:50%; float:right" id="preview" style="display:none">Preview will show here</div>
@@ -48,7 +48,7 @@
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
   var drafts = {"1":{"subj":" ","parts":" "}};
-  var draftEl = document.getElementById("draft");
+  var draftEl = document.getElementById("draftSelect");
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -80,16 +80,15 @@
                   getInfo(getDraft);
                 }
                 document.getElementById("loadDrafts").style.display="none";
+                delete drafts.1;
                 console.log("drafts",drafts);
-                var test = { "1" : {"name":"1","test":"yes"},"2":{"name":"2","test":"no"}};
-                console.log("test",test);
                 for (id in drafts) {
                   console.log("id",id);
                   console.log("drafts[id]",drafts[id]);
-                  var option = document.createElement("option");
+/*                  var option = document.createElement("option");
                   option.value = id;
                   option.text = id.subj;
-                  draftEl.add(option);
+                  draftEl.add(option);*/
                 }
                 draftEl.style.display = "inherit";
                 document.getElementById("preview").style.display = "inherit";
