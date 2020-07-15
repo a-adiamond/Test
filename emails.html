@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.9</h2>
+          <h2>V0.0.8.9.1</h2>
         </header>
 
         <hr>
@@ -102,7 +102,7 @@
   
   function updatePreview() {
     console.log(drafts[draftEl.value]);
-    preview.innerText = draftEl.text;
+    preview.innerHTML = atob(drafts[draftEl.value].parts[1].body.data);
   }
   
   function getInfo(draftId) {
