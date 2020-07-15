@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.8.5.3</h2>
+          <h2>V0.0.8.8.6</h2>
         </header>
 
         <hr>
@@ -86,13 +86,11 @@
   function updateList(limit) {
     if (Object.keys(drafts).length == limit) {
       document.getElementById("loadDrafts").style.display="none";
-      console.log("drafts",drafts);
       for (id in drafts) {
-        console.log("id",id);
-        console.log("drafts[id]",drafts[id]);
+        console.log(id + " " + drafts.id["subj"]);
         var option = document.createElement("option");
         option.value = id;
-        option.text = drafts.id.subj;
+        option.text = drafts.id["subj"];
         draftEl.add(option);
       }
       draftEl.style.display = "inherit";
