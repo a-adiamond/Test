@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.9.4</h2>
+          <h2>V0.0.8.9.5</h2>
         </header>
 
         <hr>
@@ -46,6 +46,8 @@
    * See instructions for running APIs Explorer code samples locally:
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
+  var URLSafeBase64 = require('urlsafe-base64');
+  
   var drafts = {};
   var draftForm = document.getElementById("draft"),
       draftEl = document.getElementById("draftSelect"),
@@ -112,8 +114,8 @@
                     "format":"full"})
     .then(function(response) {
       drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
-                        "bodyPlain" : atob(response.result.payload.parts[0].body.data.replace(/-/g, '+').replace(/_/g, '/')),
-                        "bodyHTML":atob(response.result.payload.parts[1].body.data.replace(/-/g, '+').replace(/_/g, '/'))};
+                        //"bodyPlain" : atob(response.result.payload.parts[0].body.data.replace(/-/g, '+').replace(/_/g, '/')),
+                        "bodyHTML":URLSafeBase64.decode(response.result.payload.parts[1].body.data).toString()};
     },
           function(err) { console.error("Execute error", err); });
   }
