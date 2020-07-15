@@ -40,14 +40,12 @@
   </body>
           
     <script src="https://apis.google.com/js/api.js"></script>
-  <script src="javascripts/urlsafe-base64.js"></script>
 <script>
   /**
    * Sample JavaScript code for gmail.users.drafts.list
    * See instructions for running APIs Explorer code samples locally:
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
-  var URLSafeBase64 = require('urlsafe-base64');
   
   var drafts = {};
   var draftForm = document.getElementById("draft"),
@@ -114,12 +112,26 @@
                     "id":draftId,
                     "format":"full"})
     .then(function(response) {
+      var tempOne = decode(response.result.payload.parts[1].body.data).toString();
       drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
                         //"bodyPlain" : atob(response.result.payload.parts[0].body.data.replace(/-/g, '+').replace(/_/g, '/')),
-                        "bodyHTML":URLSafeBase64.decode(response.result.payload.parts[1].body.data).toString()};
+                        "bodyHTML":tempOne};
     },
           function(err) { console.error("Execute error", err); });
   }
+  
+  function decode(base64) {
+
+  // Add removed at end '='
+  base64 += Array(5 - base64.length % 4).join('=');
+
+  base64 = base64
+    .replace(/\-/g, '+') // Convert '-' to '+'
+    .replace(/\_/g, '/'); // Convert '_' to '/'
+
+  return new Buffer(base64, 'base64');
+
+};
   
   gapi.load("client:auth2", function() {
     gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
