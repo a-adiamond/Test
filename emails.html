@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.9</h2>
+          <h2>V0.0.9.1</h2>
         </header>
 
         <hr>
@@ -29,14 +29,14 @@
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
         </section>
       </div>
-      <form id="draft" onsubmit="event.preventDefault(); testFunction(this)" style="display:none">
+      <section id="draft" style="display:none">
         <h1>Which draft?</h1>
         <div style="width: 45%; float:left">
         <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
         <option value="none" selected disabled hidden></option> 
-        </select><input type="submit" id="continue" value="Continue"></div>
+        </select><button id="continue" onclick="nextStep()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:45%; float:right" id="preview">Preview will show here</div>
-      </form>
+      </section>
     </div>
   </body>
           
@@ -122,6 +122,9 @@
           function(err) { console.error("Execute error", err); });
   }
   
+  function nextStep() {
+  }
+  
   function decode(base64) {
 
   // Add removed at end '='
@@ -133,7 +136,7 @@
 
   return new Buffer(base64, 'base64');
 
-};
+  }
   
   gapi.load("client:auth2", function() {
     gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
