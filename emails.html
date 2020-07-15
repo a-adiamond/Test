@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.8.4</h2>
+          <h2>V0.0.8.8.5</h2>
         </header>
 
         <hr>
@@ -87,7 +87,8 @@
   }
   
   function updateList(limit) {
-    if (Object.keys(drafts).length == limit) {
+    console.log("Draft length",Object.keys(drafts).length);
+/*    if (Object.keys(drafts).length == limit) {
       
                 document.getElementById("loadDrafts").style.display="none";
                 console.log("drafts",drafts);
@@ -97,14 +98,14 @@
 /*                  var option = document.createElement("option");
                   option.value = id;
                   option.text = id.subj;
-                  draftEl.add(option);*/
+                  draftEl.add(option);
                 }
                 draftEl.style.display = "inherit";
                 document.getElementById("preview").style.display = "inherit";
     }
     else {
       setTimeout(updateList(limit),300);
-    }
+    }*/
   }
   
   function getInfo(draftId) {
