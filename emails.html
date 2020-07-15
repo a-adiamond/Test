@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.1</h2>
+          <h2>V0.2</h2>
         </header>
 
         <hr>
@@ -68,6 +68,12 @@
       preview = document.getElementById("preview"),
       recipForm = document.getElementById("recipient"),
       recipEl = document.getElementById("recipientSelect");
+  
+  var Airtable = require('airtable'),
+      API_KEY = 'keyJS9Lnv0F166zj2',
+      baseId = 'appf5kgjPnWM3kIJR',
+      base = new Airtable({apiKey: API_KEY}).base(baseId),
+      testRecord = base('Participants').find("recZpMrUZuOpynd7K");
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -143,6 +149,7 @@
   
   function checkRecipient() {
     console.log(recipEl.value);
+    console.log(testRecord);
   }
   
   function decode(base64) {
