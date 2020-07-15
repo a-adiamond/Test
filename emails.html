@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.8.6.1</h2>
+          <h2>V0.0.8.8.6.2</h2>
         </header>
 
         <hr>
@@ -32,8 +32,8 @@
            <div style="width: 50%; float:left"><h1>Which draft?</h1>
             <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
             <option value="none" selected disabled hidden></option> 
-            </select><input type="submit" id="continue" value="Continue" style="display:none"></div>
-            <div style="border: thin solid black; width:50%; float:right" id="preview" style="display:none">Preview will show here</div>
+            </select><input type="submit" id="continue" value="Continue"></div>
+            <div style="border: thin solid black; width:50%; float:right" id="preview">Preview will show here</div>
           </form>
         </section>
       </div>
@@ -48,7 +48,8 @@
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
   var drafts = {};
-  var draftEl = document.getElementById("draftSelect");
+  var draftForm = document.getElementById("draft"),
+      draftEl = document.getElementById("draftSelect");
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -93,8 +94,7 @@
         option.text = drafts[id]["subj"];
         draftEl.add(option);
       }
-      draftEl.style.display = "inherit";
-      document.getElementById("preview").style.display = "inherit";
+      draft.style.display = "inherit";
     }
     else {
       setTimeout(() => {  updateList(limit);}, 800);;
