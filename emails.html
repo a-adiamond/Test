@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.9.1</h2>
+          <h2>V0.1</h2>
         </header>
 
         <hr>
@@ -34,9 +34,21 @@
         <div style="width: 45%; float:left">
         <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
         <option value="none" selected disabled hidden></option> 
-        </select><button id="continue" onclick="nextStep()" style="display:none"><span>Continue</span></button></div>
+        </select><button id="continueDraft" onclick="continueDraft()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:45%; float:right" id="preview">Preview will show here</div>
       </section>
+      <section id="recipient" style="display:none">
+        <h1>Which group?</h1>
+        <select name="recipientSelect" id="recipientSelect" onchange="checkRecipient()">
+        <option value="none" selected disabled hidden></option>
+        <option value="Authors">Authors</option>
+        <option value="Artists">Artists</option>
+        <option value="Author&Artists">Authors and Artists</option>
+        <option value="Betas">Beta Readers</option>
+        <option value="ACTIVE participants">All Participants</option>
+        <option value="view">Other Airtable View</option>
+        <option value="individual">Specific Emails</option>
+      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button>
     </div>
   </body>
           
@@ -53,7 +65,9 @@
   var drafts = {};
   var draftForm = document.getElementById("draft"),
       draftEl = document.getElementById("draftSelect"),
-      preview = document.getElementById("preview");
+      preview = document.getElementById("preview"),
+      recipForm = document.getElementById("recipient"),
+      recipEl = document.getElementById("recipientSelect");
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -105,8 +119,8 @@
   }
   
   function updatePreview() {
-    console.log(drafts[draftEl.value].bodyPlain);
     preview.innerHTML = drafts[draftEl.value].bodyHTML;
+    document.getElementById("continueDraft").style.display="block";
   }
   
   function getInfo(draftId) {
@@ -122,7 +136,13 @@
           function(err) { console.error("Execute error", err); });
   }
   
-  function nextStep() {
+  function continueDraft() {
+    draftForm.style.display="none";
+    recipForm.style.display="block";
+  }
+  
+  function checkRecipient() {
+    console.log(recipEl.value);
   }
   
   function decode(base64) {
