@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.8.6.2</h2>
+          <h2>V0.0.8.9</h2>
         </header>
 
         <hr>
@@ -27,16 +27,15 @@
         <section id="main_content">
           <button id="signIn" onclick="authenticate().then(loadClient)"><span>Sign in</span></button>
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
-          
-          <form id="draft" onsubmit="event.preventDefault(); testFunction(this)" style="display:none">
-           <div style="width: 50%; float:left"><h1>Which draft?</h1>
-            <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
-            <option value="none" selected disabled hidden></option> 
-            </select><input type="submit" id="continue" value="Continue"></div>
-            <div style="border: thin solid black; width:50%; float:right" id="preview">Preview will show here</div>
-          </form>
         </section>
       </div>
+      <form id="draft" onsubmit="event.preventDefault(); testFunction(this)" style="display:none">
+        <div style="width: 50%; float:left"><h1>Which draft?</h1>
+        <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
+        <option value="none" selected disabled hidden></option> 
+        </select><input type="submit" id="continue" value="Continue"></div>
+        <div style="border: thin solid black; width:50%; float:right" id="preview">Preview will show here</div>
+      </form>
     </div>
   </body>
           
@@ -49,7 +48,8 @@
    */
   var drafts = {};
   var draftForm = document.getElementById("draft"),
-      draftEl = document.getElementById("draftSelect");
+      draftEl = document.getElementById("draftSelect"),
+      preview = document.getElementById("preview");
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -88,7 +88,6 @@
     if (Object.keys(drafts).length == limit) {
       document.getElementById("loadDrafts").style.display="none";
       for (id in drafts) {
-        console.log(id + " " + drafts[id]["subj"]);
         var option = document.createElement("option");
         option.value = id;
         option.text = drafts[id]["subj"];
@@ -99,6 +98,11 @@
     else {
       setTimeout(() => {  updateList(limit);}, 800);;
     }
+  }
+  
+  function updatePreview() {
+    console.log(drafts[draftEl.value]);
+    preview.innerText = draftEl.text;
   }
   
   function getInfo(draftId) {
