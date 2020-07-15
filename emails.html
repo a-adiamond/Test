@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.9.5</h2>
+          <h2>V0.0.9</h2>
         </header>
 
         <hr>
@@ -30,11 +30,12 @@
         </section>
       </div>
       <form id="draft" onsubmit="event.preventDefault(); testFunction(this)" style="display:none">
-        <div style="width: 50%; float:left"><h1>Which draft?</h1>
+        <h1>Which draft?</h1>
+        <div style="width: 45%; float:left">
         <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
         <option value="none" selected disabled hidden></option> 
         </select><input type="submit" id="continue" value="Continue"></div>
-        <div style="border: thin solid black; width:50%; float:right" id="preview">Preview will show here</div>
+        <div style="border: thin solid black; width:45%; float:right" id="preview">Preview will show here</div>
       </form>
     </div>
   </body>
@@ -104,7 +105,7 @@
   }
   
   function updatePreview() {
-    console.log(drafts[draftEl.value]);
+    console.log(drafts[draftEl.value].bodyPlain);
     preview.innerHTML = drafts[draftEl.value].bodyHTML;
   }
   
@@ -114,10 +115,9 @@
                     "id":draftId,
                     "format":"full"})
     .then(function(response) {
-      var tempOne = Base64.decode(response.result.payload.parts[1].body.data);
       drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
-                        //"bodyPlain" : atob(response.result.payload.parts[0].body.data.replace(/-/g, '+').replace(/_/g, '/')),
-                        "bodyHTML":tempOne};
+                        "bodyPlain" : Base64.decode(response.result.payload.parts[0].body.data),
+                        "bodyHTML":Base64.decode(response.result.payload.parts[1].body.data)};
     },
           function(err) { console.error("Execute error", err); });
   }
