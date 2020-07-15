@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.0.8.9.3</h2>
+          <h2>V0.0.8.9.4</h2>
         </header>
 
         <hr>
@@ -102,7 +102,7 @@
   
   function updatePreview() {
     console.log(drafts[draftEl.value]);
-    console.log(atob(drafts[draftEl.value].parts[1].body.data.replace(/-/g, '+').replace(/_/g, '/')));
+    preview.innerHTML = drafts[draftEl.value].bodyHTML;
   }
   
   function getInfo(draftId) {
@@ -112,7 +112,8 @@
                     "format":"full"})
     .then(function(response) {
       drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
-                        "parts" : response.result.payload.parts};
+                        "bodyPlain" : atob(response.result.payload.parts[0].body.data.replace(/-/g, '+').replace(/_/g, '/')),
+                        "bodyHTML":atob(response.result.payload.parts[1].body.data.replace(/-/g, '+').replace(/_/g, '/'))};
     },
           function(err) { console.error("Execute error", err); });
   }
