@@ -39,7 +39,7 @@
       </section>
       <section id="recipient" style="display:none">
         <h1>Which group?</h1>
-        <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient().then(checkRecipient)">
+        <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient()">
         <option value="none" selected disabled hidden></option>
         <option value="Authors">Authors</option>
         <option value="Artists">Artists</option>
@@ -149,18 +149,15 @@
   function loadRecipient() {
     console.log(recipEl.value);
     if (recipEl.value == "view" || recipEl.value == "individual") {
-      console.log("Do this later");
+      table = "Do this later";
     }
     else {
       table = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
         apiKey: API_KEY,
-        view: recipEl.value});
+        view: recipEl.value},checkRecipient());
     }
-    return true.then(function() { 
-          //console.log("Sign-in successful"); 
-        });
   }
   
   function checkRecipient() {
