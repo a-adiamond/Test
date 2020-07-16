@@ -75,7 +75,7 @@
   const table = new Airpuck.Table({
         name: "Participants",
         baseID: baseId,
-        apiKey: API_KEY}).ready(_ => {console.log(table.records().length}));
+        apiKey: API_KEY}, _ => {console.log(table.records().length)});
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
