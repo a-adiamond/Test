@@ -45,7 +45,7 @@ const Airtable = {
                     _props.options.name = options.name
                     _props.options.baseID = options.baseID
                     _props.options.apiKey = options.apiKey
-                    _props.options.view = _private.encodeForURL(options.view)
+                    _props.options.view = options.view
                 }
             })()
 
@@ -136,6 +136,7 @@ const Airtable = {
                 init: callback => {
                     if (_props.options.name && _props.options.baseID && _props.options.apiKey) {
                         _props.endpoint = _private.getEndpoint(_props.options.baseID, _props.options.name)
+                        if (_props.options.view) _props.options.view = _private.encodeForURL(_props.options.view)
                         const completeCallback = _ => {
                             _private.getFields()
                             callback()
