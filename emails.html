@@ -19,12 +19,12 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.2.2.5</h2>
+          <h2>V0.3</h2>
         </header>
 
         <hr>
 
-        <section id="main_content">
+        <section id="main_content" style="display:none">
           <button id="signIn" onclick="authenticate().then(loadClient)"><span>Sign in</span></button>
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
         </section>
@@ -35,7 +35,7 @@
         <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
         <option value="none" selected disabled hidden></option> 
         </select><button id="continueDraft" onclick="continueDraft()" style="display:none"><span>Continue</span></button></div>
-        <div style="border: thin solid black; width:45%; float:right" id="preview">Preview will show here</div>
+        <div style="border: thin solid black; width:45%; float:right" id="previewDraft">Preview will show here</div>
       </section>
       <section id="recipient">
         <h1>Which group?</h1>
@@ -48,7 +48,14 @@
         <option value="ACTIVE participants">All Participants</option>
         <option value="view">Other Airtable View</option>
         <option value="individual">Specific Emails</option>
-      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button>
+      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button></section>
+        <section id="vars" style="display:none">
+        <h1>Select your variables</h1>
+        <div style="width: 45%; float:left">
+          <span id="debug">Debug stuff here!</span>
+          <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
+        <div style="border: thin solid black; width:45%; float:right" id="previewVars">Preview will show here</div>
+      </section>
     </div>
   </body>
           
@@ -65,14 +72,21 @@
   var drafts = {};
   var draftForm = document.getElementById("draft"),
       draftEl = document.getElementById("draftSelect"),
-      preview = document.getElementById("preview"),
+      draftPre = document.getElementById("previewDraft"),
       recipForm = document.getElementById("recipient"),
-      recipEl = document.getElementById("recipientSelect");
+      recipEl = document.getElementById("recipientSelect"),
+      varForm = document.getElementById("vars"),
+      varPre = document.getElementById("previewVars"),
+      debug = document.getElementById("debug");
   
   var API_KEY = "keyJS9Lnv0F166zj2",
       baseId = "appf5kgjPnWM3kIJR",
-      testRecord = "recZpMrUZuOpynd7K";
   var table;
+  const samples = new Airtable.Table({
+        name: "Participants",
+        baseID: baseId,
+        apiKey: API_KEY,
+        view: "Diamond Samples"});
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -124,7 +138,7 @@
   }
   
   function updatePreview() {
-    preview.innerHTML = drafts[draftEl.value].bodyHTML;
+    draftPre.innerHTML = drafts[draftEl.value].bodyHTML;
     document.getElementById("continueDraft").style.display="block";
   }
   
@@ -147,6 +161,7 @@
   }
   
   function loadRecipient() {
+    table = 
     console.log(recipEl.value);
     if (recipEl.value == "view" || recipEl.value == "individual") {
       console.log("Do this later");
@@ -162,11 +177,20 @@
   }
   
   function checkRecipient() {
-    if (table) console.log(table.records().length);
-    else console.log("I have no table for you.");
+    if (table) {
+      document.getElementById("continueRecipient").style.display="block";
+    }
+    else {
+      document.getElementById("continueRecipient").style.display="none";
+      console.log("I have no table for you.");
+    }
   }
   
-  function continueRecipient() {}
+  function continueRecipient() {
+    recipForm.style.display="none";
+    varForm.style.display="block";
+    debug.innerText = "Sample fields: " + samples.fields().toString() + "\nRecipient fields: " + table.fields().toString();
+  }
   
   
   
