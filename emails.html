@@ -37,7 +37,7 @@
         </select><button id="continueDraft" onclick="continueDraft()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:45%; float:right" id="preview">Preview will show here</div>
       </section>
-      <section id="recipient" style="display:none">
+      <section id="recipient">
         <h1>Which group?</h1>
         <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient()">
         <option value="none" selected disabled hidden></option>
@@ -157,7 +157,7 @@
         baseID: baseId,
         apiKey: API_KEY,
         view: recipEl.value});
-        setTimeout(() => {checkRecipient();}, 800);
+        setTimeout(() => {checkRecipient();}, 1000);
     }
   }
   
