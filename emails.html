@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.2.1.3</h2>
+          <h2>V0.2.1.4</h2>
         </header>
 
         <hr>
@@ -75,7 +75,7 @@
   const table = new Airpuck.Table({
         name: "Participants",
         baseID: baseId,
-        apiKey: API_KEY}, _ => table.ready(_ => {console.log(table.records().length)}));
+        apiKey: API_KEY});
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -119,6 +119,7 @@
         option.text = drafts[id]["subj"];
         draftEl.add(option);
       }
+      console.log(table.records().length);
       draft.style.display = "inherit";
     }
     else {
