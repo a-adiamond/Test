@@ -45,7 +45,7 @@ const Airtable = {
                     _props.options.name = options.name
                     _props.options.baseID = options.baseID
                     _props.options.apiKey = options.apiKey
-                    _props.options.view = options.view
+                    _props.options.view = _private.encodeForURL(options.view)
                 }
             })()
 
