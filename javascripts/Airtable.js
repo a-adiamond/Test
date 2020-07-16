@@ -14,6 +14,7 @@ const Airtable = {
          * @property {string} name - The table name exactly as it appears in Airtable.
          * @property {string} baseID - The ID of the intended base.
          * @property {string} apiKey - The appropriate API key.
+         * @property {string} view - The view name exactly as it appears in Airtable
          */
 
         /**
@@ -44,6 +45,7 @@ const Airtable = {
                     _props.options.name = options.name
                     _props.options.baseID = options.baseID
                     _props.options.apiKey = options.apiKey
+                    _props.options.view = options.view
                 }
             })()
 
@@ -70,11 +72,16 @@ const Airtable = {
                     this.offset = _props.offset
                     this.status = null
                     this.response = null
+                    this.view = _props.options.view
 
                     const _request = (type, success, fail, send, recordID) => {
                         const xhr = new XMLHttpRequest()
 
                         if (recordID) xhr.open(type, this.endpoint + '/' + recordID)
+                        if (this.view) {
+                            if (this.offset) xhr.open(type,this.endpoint + '?view=' + this.view + '&offset=' + this.offset)
+                            else xhr.open(type,this.endpoint + '?view=' + this.view)
+                        }
                         else if (this.offset) xhr.open(type, this.endpoint + '?offset=' + this.offset)
                         else xhr.open(type, this.endpoint)
 
