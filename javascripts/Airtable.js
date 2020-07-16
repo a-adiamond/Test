@@ -207,15 +207,20 @@ const Airtable = {
                         xhr.GET(_ => {
                             _props.records = xhr.response.records
                             _props.offset = xhr.response.offset
-                            var timeout = 0
-                            while (_props.offset && timeout < 4) {
+                            if (_props.offset) {
                                 console.log("Offset",_props.offset)
-                                timeout ++
                                 const xhr2 = new XHR()
                                     xhr2.GET(_ => {
                                     _props.records = _props.records.concat(xhr2.response.records)
                                     _props.offset = xhr2.response.offset
                                     console.log("Offset",_props.offset)
+                                    if (_props.offset) {
+                                        const xhr3 = new XHR()
+                                         xhr3.GET(_ => {
+                                           _props.records = _props.records.concat(xhr3.response.records)
+                                           _props.offset = xhr3.response.offset
+                                          console.log("Offset",_props.offset)
+                                         }, _ => console.log('pull error'))
                                     }, _ => console.log('pull error'))
                                   }
                             if (callback) callback()
