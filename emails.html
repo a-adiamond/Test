@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.2.2.1</h2>
+          <h2>V0.2.2.2</h2>
         </header>
 
         <hr>
@@ -39,7 +39,7 @@
       </section>
       <section id="recipient" style="display:none">
         <h1>Which group?</h1>
-        <select name="recipientSelect" id="recipientSelect" onchange="checkRecipient()">
+        <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient().then(checkRecipient)">
         <option value="none" selected disabled hidden></option>
         <option value="Authors">Authors</option>
         <option value="Artists">Artists</option>
@@ -146,7 +146,7 @@
     recipForm.style.display="block";
   }
   
-  function checkRecipient() {
+  function loadRecipient() {
     console.log(recipEl.value);
     if (recipEl.value == "view" || recipEl.value == "individual") {
       console.log("Do this later");
@@ -156,9 +156,15 @@
         name: "Participants",
         baseID: baseId,
         apiKey: API_KEY,
-        view: recipEl.value}).then(function(){console.log(table.records().length)});
+        view: recipEl.value});
     }
   }
+  
+  function checkRecipient() {
+    console.log(table.records().length);
+  }
+  
+  function continueRecipient() {}
   
   
   
