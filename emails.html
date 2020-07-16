@@ -149,19 +149,20 @@
   function loadRecipient() {
     console.log(recipEl.value);
     if (recipEl.value == "view" || recipEl.value == "individual") {
-      table = "Do this later";
+      console.log("Do this later");
     }
     else {
       table = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
         apiKey: API_KEY,
-        view: recipEl.value},checkRecipient());
+        view: recipEl.value},setTimeout(() => {checkRecipient();}, 800));
     }
   }
   
   function checkRecipient() {
-    console.log(table.records().length);
+    if (table) console.log(table.records().length);
+    else console.log("I have no table for you.");
   }
   
   function continueRecipient() {}
