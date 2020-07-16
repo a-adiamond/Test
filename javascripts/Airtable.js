@@ -221,8 +221,9 @@ const Airtable = {
                                            _props.offset = xhr3.response.offset
                                           console.log("Offset",_props.offset)
                                          }, _ => console.log('pull error'))
-                                    }, _ => console.log('pull error'))
-                                  }
+                                      }
+                                   }, _ => console.log('pull error'))
+                            }
                             if (callback) callback()
                         }, _ => console.log('pull error'))
                     } else console.log('pull error - options required')
