@@ -19,12 +19,12 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3</h2>
+          <h2>V0.3.1</h2>
         </header>
 
         <hr>
 
-        <section id="main_content" style="display:none">
+        <section id="main_content">
           <button id="signIn" onclick="authenticate().then(loadClient)"><span>Sign in</span></button>
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
         </section>
@@ -37,7 +37,7 @@
         </select><button id="continueDraft" onclick="continueDraft()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:45%; float:right" id="previewDraft">Preview will show here</div>
       </section>
-      <section id="recipient">
+      <section id="recipient" style="display:none">
         <h1>Which group?</h1>
         <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient()">
         <option value="none" selected disabled hidden></option>
@@ -48,7 +48,11 @@
         <option value="ACTIVE participants">All Participants</option>
         <option value="view">Other Airtable View</option>
         <option value="individual">Specific Emails</option>
-      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button></section>
+      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button>
+      <div id="view" style="display:none"><h2>Airtable View name - case must match!</h2>
+      <input type="text" id="viewSelect" onChange="checkView()"><span style="color:red" id="airtableerror" style="display:none">Not a valid view, please try again.</span>
+        </div>
+      </section>
         <section id="vars" style="display:none">
         <h1>Select your variables</h1>
         <div style="width: 45%; float:left">
@@ -75,6 +79,8 @@
       draftPre = document.getElementById("previewDraft"),
       recipForm = document.getElementById("recipient"),
       recipEl = document.getElementById("recipientSelect"),
+      viewForm = document.getElementById("view"),
+      viewEl = document.getElementById("viewSelect"),
       varForm = document.getElementById("vars"),
       varPre = document.getElementById("previewVars"),
       debug = document.getElementById("debug");
@@ -161,9 +167,12 @@
   }
   
   function loadRecipient() {
-    table = 
-    console.log(recipEl.value);
-    if (recipEl.value == "view" || recipEl.value == "individual") {
+    document.getElementById("continueRecipient").style.display="none";
+    table=undefined;
+    if (recipEl.value == "view") {
+      viewForm.style.display="block";
+    }
+    else if(recipEl.value == "individual") {
       console.log("Do this later");
     }
     else {
@@ -174,6 +183,17 @@
         view: recipEl.value});
         setTimeout(() => {checkRecipient();}, 1000);
     }
+  }
+  
+  function checkView() {
+    document.getElementById("continueRecipient").style.display="none";
+    table=undefined;
+      table = new Airtable.Table({
+        name: "Participants",
+        baseID: baseId,
+        apiKey: API_KEY,
+        view: viewEl.value});
+        setTimeout(() => {checkRecipient();}, 1000);
   }
   
   function checkRecipient() {
