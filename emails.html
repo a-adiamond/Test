@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.2.1</h2>
+          <h2>V0.2.1.1</h2>
         </header>
 
         <hr>
@@ -54,7 +54,6 @@
           
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/airtable@0.8.1/build/airtable.browser.js"></script>
 <script>
   /**
    * Sample JavaScript code for gmail.users.drafts.list
@@ -69,10 +68,8 @@
       recipForm = document.getElementById("recipient"),
       recipEl = document.getElementById("recipientSelect");
   
-  //var Airtable = require('airtable');
   var API_KEY = "keyJS9Lnv0F166zj2",
       baseId = "appf5kgjPnWM3kIJR",
-      base = new Airtable({apiKey: API_KEY}).base(baseId),
       testRecord = "recZpMrUZuOpynd7K";
   
   function authenticate() {
@@ -152,7 +149,7 @@
     console.log(testRecord);
   }
   
-  function decode(base64) {
+/*  function decode(base64) {
 
   // Add removed at end '='
   base64 += Array(5 - base64.length % 4).join('=');
@@ -163,7 +160,9 @@
 
   return new Buffer(base64, 'base64');
 
-  }
+  }*/
+  
+  
   
   gapi.load("client:auth2", function() {
     gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
