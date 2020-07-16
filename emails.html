@@ -72,7 +72,7 @@
   var API_KEY = "keyJS9Lnv0F166zj2",
       baseId = "appf5kgjPnWM3kIJR",
       testRecord = "recZpMrUZuOpynd7K";
-  const table = new Airtable;
+  const table;
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -153,7 +153,7 @@
       console.log("Do this later");
     }
     else {
-      table.Table({
+      table = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
         apiKey: API_KEY,
