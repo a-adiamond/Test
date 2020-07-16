@@ -75,7 +75,7 @@ const Airtable = {
                         const xhr = new XMLHttpRequest()
 
                         if (recordID) xhr.open(type, this.endpoint + '/' + recordID)
-                        else if (this.offset) xhr.open(type, this.endpoint + '&offset=' + this.offset)
+                        else if (this.offset) xhr.open(type, this.endpoint + '?offset=' + this.offset)
                         else xhr.open(type, this.endpoint)
 
                         xhr.setRequestHeader('Content-Type', 'application/json')
