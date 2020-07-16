@@ -1,21 +1,9 @@
-/*
+/*  Modified from https://github.com/justKD/AirpuckJS
  *  Version 2.0
  *  10-18-2019
  *  Copyright 2019 justKD
  *  MIT License
  */
-
-// go to airtable api  - https://airtable.com/api
-// select the base you want to work with
-// check show api key
-// check the authentication section, and see something like:
-//
-// $ curl https://api.airtable.com/v0/appqAIFn2dZxGMIty/Table%201?api_key=keyRvIqOJ3I393sB3
-// 
-// in the example url above:
-// Base ID = appqAIFn2dZxGMIty
-// Table Name = able 1 (after removing the escaped space)
-// Api Key = keyRvIqOJ3I393sB3
 
 const Airtable = {
 
@@ -79,6 +67,7 @@ const Airtable = {
 
                     this.endpoint = _props.endpoint
                     this.bearer = _props.options.apiKey
+                    this.offset = _props.offset
                     this.status = null
                     this.response = null
 
@@ -86,6 +75,7 @@ const Airtable = {
                         const xhr = new XMLHttpRequest()
 
                         if (recordID) xhr.open(type, this.endpoint + '/' + recordID)
+                        else if (this.offset) xhr.open(type, this.endpoint + '&offset=' + this.offset)
                         else xhr.open(type, this.endpoint)
 
                         xhr.setRequestHeader('Content-Type', 'application/json')
@@ -95,7 +85,6 @@ const Airtable = {
                             this.status = xhr.status
                             if (xhr.status === 200) {
                                 this.response = JSON.parse(xhr.response)
-                                console.log("Offset", this.response.offset)
                                 if (success) success()
                             } else {
                                 console.log(xhr.status)
@@ -217,6 +206,14 @@ const Airtable = {
                         const xhr = new XHR()
                         xhr.GET(_ => {
                             _props.records = xhr.response.records
+                            _props.offset = xhr.response.offset
+                            while (_props.offset) {
+                                const xhr2 = new XHR()
+                                    xhr2.GET(_ => {
+                                    _props.records = _props.records.concat(xhr2.response.records)
+                                    _props.offset = xhr2.response.offset
+                                    }
+                                  }
                             if (callback) callback()
                         }, _ => console.log('pull error'))
                     } else console.log('pull error - options required')
