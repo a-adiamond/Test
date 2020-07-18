@@ -19,7 +19,8 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.1</h2>
+          <h2>V0.3.1.1</h2>
+          <button id="skip" onclick="continueDraft();function(){document.getElementById('signIn').style.display='none';}"><span>Skip to recipients</span></button>
         </header>
 
         <hr>
@@ -38,6 +39,7 @@
         <div style="border: thin solid black; width:45%; float:right" id="previewDraft">Preview will show here</div>
       </section>
       <section id="recipient" style="display:none">
+        <div style="width: 45%; float:left;display:block">
         <h1>Which group?</h1>
         <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient()">
         <option value="none" selected disabled hidden></option>
@@ -48,9 +50,9 @@
         <option value="ACTIVE participants">All Participants</option>
         <option value="view">Other Airtable View</option>
         <option value="individual">Specific Emails</option>
-      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button>
-      <div id="view" style="display:none"><h2>Airtable View name - case must match!</h2>
-      <input type="text" id="viewSelect" onChange="checkView()"><span style="color:red" id="airtableerror" style="display:none">Not a valid view, please try again.</span>
+      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button></div>
+      <div id="view" style="width:45%;display:none"><h2>Airtable View name - case must match!</h2>
+      <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError">Not a valid view, please try again.</span>
         </div>
       </section>
         <section id="vars" style="display:none">
@@ -185,15 +187,27 @@
     }
   }
   
-  function checkView() {
+  function loadView() {
     document.getElementById("continueRecipient").style.display="none";
+    document.getElementById("viewError").style.display="none";
     table=undefined;
       table = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
         apiKey: API_KEY,
         view: viewEl.value});
-        setTimeout(() => {checkRecipient();}, 1000);
+        setTimeout(() => {checkView();}, 1000);
+  }
+
+    
+  function checkView() {
+    if (table) {
+      document.getElementById("ContinueRecipient").style.display="block";
+    }
+    else {
+      document.getElementById("ContinueRecipient").style.display="none";
+      document.getElementById("viewError").style.display="block";
+    }
   }
   
   function checkRecipient() {
