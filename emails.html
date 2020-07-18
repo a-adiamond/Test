@@ -41,7 +41,7 @@
       </section>
       <section id="recipient" style="display: none; padding-left: 5%; padding-right: 5%;">
         <h1>Which group?</h1>
-        <div style="width: 40%; float:left;display:block">
+        <div style="width: 30%; float:left;display:block">
         <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient()">
         <option value="none" selected disabled hidden></option>
         <option value="Authors">Authors</option>
@@ -52,9 +52,12 @@
         <option value="view">Other Airtable View</option>
         <option value="individual">Specific Emails</option>
       </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button></div>
-      <div id="view" style="width:40%;float:right;display:none"><h2>Airtable View name - case must match!</h2>
-      <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
-        </div>
+      <div id="view" style="width:45%;float:right;padding-right:10%;display:none"><h2>Airtable View name - case must match!</h2>
+        <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
+      </div>
+      <div id="emails" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email addresses - separated by spaces, commas, and/or returns.</h2>
+        <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
+      </div>
       </section>
         <section id="vars" style="display:none">
         <h1>Select your variables</h1>
@@ -170,7 +173,8 @@
   
   function loadRecipient() {
     document.getElementById("continueRecipient").style.display="none";
-    table=undefined;
+    document.getElementById("viewError").style.display="none";
+    viewForm.style.display="none";
     if (recipEl.value == "view") {
       viewForm.style.display="block";
     }
