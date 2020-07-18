@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.1.6</h2>
+          <h2>V0.3.1.7</h2>
           <span id="debug">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -183,7 +183,7 @@
         baseID: baseId,
         apiKey: API_KEY,
         view: recipEl.value});
-        setTimeout(() => {checkRecipient();}, 1000);
+        setTimeout(() => {checkRecipient();}, 1200);
     }
   }
   
@@ -195,7 +195,7 @@
         baseID: baseId,
         apiKey: API_KEY,
         view: viewEl.value});
-        setTimeout(() => {checkView();}, 1000);
+        setTimeout(() => {checkView();}, 1200);
   }
 
     
