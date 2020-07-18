@@ -219,10 +219,10 @@ const Airtable = {
                             if (_props.offset) {
                                 const xhr2 = new XHR()
                                     xhr2.GET(_ => {
-                                    _props.records = Object.assign(_props.records,xhr2.response.records) 
+                                    _props.records = {_props.records,xhr2.response.records}
                                     console.log("2",xhr2.response.records)
                                     _props.offset = xhr2.response.offset
-                                    console.log("2.5?",Object.assign(xhr.response.records,xhr2.response.records))
+                                    console.log("2.5?",{xhr.response.records,xhr2.response.records})
                                     if (_props.offset) {
                                         const xhr3 = new XHR()
                                          xhr3.GET(_ => {
