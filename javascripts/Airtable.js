@@ -218,12 +218,12 @@ const Airtable = {
                             if (_props.offset) {
                                 const xhr2 = new XHR()
                                     xhr2.GET(_ => {
-                                    _props.records = Obj.assign(_props.records,xhr2.response.records)
+                                    _props.records = Object.assign(_props.records,xhr2.response.records)
                                     _props.offset = xhr2.response.offset
                                     if (_props.offset) {
                                         const xhr3 = new XHR()
                                          xhr3.GET(_ => {
-                                           _props.records =  Obj.assign(_props.records,xhr3.response.records)
+                                           _props.records =  Object.assign(_props.records,xhr3.response.records)
                                            _props.offset = xhr3.response.offset
                                          }, _ => console.log('pull error'))
                                       }
