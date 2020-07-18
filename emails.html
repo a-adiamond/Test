@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.1.7</h2>
+          <h2>V0.3.1.8</h2>
           <span id="debug">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -53,7 +53,7 @@
         <option value="individual">Specific Emails</option>
       </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button></div>
       <div id="view" style="width:45%;display:none"><h2>Airtable View name - case must match!</h2>
-      <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError">Not a valid view, please try again.</span>
+      <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
         </div>
       </section>
         <section id="vars" style="display:none">
@@ -172,7 +172,7 @@
     document.getElementById("continueRecipient").style.display="none";
     table=undefined;
     if (recipEl.value == "view") {
-      viewForm.style.display="block";
+      viewForm.style.display="inline-block";
     }
     else if(recipEl.value == "individual") {
       console.log("Do this later");
@@ -200,8 +200,7 @@
 
     
   function checkView() {
-    console.log(table.records());
-    if (table) {
+    if (table.records().length > 0) {
       document.getElementById("continueRecipient").style.display="block";
     }
     else {
@@ -211,8 +210,7 @@
   }
   
   function checkRecipient() {
-    console.log(table.records());
-    if (table) {
+    if (table.records().length > 0) {
       document.getElementById("continueRecipient").style.display="block";
     }
     else {
