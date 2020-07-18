@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.1.9</h2>
+          <h2>V0.3.2</h2>
           <span id="debug" style="display:none">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -55,7 +55,7 @@
       <div id="view" style="width:45%;float:right;padding-right:10%;display:none"><h2>Airtable View name - case must match!</h2>
         <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
       </div>
-      <div id="emails" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email addresses - separated by spaces, commas, and/or returns.</h2>
+      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2>
         <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
       </div>
       </section>
@@ -86,13 +86,16 @@
       recipEl = document.getElementById("recipientSelect"),
       viewForm = document.getElementById("view"),
       viewEl = document.getElementById("viewSelect"),
+      emailForm = document.getElementById("emails"),
+      emailEl = document.getElementById("emailSelect"),
       varForm = document.getElementById("vars"),
       varPre = document.getElementById("previewVars"),
       debug = document.getElementById("debug");
   
   var API_KEY = "keyJS9Lnv0F166zj2",
       baseId = "appf5kgjPnWM3kIJR",
-      table;
+      table,
+      sendRecords;
   const samples = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
@@ -175,11 +178,17 @@
     document.getElementById("continueRecipient").style.display="none";
     document.getElementById("viewError").style.display="none";
     viewForm.style.display="none";
+    emailForm.style.display="none";
+    document.getElementById("emailError").style.display="none";
     if (recipEl.value == "view") {
       viewForm.style.display="block";
     }
     else if(recipEl.value == "individual") {
-      console.log("Do this later");
+      emailForm.style.display="block";
+      table = new Airtable.Table({
+        name: "Participants",
+        baseID: baseId,
+        apiKey: API_KEY});
     }
     else {
       table = new Airtable.Table({
@@ -188,6 +197,17 @@
         apiKey: API_KEY,
         view: recipEl.value});
         setTimeout(() => {checkRecipient();}, 1200);
+    }
+  }
+  
+
+  function checkRecipient() {
+    if (table.records().length > 0) {
+      document.getElementById("continueRecipient").style.display="block";
+      sendRecords = table.records();
+    }
+    else {
+      document.getElementById("continueRecipient").style.display="none";
     }
   }
   
@@ -202,10 +222,10 @@
         setTimeout(() => {checkView();}, 1200);
   }
 
-    
   function checkView() {
     if (table.records().length > 0) {
       document.getElementById("continueRecipient").style.display="block";
+      sendRecords = table.records();
     }
     else {
       document.getElementById("continueRecipient").style.display="none";
@@ -213,15 +233,50 @@
     }
   }
   
-  function checkRecipient() {
-    if (table.records().length > 0) {
+  
+  function loadEmail() {
+    document.getElementById("continueRecipient").style.display="none";
+    document.getElementById("emailError").style.display="none";
+    sendRecords = [];
+    var emailList = emailEl.split(/(?:[,\n\s]+)/g);
+    emailList = emailList.filter(Boolean);
+    var error = 0;
+    if (emailList.length == 0) {
+      error = 1;
+    }
+    else {
+      for (var i in emailList) {
+        if (emailList[i].match(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/) == null) {
+          error = 1;
+        }
+      }
+    }
+    if (error == 1) {
+      document.getElementById("emailError").style.display="block";
+    }
+    else {
+      for (var j in emailList) {
+        sendRecords = sendRecords.push(table.getRecordsByField("Email",j))
+      }
+      setTimeout(() => {checkEmail();}, 1200);
+    }
+  }
+    
+    
+    
+//Search existing records for these emails wooo
+  }
+
+  function checkEmail() {
+    if (sendRecords.length > 0) {
       document.getElementById("continueRecipient").style.display="block";
     }
     else {
       document.getElementById("continueRecipient").style.display="none";
-      console.log("I have no table for you.");
+      document.getElementById("emailError").style.display="block";
     }
   }
+  
   
   function continueRecipient() {
     recipForm.style.display="none";
