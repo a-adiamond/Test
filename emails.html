@@ -19,8 +19,8 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.1.1</h2>
-          <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';"><span>Skip to recipients</span></button>
+          <h2>V0.3.1.2</h2>
+          <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
 
         <hr>
@@ -202,10 +202,10 @@
     
   function checkView() {
     if (table) {
-      document.getElementById("ContinueRecipient").style.display="block";
+      document.getElementById("continueRecipient").style.display="block";
     }
     else {
-      document.getElementById("ContinueRecipient").style.display="none";
+      document.getElementById("continueRecipient").style.display="none";
       document.getElementById("viewError").style.display="block";
     }
   }
