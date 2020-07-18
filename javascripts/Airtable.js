@@ -218,7 +218,6 @@ const Airtable = {
                             if (_props.offset) {
                                 const xhr2 = new XHR()
                                     xhr2.GET(_ => {
-                                    console.log("2",xhr2.response.records)
                                     _props.offset = xhr2.response.offset
                                     if (_props.offset) {
                                         const xhr3 = new XHR()
