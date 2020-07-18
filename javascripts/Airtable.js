@@ -222,12 +222,12 @@ const Airtable = {
                                     if (_props.offset) {
                                         const xhr3 = new XHR()
                                          xhr3.GET(_ => {
-                                            _props.records = xhr.response.records.concat(xhr2.response.records,xhr2.response.records)
+                                            _props.records = xhr.response.records.concat(xhr2.response.records,xhr3.response.records)
                                             _props.offset = xhr3.response.offset
                                          }, _ => console.log('pull error'))
                                       }
-                                        else
-                                    _props.records = xhr.response.records.concat(xhr2.response.records)
+                                        else {
+                                    _props.records = xhr.response.records.concat(xhr2.response.records) }
                                    }, _ => console.log('pull error'))
                             }
                             if (callback) callback()
