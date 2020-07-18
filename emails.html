@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.1.4</h2>
+          <h2>V0.3.1.5</h2>
           <span id="debug">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -200,7 +200,7 @@
 
     
   function checkView() {
-    console.log(table.records().toString());
+    console.log(table.records());
     if (table) {
       document.getElementById("continueRecipient").style.display="block";
     }
@@ -211,7 +211,7 @@
   }
   
   function checkRecipient() {
-    console.log(table.records().toString());
+    console.log("records(): " + table.records() + "\nrecords: " + table.records + "\nstringify?: " + JSON.stringify(table.records()));
     if (table) {
       document.getElementById("continueRecipient").style.display="block";
     }
