@@ -238,7 +238,7 @@
     document.getElementById("continueRecipient").style.display="none";
     document.getElementById("emailError").style.display="none";
     sendRecords = [];
-    var emailList = emailEl.split(/(?:[,\n\s]+)/g);
+    var emailList = emailEl.value.split(/(?:[,\n\s]+)/g);
     emailList = emailList.filter(Boolean);
     var error = 0;
     if (emailList.length == 0) {
