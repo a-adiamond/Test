@@ -214,23 +214,21 @@ const Airtable = {
                         const xhr = new XHR()
                         xhr.GET(_ => {
                             _props.records = xhr.response.records
-                            console.log("1",xhr.response.records)
                             _props.offset = xhr.response.offset
                             if (_props.offset) {
                                 const xhr2 = new XHR()
                                     xhr2.GET(_ => {
-                                    _props.records.concat(xhr2.response.records)
                                     console.log("2",xhr2.response.records)
                                     _props.offset = xhr2.response.offset
-                                    console.log("2.5?",xhr.response.records.concat(xhr2.response.records))
-                                    console.log("Also 2.5?",_props.records)
                                     if (_props.offset) {
                                         const xhr3 = new XHR()
                                          xhr3.GET(_ => {
-                                           _props.records =  Object.assign(_props.records,xhr3.response.records)
-                                           _props.offset = xhr3.response.offset
+                                            _props.records = xhr.response.records.concat(xhr2.response.records,xhr2.response.records)
+                                            _props.offset = xhr3.response.offset
                                          }, _ => console.log('pull error'))
                                       }
+                                        else
+                                    _props.records = xhr.response.records.concat(xhr2.response.records)
                                    }, _ => console.log('pull error'))
                             }
                             if (callback) callback()
