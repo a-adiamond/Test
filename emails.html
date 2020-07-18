@@ -20,6 +20,7 @@
         <header>
           <h1>DCBB Emails</h1>
           <h2>V0.3.1.3</h2>
+          <span id="debug">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
 
@@ -58,7 +59,6 @@
         <section id="vars" style="display:none">
         <h1>Select your variables</h1>
         <div style="width: 45%; float:left">
-          <span id="debug">Debug stuff here!</span>
           <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:45%; float:right" id="previewVars">Preview will show here</div>
       </section>
@@ -190,7 +190,6 @@
   function loadView() {
     document.getElementById("continueRecipient").style.display="none";
     document.getElementById("viewError").style.display="none";
-    table=undefined;
       table = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
@@ -212,6 +211,7 @@
   }
   
   function checkRecipient() {
+    console.log(table);
     if (table) {
       document.getElementById("continueRecipient").style.display="block";
     }
