@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.2.3</h2>
+          <h2>V0.3.2.4</h2>
           <span id="debug" style="display:none">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -256,8 +256,8 @@
     }
     else {
       for (var j in emailList) {
-        console.log("finding:",j);
-        sendRecords.push(table.getRecordsByField("Email",j)[0]);
+        console.log("finding:",emailList[j]);
+        sendRecords.push(table.getRecordsByField("Email",emailList[j])[0]);
       }
       setTimeout(() => {checkEmail();}, 1200);
     }
