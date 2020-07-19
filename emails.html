@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.8</h2>
+          <h2>V0.3.9</h2>
         </header>
 
         <hr>
@@ -336,9 +336,18 @@
       test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
     }
     test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
-    console.log("decoded: ",test);
-    console.log("encoded: ",Base64.encode(test));
+    sendEmail(Base64.encode(test));
   }
+  
+  function sendEmail(test) {
+  return gapi.client.gmail.users.messages.send({
+    'userId': "deancasbigbangmod@gmail.com",
+    'resource': {
+      'raw': test    }
+  })
+  .then(function(response){console.log("Sent an email?")},
+          function(err) { console.error("Execute error", err); }););
+}
   
   
   gapi.load("client:auth2", function() {
