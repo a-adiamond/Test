@@ -307,11 +307,9 @@
   function updateVars() {
     subjPre.innerHTML = drafts[draftEl.value].subj;
     bodyPre.innerHTML = drafts[draftEl.value].bodyHTML;
-    var varCheck;
     for (var i in sendVars) {
       subjPre.innerHTML = subjPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
       bodyPre.innerHTML = bodyPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
-      varCheck.push(sendVars[i]);
     }
     if (JSON.stringify(sendVars).includes("{{") && JSON.stringify(sendVars).includes("}}")) {
       document.getElementById("continueVars").style.display="none";
