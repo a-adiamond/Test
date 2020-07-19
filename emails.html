@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.6</h2>
+          <h2>V0.3.7</h2>
         </header>
 
         <hr>
@@ -331,9 +331,9 @@
   }
   
   function continueVars() {
-    var test = drafts[draftEl].raw;
+    var test = drafts[draftEl.value].raw;
     for (var i in sendVars) {
-      test = test.split("{{"+i+"}}").join(sendVars[i]);
+      test = test.split("{{"+i+"}}").join(sendRecords[0].fields[i]);
     }
     console.log("decoded: ",test);
     console.log("encoded: ",Base64.encode(test));
