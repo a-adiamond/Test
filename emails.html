@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.5.3</h2>
+          <h2>V0.3.5.4</h2>
         </header>
 
         <hr>
@@ -108,7 +108,6 @@
     return gapi.auth2.getAuthInstance()
         .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.readonly"})
         .then(function() { 
-          //console.log("Sign-in successful"); 
         }, 
               function(err) { console.error("Error signing in", err); });
   }
@@ -116,7 +115,6 @@
     gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
     return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
         .then(function() {
-                 //console.log("GAPI client loaded for API");
                  document.getElementById("signIn").style.display="none";
                  document.getElementById("loadDrafts").style.display = "block";},
               function(err) { console.error("Error loading GAPI client for API", err); });
@@ -195,7 +193,7 @@
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         cell1.innerText = "{{"+match[1]+"}}";
-        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"sendVars['"+match[1]+"'] = samples.records()[0].fields[this.value]\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
+        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"sendVars['"+match[1]+"'] = samples.records()[0].fields[this.value];updateVars();\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
       }
     }
   }
@@ -309,10 +307,18 @@
   function updateVars() {
     subjPre.innerHTML = drafts[draftEl.value].subj;
     bodyPre.innerHTML = drafts[draftEl.value].bodyHTML;
+    var varCheck;
     for (var i in sendVars) {
       subjPre.innerHTML = subjPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
       bodyPre.innerHTML = bodyPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
+      varCheck.push(sendVars[i]);
     }
+    if (JSON.stringify(sendVars).includes("{{") && JSON.stringify(sendVars).includes("}}")) {
+      document.getElementById("continueVars").style.display="none";
+    }
+    else {
+      document.getElementById("continueVars").style.display="block";
+    } 
   }
   
   
