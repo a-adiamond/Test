@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.9</h2>
+          <h2>V0.4</h2>
         </header>
 
         <hr>
@@ -64,6 +64,11 @@
           <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:65%; float:right"><div style="border:thin solid black;width:100%" id="previewSubj">Subject</div><div style="border:thin solid black;width:100%;font-size:smaller" id="previewBody">Preview will show here</div></div>
       </section>
+      <section id="confirmationScreen" style="display:none">
+        <h1>Send email to {{#}} recipients?</h1>
+        <button id="confirmButton" onclick="prepEmail();this.style.display='none';document.getElementById('processing').style.display='block';"><span>Send!</span></button></div>
+      </section>
+    <section id="processing" style="display:none"><h1>Processing, please hold.</h1></section>
     </div>
   </body>
           
@@ -331,13 +336,24 @@
   }
   
   function continueVars() {
-    var test = drafts[draftEl.value].raw;
-    for (var i in sendVars) {
-      test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
-    }
-    test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
-    sendEmail(Base64.encode(test));
+    varForm.style.display="none";
+    document.getElementById("confirmationScreen").innerHTML=document.getElementById("confirmationScreen").innerHTML.split("{{#}}").join(sendRecords.length)
+    document.getElementById("confirmationScreen").style.display="block";
   }
+  
+  function prepEmail() {
+    if (sendRecords.length > 0) {
+      var test = drafts[draftEl.value].raw;
+      for (var i in sendVars) {
+        test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
+      }
+      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+      sendEmail(Base64.encode(test));
+    }
+    else {
+      document.getElementById('processing').innerText = "Done! Good job you.";
+    }
+  } 
   
   function sendEmail(test) {
   return gapi.client.gmail.users.messages.send({
@@ -345,7 +361,7 @@
     'resource': {
       'raw': test    }
   })
-  .then(function(response){console.log("Sent an email?")},
+  .then(function(response){sendRecords.shift();prepEmail()},
           function(err) { console.error("Execute error", err); });
 }
   
