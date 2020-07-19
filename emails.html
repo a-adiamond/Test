@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.3.2</h2>
+          <h2>V0.3.3.3</h2>
         </header>
 
         <hr>
@@ -53,13 +53,14 @@
       <div id="view" style="width:45%;float:right;padding-right:10%;display:none"><h2>Airtable View name - case must match!</h2>
         <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
       </div>
-      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2><button style="float:right;display:inline">><span>Check</span></button>
+      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2><button style="float:right"><span>Check</span></button>
         <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
       </div>
       </section>
         <section id="vars" style="display: none; padding-left: 5%; padding-right: 5%;">
         <h1>Select your variables</h1>
-        <div style="width: 40%; float:left;" id="varsDiv">
+        <div style="width: 40%; float:left;">
+          <table id="varsDiv"><tr><th >Variable</th><th>Airtable Column</th></tr></table>
           <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:45%; float:right" id="previewVars">Preview will show here</div>
       </section>
@@ -181,6 +182,11 @@
     for (var match of find) {
       if (sendVars.includes(match[1]) == false) {
         sendVars.push(match[1]);
+        var row = varEl.insertRow(varEl.rows.length);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerText = match[1];
+        cell2.innerText = "tktk";
       }
     }
     console.log(sendVars);
