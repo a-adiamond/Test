@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.2.4</h2>
+          <h2>V0.3.3</h2>
           <span id="debug" style="display:none">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -55,13 +55,13 @@
       <div id="view" style="width:45%;float:right;padding-right:10%;display:none"><h2>Airtable View name - case must match!</h2>
         <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
       </div>
-      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2>
+      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2><button><span>Check</span></button>
         <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
       </div>
       </section>
-        <section id="vars" style="display:none">
+        <section id="vars" style="display: none; padding-left: 5%; padding-right: 5%;">
         <h1>Select your variables</h1>
-        <div style="width: 45%; float:left">
+        <div style="width: 40%; float:left;" id="varsDiv">
           <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
         <div style="border: thin solid black; width:45%; float:right" id="previewVars">Preview will show here</div>
       </section>
@@ -89,13 +89,14 @@
       emailForm = document.getElementById("email"),
       emailEl = document.getElementById("emailSelect"),
       varForm = document.getElementById("vars"),
-      varPre = document.getElementById("previewVars"),
-      debug = document.getElementById("debug");
+      varEl = document.getElementById("varsDiv"),
+      varPre = document.getElementById("previewVars");
   
   var API_KEY = "keyJS9Lnv0F166zj2",
       baseId = "appf5kgjPnWM3kIJR",
       table,
-      sendRecords;
+      sendRecords,
+      sendVars;
   const samples = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
@@ -170,8 +171,21 @@
   }
   
   function continueDraft() {
+    parseVars();
     draftForm.style.display="none";
     recipForm.style.display="block";
+  }
+  
+  function parseVars() {
+    var regex = /\{\{([\w\s]+)\}\}/g,
+        find = drafts[draftsEl.value].subj.concat(drafts[draftEl.value].bodyHTML).matchAll(regex),
+        matches = [];
+    for (var match of find) {
+      if (matches.includes(match[1]) == false) {
+        matches.push(match[1]);
+      }
+    }
+    console.log(matches);
   }
   
   function loadRecipient() {
@@ -279,6 +293,7 @@
   function continueRecipient() {
     recipForm.style.display="none";
     varForm.style.display="block";
+    console.log("Email fields: "
     console.log("Sample fields: ",samples.fields().toString());
   }
   
