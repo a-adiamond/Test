@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.3.1</h2>
+          <h2>V0.3.3.2</h2>
         </header>
 
         <hr>
@@ -53,7 +53,7 @@
       <div id="view" style="width:45%;float:right;padding-right:10%;display:none"><h2>Airtable View name - case must match!</h2>
         <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
       </div>
-      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2><button><span>Check</span></button>
+      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2><button style="float:right;display:inline">><span>Check</span></button>
         <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
       </div>
       </section>
@@ -176,14 +176,14 @@
   
   function parseVars() {
     var regex = /\{\{([\w\s]+)\}\}/g,
-        find = drafts[draftEl.value].subj.concat(drafts[draftEl.value].bodyHTML).matchAll(regex),
-        matches = [];
+        find = drafts[draftEl.value].subj.concat(drafts[draftEl.value].bodyHTML).matchAll(regex);
+    sendVars = [];
     for (var match of find) {
-      if (matches.includes(match[1]) == false) {
-        matches.push(match[1]);
+      if (sendVars.includes(match[1]) == false) {
+        sendVars.push(match[1]);
       }
     }
-    console.log(matches);
+    console.log(sendVars);
   }
   
   function loadRecipient() {
@@ -268,7 +268,6 @@
     }
     else {
       for (var j in emailList) {
-        console.log("finding:",emailList[j]);
         sendRecords.push(table.getRecordsByField("Email",emailList[j])[0]);
       }
       setTimeout(() => {checkEmail();}, 1200);
@@ -277,7 +276,6 @@
  
 
   function checkEmail() {
-    console.log(sendRecords);
     if (sendRecords.length > 0) {
       document.getElementById("continueRecipient").style.display="block";
     }
@@ -291,7 +289,7 @@
   function continueRecipient() {
     recipForm.style.display="none";
     varForm.style.display="block";
-    console.log("Email fields: ",matches.toString());
+    console.log("Email fields: ",sendVars.toString());
     console.log("Sample fields: ",samples.fields().toString());
   }
   
