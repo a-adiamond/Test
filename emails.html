@@ -256,7 +256,7 @@
     }
     else {
       for (var j in emailList) {
-        sendRecords = sendRecords.push(table.getRecordsByField("Email",j))
+        sendRecords.push(table.getRecordsByField("Email",j));
       }
       setTimeout(() => {checkEmail();}, 1200);
     }
