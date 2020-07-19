@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.2.1</h2>
+          <h2>V0.3.2.2</h2>
           <span id="debug" style="display:none">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -237,7 +237,7 @@
   function loadEmail() {
     document.getElementById("continueRecipient").style.display="none";
     document.getElementById("emailError").style.display="none";
-    sendRecords = [];
+//    sendRecords = [];
     var emailList = emailEl.value.split(/(?:[,\n\s]+)/g);
     emailList = emailList.filter(Boolean);
     var error = 0;
@@ -256,7 +256,8 @@
     }
     else {
       for (var j in emailList) {
-        sendRecords.push(table.getRecordsByField("Email",j));
+        console.log("finding:",j);
+        sendRecords.push(table.getRecordsByField("Email",j)[0]);
       }
       setTimeout(() => {checkEmail();}, 1200);
     }
@@ -264,6 +265,7 @@
  
 
   function checkEmail() {
+    console.log(sendRecords);
     if (sendRecords.length > 0) {
       document.getElementById("continueRecipient").style.display="block";
     }
@@ -277,7 +279,7 @@
   function continueRecipient() {
     recipForm.style.display="none";
     varForm.style.display="block";
-    debug.innerText = "Sample fields: " + samples.fields().toString() + "\nRecipient fields: " + table.fields().toString();
+    console.log("Sample fields: ",samples.fields().toString());
   }
   
   
