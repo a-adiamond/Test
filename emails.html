@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.2.2</h2>
+          <h2>V0.3.2.3</h2>
           <span id="debug" style="display:none">Debug stuff here!</span>
           <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
@@ -237,7 +237,7 @@
   function loadEmail() {
     document.getElementById("continueRecipient").style.display="none";
     document.getElementById("emailError").style.display="none";
-//    sendRecords = [];
+    sendRecords = [];
     var emailList = emailEl.value.split(/(?:[,\n\s]+)/g);
     emailList = emailList.filter(Boolean);
     var error = 0;
