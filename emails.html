@@ -20,8 +20,6 @@
         <header>
           <h1>DCBB Emails</h1>
           <h2>V0.3.3</h2>
-          <span id="debug" style="display:none">Debug stuff here!</span>
-          <button id="skip" onclick="continueDraft();document.getElementById('signIn').style.display='none';document.getElementById('skip').style.display='none';"><span>Skip to recipients</span></button>
         </header>
 
         <hr>
@@ -293,7 +291,7 @@
   function continueRecipient() {
     recipForm.style.display="none";
     varForm.style.display="block";
-    console.log("Email fields: "
+    console.log("Email fields: ",matches.toString());
     console.log("Sample fields: ",samples.fields().toString());
   }
   
