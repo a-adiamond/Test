@@ -333,8 +333,9 @@
   function continueVars() {
     var test = drafts[draftEl.value].raw;
     for (var i in sendVars) {
-      test = test.split("{{"+i+"}}").join(sendRecords[0].fields[i]);
+      test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
     }
+    test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
     console.log("decoded: ",test);
     console.log("encoded: ",Base64.encode(test));
   }
