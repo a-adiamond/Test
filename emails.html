@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.3.3</h2>
+          <h2>V0.3.3.4</h2>
         </header>
 
         <hr>
@@ -145,6 +145,7 @@
         draftEl.add(option);
       }
       draft.style.display = "inherit";
+      console.log(draftEl.innerHTML);
     }
     else {
       setTimeout(() => {  updateList(limit);}, 800);;
@@ -175,7 +176,7 @@
     recipForm.style.display="block";
   }
   
-  function parseVars() {
+  function parseVars() { 
     var regex = /\{\{([\w\s]+)\}\}/g,
         find = drafts[draftEl.value].subj.concat(drafts[draftEl.value].bodyHTML).matchAll(regex);
     sendVars = [];
