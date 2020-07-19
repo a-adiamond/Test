@@ -15,11 +15,11 @@
 
   <body>
     <div id="container">
-      <div class="inner">
+      <div class="inner" id="head">
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.5.4</h2>
+          <h2>V0.3.6</h2>
         </header>
 
         <hr>
@@ -35,7 +35,7 @@
         <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
         <option value="none" selected disabled hidden></option> 
         </select><button id="continueDraft" onclick="continueDraft()" style="display:none"><span>Continue</span></button></div>
-        <div style="border: thin solid black; width: 50%;float:right;" id="previewDraft">Preview will show here</div>
+        <div style="border: thin solid black; width: 50%;float:right;font-size:smaller" id="previewDraft">Preview will show here</div>
       </section>
       <section id="recipient" style="display: none; padding-left: 5%; padding-right: 5%;">
         <h1>Which group?</h1>
@@ -59,10 +59,10 @@
       </section>
         <section id="vars" style="display: none; padding-left: 5%; padding-right: 5%;">
         <h1>Select your variables</h1>
-        <div style="width: 40%; float:left;">
+        <div style="width: 30%; float:left;">
           <table id="varsDiv"><tr><th >Variable</th><th>Airtable Column</th></tr></table>
           <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
-        <div style="border: thin solid black; width:45%; float:right"><div style="border:thin solid black;width:100%" id="previewSubj">Subject</div><div style="border:thin solid black;width:100%" id="previewBody">Preview will show here</div></div>
+        <div style="border: thin solid black; width:65%; float:right"><div style="border:thin solid black;width:100%" id="previewSubj">Subject</div><div style="border:thin solid black;width:100%;font-size:smaller" id="previewBody">Preview will show here</div></div>
       </section>
     </div>
   </body>
@@ -106,7 +106,7 @@
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
-        .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.readonly"})
+        .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
         .then(function() { 
         }, 
               function(err) { console.error("Error signing in", err); });
@@ -137,7 +137,7 @@
   
   function updateList(limit) {
     if (Object.keys(drafts).length == limit) {
-      document.getElementById("loadDrafts").style.display="none";
+      document.getElementById("head").style.display="none";
       for (id in drafts) {
         var option = document.createElement("option");
         option.value = id;
@@ -170,13 +170,24 @@
                     "format":"full"})
     .then(function(response) {
       drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
-                        "bodyPlain" : Base64.decode(response.result.payload.parts[0].body.data),
                         "bodyHTML":Base64.decode(response.result.payload.parts[1].body.data)};
+    },
+          function(err) { console.error("Execute error", err); });
+  }
+
+  function getRaw(draftId) {
+        return gapi.client.gmail.users.messages.get({
+                    "userId":"deancasbigbangmod@gmail.com",
+                    "id":draftId,
+                    "format":"raw"})
+    .then(function(response) {
+      drafts[draftId] = {"raw" : Base64.decode(response.result.raw)};
     },
           function(err) { console.error("Execute error", err); });
   }
   
   function continueDraft() {
+    getRaw(draftEl.value);
     parseVars();
     draftForm.style.display="none";
     recipForm.style.display="block";
@@ -317,6 +328,15 @@
     else {
       document.getElementById("continueVars").style.display="block";
     } 
+  }
+  
+  function continueVars() {
+    var test = drafts[draftEl].raw;
+    for (var i in sendVars) {
+      test = test.split("{{"+i+"}}").join(sendVars[i]);
+    }
+    console.log("decoded: ",test);
+    console.log("encoded: ",Base64.encode(test));
   }
   
   
