@@ -189,7 +189,7 @@
         find = drafts[draftEl.value].subj.concat(drafts[draftEl.value].bodyHTML).matchAll(regex);
     sendVars = {};
     for (var match of find) {
-      if (sendVars[match[1]]) == undefined) {
+      if (sendVars[match[1]] == undefined) {
         sendVars[match[1]] = "{{"+match[1]+"}}";
         var row = varEl.insertRow(varEl.rows.length);
         var cell1 = row.insertCell(0);
