@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.3.4</h2>
+          <h2>V0.3.5.1</h2>
         </header>
 
         <hr>
@@ -62,7 +62,7 @@
         <div style="width: 40%; float:left;">
           <table id="varsDiv"><tr><th >Variable</th><th>Airtable Column</th></tr></table>
           <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
-        <div style="border: thin solid black; width:45%; float:right" id="previewVars">Preview will show here</div>
+        <div style="border: thin solid black; width:45%; float:right"><div style="border:thin solid black;width:100%" id="previewSubj">Subject</div><div style="border:thin solid black;width:100%" id="previewBody">Preview will show here</div></div>
       </section>
     </div>
   </body>
@@ -89,7 +89,8 @@
       emailEl = document.getElementById("emailSelect"),
       varForm = document.getElementById("vars"),
       varEl = document.getElementById("varsDiv"),
-      varPre = document.getElementById("previewVars");
+      subjPre = document.getElementById("previewSubj"),
+      bodyPre = document.getElementById("previewBody");
   
   var API_KEY = "keyJS9Lnv0F166zj2",
       baseId = "appf5kgjPnWM3kIJR",
@@ -186,15 +187,15 @@
   function parseVars() { 
     var regex = /\{\{([\w\s]+)\}\}/g,
         find = drafts[draftEl.value].subj.concat(drafts[draftEl.value].bodyHTML).matchAll(regex);
-    sendVars = [];
+    sendVars = {};
     for (var match of find) {
-      if (sendVars.includes(match[1]) == false) {
-        sendVars.push(match[1]);
+      if (sendVars[match[1]]) == undefined) {
+        sendVars[match[1]] = "{{"+match[1]+"}}";
         var row = varEl.insertRow(varEl.rows.length);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
-        cell1.innerText = match[1];
-        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"updateVars("+match[1]+")\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
+        cell1.innerText = "{{"+match[1]+"}}";
+        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"sendVars[match[1]] = this.value;updateVars()\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
       }
     }
   }
@@ -300,14 +301,18 @@
   
   
   function continueRecipient() {
+    updateVars();
     recipForm.style.display="none";
     varForm.style.display="block";
   }
   
-  
-  
-  function updateVars(sub) {
-    console.log("sub",document.getElementById(sub).value);
+  function updateVars() {
+    subjPre.innerHTML = drafts[draftEl.value].subj;
+    bodyPre.innerHTML = drafts[draftEl.value].bodyHTML;
+    for (var i in sendVars) {
+      subjPre.innerHTML = subjPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
+      bodyPre.innerHTML = bodyPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
+    }
   }
   
   
