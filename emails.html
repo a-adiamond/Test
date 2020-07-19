@@ -46,15 +46,15 @@
         <option value="Artists">Artists</option>
         <option value="Author&Artists">Authors and Artists</option>
         <option value="Betas">Beta Readers</option>
-        <option value="ACTIVE participants">All Participants</option>
+        <option value="ACTIVE participants">All Active Participants</option>
         <option value="view">Other Airtable View</option>
         <option value="individual">Specific Emails</option>
       </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button></div>
       <div id="view" style="width:45%;float:right;padding-right:10%;display:none"><h2>Airtable View name - case must match!</h2>
         <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
       </div>
-      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2><button style="float:right"><span>Check</span></button>
-        <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
+      <div id="email" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2>
+        <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><button><span>Check</span></button><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
       </div>
       </section>
         <section id="vars" style="display: none; padding-left: 5%; padding-right: 5%;">
@@ -186,6 +186,8 @@
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         cell1.innerText = match[1];
+        
+        //pre-make options for sample fields. cell2 innerhtml makes select, then add options to it?
         cell2.innerText = "tktk";
       }
     }
