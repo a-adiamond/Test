@@ -159,7 +159,7 @@ select {  display: block;
   padding: 12px 16px 12px 16px;
   margin-right: 14px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 300;
   line-height: 25px;
       text-align: center;
     text-align-last: center;
@@ -183,19 +183,6 @@ select {  display: block;
   box-shadow: 0px 1px 5px #e8e8e8;
   -moz-border-radius: 30px;
   -webkit-border-radius: 30px;
-}
-
-#download-zip span {
-  background: transparent url(../images/zip-icon.png) 12px 50% no-repeat;
-}
-#download-tar-gz span {
-  background: transparent url(../images/tar-gz-icon.png) 12px 50% no-repeat;
-}
-#view-on-github span {
-  background: transparent url(../images/octocat-icon.png) 12px 50% no-repeat;
-}
-#view-on-github {
-  margin-right: 0;
 }
 
 code, pre {
@@ -255,13 +242,53 @@ table {
 }
 
 th {
-  font-weight: 500;
+  font-weight: bold;
+  font-size:larger;
+  border-bottom:2px solid #ababab;
+  text-align:-webkit-center;
+  padding-left:3%;
+  padding-right:3%;
 }
 
 td {
   font-weight: 300;
-  text-align: center;
+  text-align:-webkit-center;
+  vertical-align:middle;
   border: 1px solid #ebebeb;
+  margin:auto;
+}
+
+.tdSelect {
+  display: table-cell;
+  float:none;
+  margin:auto;
+  width: max-content;
+  padding:2px 0px 2px 0px;
+  font-size: 100%;
+  font-weight: 300;
+  line-height: 100%;
+      text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center;
+  color: #303030;
+  background: #fdfdfd; /* Old browsers */
+  background: -moz-linear-gradient(top,  #fdfdfd 0%, #f2f2f2 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdfd), color-stop(100%,#f2f2f2)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #fdfdfd 0%,#f2f2f2 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #fdfdfd 0%,#f2f2f2 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #fdfdfd 0%,#f2f2f2 100%); /* IE10+ */
+  background: linear-gradient(top,  #fdfdfd 0%,#f2f2f2 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#f2f2f2',GradientType=0 ); /* IE6-9 */
+  border-top: solid 1px #cbcbcb;
+  border-right: solid 1px #b7b7b7;
+  border-bottom: solid 1px #b3b3b3;
+  border-left: solid 1px #b7b7b7;
+  border-radius: 30px;
+  -webkit-box-shadow: 10px 10px 5px #888;
+  -moz-box-shadow: 10px 10px 5px #888;
+  box-shadow: 0px 1px 5px #e8e8e8;
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
 }
 
 form {
