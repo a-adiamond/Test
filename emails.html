@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.4.1</h2>
+          <h2>V0.4.TESTING QUOTAS</h2>
         </header>
 
         <hr>
@@ -347,7 +347,8 @@
       for (var i in sendVars) {
         test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
       }
-      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+            test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <a.diamond.2010@gmail.com>");
+//      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
       sendEmail(Base64.encode(test));
     }
     else {
