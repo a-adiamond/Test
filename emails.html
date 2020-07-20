@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.5</h2>
+          <h2>V0.5.1</h2>
         </header>
 
         <hr>
@@ -347,8 +347,7 @@
       for (var i in sendVars) {
         test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
       }
-            test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <a.diamond.1020@gmail.com>");
-//      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
       sendEmail(Base64.encode(test));
     }
     else {
@@ -357,13 +356,16 @@
   } 
   
   function sendEmail(test) {
-  return gapi.client.gmail.users.messages.send({
+/*  return gapi.client.gmail.users.messages.send({
     'userId': "deancasbigbangmod@gmail.com",
     'resource': {
       'raw': test    }
   })
   .then(function(response){sendRecords.shift();prepEmail()},
-          function(err) { console.error("Execute error", err); });
+          function(err) { console.error("Execute error", err); });*/
+    console.log(test);
+    sendRecords.shift();
+    prepEmail();
 }
   
 function reset() {
@@ -371,6 +373,7 @@ function reset() {
   document.getElementById('processing').style.display="none";
   document.getElementById('confirmationScreen').innerHTML="<h1>Send email to {{#}} recipients?</h1><button id='confirmButton' onclick='prepEmail();document.getElementById('confirmationScreen').style.display='none';document.getElementById('processing').style.display='block';'><span>Send!</span></button>";
   draftForm.style.display="block";
+  viewForm.style.display="none";
   draftEl.value="none";
   draftPre.innerHTML="Preview will show here";
   document.getElementById('continueDraft').style.display="none";
@@ -380,9 +383,9 @@ function reset() {
   sendVars="";
   varOptions = "";
   recipEl.value="none";
-  emailEl.value="none";
+  emailEl.innerText="";
   viewEl.value="none";
-  varForm.innerHTML = "<tr><th >Variable</th><th>Airtable Column</th></tr>";
+  varEl.innerHTML = "<tr><th >Variable</th><th>Airtable Column</th></tr>";
 }
   
   
