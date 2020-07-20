@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.6</h2>
+          <h2>V0.6.1</h2>
         </header>
 
         <hr>
@@ -236,7 +236,7 @@
         baseID: baseId,
         apiKey: API_KEY,
         view: recipEl.value});
-        setTimeout(() => {checkRecipient();}, 1200);
+        setTimeout(() => {checkRecipient();}, 2000);
     }
   }
   
@@ -259,7 +259,7 @@
         baseID: baseId,
         apiKey: API_KEY,
         view: viewEl.value});
-        setTimeout(() => {checkView();}, 1200);
+        setTimeout(() => {checkView();}, 2000);
   }
 
   function checkView() {
@@ -298,7 +298,7 @@
       for (var j in emailList) {
         sendRecords.push(table.getRecordsByField("Email",emailList[j])[0]);
       }
-      setTimeout(() => {checkEmail();}, 1200);
+      setTimeout(() => {checkEmail();}, 2000);
     }
   }
  
@@ -316,6 +316,7 @@
   
   function continueRecipient() {
     updateVars();
+    cleanRecords();
     recipForm.style.display="none";
     varForm.style.display="block";
   }
@@ -335,6 +336,15 @@
     } 
   }
   
+  function cleanRecords() {
+    for (var i = 0; i < sendRecords.length; i++){
+      if (samples.getRecordByID(sendRecords[i].id)) {
+        sendRecords.splice(i,1);
+        i--;
+      }
+    }
+  }
+  
   function continueVars() {
     varForm.style.display="none";
     document.getElementById("confirmationScreen").innerHTML=document.getElementById("confirmationScreen").innerHTML.split("{{#}}").join(sendRecords.length)
@@ -343,19 +353,12 @@
   
   function prepEmail() {
     if (sendRecords.length > 0) {
-      if (samples.getRecordByID(sendRecords[0].id)) {
-        sendRecords.shift();
-        prepEmail();
+      var test = drafts[draftEl.value].raw;
+      for (var i in sendVars) {
+        test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
       }
-      else {
-        var test = drafts[draftEl.value].raw;
-        for (var i in sendVars) {
-          test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
-        }
-//        test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
-              test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: Dean/Cas Reverse Bang <destielreversebang@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
-        sendEmail(Base64.encode(test));
-      }
+      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+      sendEmail(Base64.encode(test));
     }
     else {
       document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><a href='/emails.html' class='button'><span>Send another?</span></a>";
