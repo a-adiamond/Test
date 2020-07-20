@@ -351,7 +351,7 @@
       sendEmail(Base64.encode(test));
     }
     else {
-      document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><button onclick='reset()'><span>Send another</span></button>";
+      document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><a href='/emails.html' class='button'><span>Send another?</span></a>";
     }
   } 
   
@@ -366,26 +366,6 @@
     console.log(test);
     sendRecords.shift();
     prepEmail();
-}
-  
-function reset() {
-  document.getElementById('processing').innerHTML="<h1>Processing, please hold.</h1>";
-  document.getElementById('processing').style.display="none";
-  document.getElementById('confirmationScreen').innerHTML="<h1>Send email to {{#}} recipients?</h1><button id='confirmButton' onclick='prepEmail();document.getElementById('confirmationScreen').style.display='none';document.getElementById('processing').style.display='block';'><span>Send!</span></button>";
-  draftForm.style.display="block";
-  viewForm.style.display="none";
-  draftEl.value="none";
-  draftPre.innerHTML="Preview will show here";
-  document.getElementById('continueDraft').style.display="none";
-  document.getElementById('continueRecipient').style.display="none";
-  table="";
-  sendRecords="";
-  sendVars="";
-  varOptions = "";
-  recipEl.value="none";
-  emailEl.innerText="";
-  viewEl.value="none";
-  varEl.innerHTML = "<tr><th >Variable</th><th>Airtable Column</th></tr>";
 }
   
   
