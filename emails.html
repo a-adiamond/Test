@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.4.TESTING QUOTAS TAKE TWO</h2>
+          <h2>V0.5</h2>
         </header>
 
         <hr>
@@ -66,7 +66,7 @@
       </section>
       <section id="confirmationScreen" style="display:none">
         <h1>Send email to {{#}} recipients?</h1>
-        <button id="confirmButton" onclick="prepEmail();document.getElementById('confirmationScreen').display='none';document.getElementById('processing').style.display='block';"><span>Send!</span></button></div>
+        <button id="confirmButton" onclick="prepEmail();document.getElementById('confirmationScreen').style.display='none';document.getElementById('processing').style.display='block';"><span>Send!</span></button>
       </section>
     <section id="processing" style="display:none"><h1>Processing, please hold.</h1></section>
     </div>
@@ -149,7 +149,7 @@
         option.text = drafts[id]["subj"];
         draftEl.add(option);
       }
-      draft.style.display = "inherit";
+      draft.style.display = "block";
       buildVarOptions();
     }
     else {
@@ -352,7 +352,7 @@
       sendEmail(Base64.encode(test));
     }
     else {
-      document.getElementById('processing').innerText = "Done! Good job you.";
+      document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><button onclick='reset()'><span>Send another</span></button>";
     }
   } 
   
@@ -364,6 +364,25 @@
   })
   .then(function(response){sendRecords.shift();prepEmail()},
           function(err) { console.error("Execute error", err); });
+}
+  
+function reset() {
+  document.getElementById('processing').innerHTML="<h1>Processing, please hold.</h1>";
+  document.getElementById('processing').style.display="none";
+  document.getElementById('confirmationScreen').innerHTML="<h1>Send email to {{#}} recipients?</h1><button id='confirmButton' onclick='prepEmail();document.getElementById('confirmationScreen').style.display='none';document.getElementById('processing').style.display='block';'><span>Send!</span></button>";
+  draftForm.style.display="block";
+  draftEl.value="none";
+  draftPre.innerHTML="Preview will show here";
+  document.getElementById('continueDraft').style.display="none";
+  document.getElementById('continueRecipient').style.display="none";
+  table="";
+  sendRecords="";
+  sendVars="";
+  varOptions = "";
+  recipEl.value="none";
+  emailEl.value="none";
+  viewEl.value="none";
+  varForm.innerHTML = "<tr><th >Variable</th><th>Airtable Column</th></tr>";
 }
   
   
