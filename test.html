@@ -3,7 +3,7 @@
   <head>
   </head>
   <body>
-    <h1>2</h1>
+    <h1>3</h1>
 <button onclick="authenticate().then(loadClient)">authorize and load</button>
 <button onclick="execute()">execute</button>  </body>
 <script src="https://apis.google.com/js/api.js"></script>
@@ -17,7 +17,7 @@
   function authenticate() {
     return gapi.auth2.getAuthInstance()
         .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.readonly"})
-        .then(function(response) { console.log("Signed in", response); },
+        .then(function(response) { console.log("Signed in", response.Ot.yu); },
               function(err) { console.error("Error signing in", err); });
   }
   function loadClient() {
