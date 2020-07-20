@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.5.1</h2>
+          <h2>V0.6</h2>
         </header>
 
         <hr>
@@ -343,30 +343,34 @@
   
   function prepEmail() {
     if (sendRecords.length > 0) {
-      var test = drafts[draftEl.value].raw;
-      for (var i in sendVars) {
-        test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
+      if (samples.getRecordByID(sendRecords[0].id)) {
+        sendRecords.shift();
+        prepEmail();
       }
-      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
-      sendEmail(Base64.encode(test));
+      else {
+        var test = drafts[draftEl.value].raw;
+        for (var i in sendVars) {
+          test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
+        }
+//        test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+              test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: Dean/Cas Reverse Bang <destielreversebang@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+        sendEmail(Base64.encode(test));
+      }
     }
     else {
       document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><a href='/emails.html' class='button'><span>Send another?</span></a>";
     }
-  } 
+  }
   
   function sendEmail(test) {
-/*  return gapi.client.gmail.users.messages.send({
-    'userId': "deancasbigbangmod@gmail.com",
-    'resource': {
-      'raw': test    }
-  })
-  .then(function(response){sendRecords.shift();prepEmail()},
-          function(err) { console.error("Execute error", err); });*/
-    console.log(test);
-    sendRecords.shift();
-    prepEmail();
-}
+    return gapi.client.gmail.users.messages.send({
+      'userId': "deancasbigbangmod@gmail.com",
+      'resource': {
+        'raw': test    }
+    }) 
+    .then(function(response){sendRecords.shift();prepEmail()},
+          function(err) { console.error("Execute error", err); });
+  }
   
   
   gapi.load("client:auth2", function() {
