@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V0.6.1</h2>
+          <h2>V1.0</h2>
         </header>
 
         <hr>
@@ -54,7 +54,7 @@
         <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
       </div>
       <div id="emailForm" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2>
-        <textarea type="textarea" id="emailSelect" onChange="loadEmail()" rows="10" cols="50"></textarea><button><span>Check</span></button><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
+        <textarea type="textarea" id="emailSelect" onChange="loadEmail()" onInput="document.getElementById('continueRecipient').style.display='none'" rows="10" cols="50"></textarea><button><span>Check</span></button><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
       </div>
       </section>
         <section id="vars" style="display: none; padding-left: 5%; padding-right: 5%;">
