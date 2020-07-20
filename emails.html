@@ -19,13 +19,13 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.0</h2>
+          <h2>V1.1</h2>
         </header>
 
         <hr>
 
         <section id="main_content">
-          <button id="signIn" onclick="authenticate().then(loadClient)"><span>Sign in</span></button>
+          <button id="signIn" onclick="authenticate()"><span>Sign in</span></button>
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
         </section>
       </div>
@@ -112,7 +112,7 @@
   function authenticate() {
     return gapi.auth2.getAuthInstance()
         .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
-        .then(function() { 
+        .then(function(response) { if (response.Ot.yu == "deancasbigbangmod@gmail.com") {loadClient();} else {console.error("Invalid login");}
         }, 
               function(err) { console.error("Error signing in", err); });
   }
