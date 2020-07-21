@@ -111,12 +111,13 @@ function deleteDrafts() {
     "userId": "adiamond@adiamond.net"
   })
   .then(function(response) {
-    document.getElementById("loadDrafts2").style.display = "block";},
+    document.getElementById("loadDrafts2").style.display = "block";
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
       var getDraft = response.result.drafts[i].message.id;
       delete(getDraft);
-    }
+    },
+          function(err) { console.error("Execute error", err); });
   }
  }
 
