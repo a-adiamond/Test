@@ -1,1 +1,134 @@
-<html><body>Nothing to see here!</body></html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Testing</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner" id="head">
+
+        <header>
+          <h1>Diamond copy drafts</h1>
+          <h2>V0.0/h2>
+        </header>
+
+        <hr>
+
+        <section id="main_content">
+          <button id="signIn" onclick="authenticate()"><span>Sign in</span></button>
+          <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load drafts</span></button>
+        </section>
+        <section id="second">
+          <button id="signIn2" onclick="authenticate2()"><span>Sign in</span></button>
+          <button id="loadDraft2s" onclick="execute2()" style="display:none"><span>Copy drafts</span></button>
+      </div>
+  </body>
+          
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+    <script src="javascripts/Airtable.js"></script>
+<script>
+  /**
+   * Sample JavaScript code for gmail.users.drafts.list
+   * See instructions for running APIs Explorer code samples locally:
+   * https://developers.google.com/explorer-help/guides/code_samples#javascript
+   */
+  
+  var drafts = [];
+
+function authenticate() {
+  return gapi.auth2.getAuthInstance()
+  .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
+  .then(function(response) { if (response.Ot.yu == "deancasbigbangmod@gmail.com") {loadClient();} else {console.error("Invalid login");}
+                           }, 
+        function(err) { console.error("Error signing in", err); });
+}
+function loadClient() {
+  gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
+  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
+  .then(function() {
+    document.getElementById("signIn").style.display="none";
+    document.getElementById("loadDrafts").style.display = "block";},
+        function(err) { console.error("Error loading GAPI client for API", err); });
+}
+// Make sure the client is loaded and sign-in is complete before calling this method.
+function execute() {
+  return gapi.client.gmail.users.drafts.list({
+    "userId": "deancasbigbangmod@gmail.com"
+  })
+  .then(function(response) {
+    // Handle the results here (response.result has the parsed body).
+    for (var i in response.result.drafts) {
+      var getDraft = response.result.drafts[i].message.id;
+      getRaw(getDraft);
+    }
+  },
+        function(err) { console.error("Execute error", err); });
+}
+
+function getRaw(draftId) {
+  return gapi.client.gmail.users.messages.get({
+    "userId":"deancasbigbangmod@gmail.com",
+    "id":draftId,
+    "format":"raw"})
+  .then(function(response) {
+    drafts.push(Base64.decode(response.result.raw));
+  },
+        function(err) { console.error("Execute error", err); });
+}
+
+
+
+
+function authenticate2() {
+  return gapi.auth2.getAuthInstance()
+  .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
+  .then(function(response) { if (response.Ot.yu == "adiamond@adiamond.net") {loadClient2();} else {console.error("Invalid login");}
+                           }, 
+        function(err) { console.error("Error signing in", err); });
+}
+function loadClient2() {
+  gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
+  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
+  .then(function() {
+    document.getElementById("signIn2").style.display="none";
+    document.getElementById("loadDrafts2").style.display = "block";},
+        function(err) { console.error("Error loading GAPI client for API", err); });
+}
+// Make sure the client is loaded and sign-in is complete before calling this method.
+function execute2() {
+  if (drafts.length>0){
+    var base64EncodedEmail = Base64.encode(drafts.pop());
+    return gapi.client.gmail.users.drafts.create({
+      'userId': userId,
+      'resource': {
+        'message': {
+          'raw': base64EncodedEmail
+        }
+      }
+    })
+    .then(function(response){execute2()},
+          function(err) { console.error("Execute error", err); });
+  }
+  else {alert("Done maybe?");}
+}
+
+
+gapi.load("client:auth2", function() {
+  gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
+});
+</script>
+
+        
+
+</html>
