@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.9.1</h2>
+          <h2>V0.9.3</h2>
         </header>
 
         <hr>
@@ -29,10 +29,9 @@
           <button id="signIn" onclick="authenticate()"><span>Sign in</span></button>
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load drafts</span></button><br><br>
         <hr>
-          <button id="signIn2" onclick="authenticate2()" style="display:block"><span>Sign in2</span></button>
+          <button id="signIn2" onclick="authenticate2()" style="display:none"><span>Sign in2</span></button>
           <button id="deleteDrafts" onclick="getDelete()" style="display:none"><span>Delete existing</span></button>
           <button id="loadDrafts2" onclick="execute2()" style="display:none"><span>Copy drafts</span></button></section>
-          <button id="ddrafts" onclick="getNewDrafts()" style="display:block"><span>Drafts</span></button>
         <section id="disp">
         </section>
       </div>
@@ -166,13 +165,18 @@ function getNewDrafts() {
     "userId": "adiamond@adiamond.net"
   })
   .then(function(response) {
-    console.log(response);
-/*    
-    // Handle the results here (response.result has the parsed body).
-    for (var i in response.result.drafts) {
-      var getDraft = response.result.drafts[i].message.id;
-      getSubj(getDraft);
-    }*/
+    if (response.result.resultSizeEstimate == 0) {
+      setTimeout(() => {  getNewDrafts();}, 1200);;
+    }
+    else if (response.result.drafts.length < draftCount) {
+      setTimeout(() => {  getNewDrafts();}, 1200);;
+    }
+    else {
+      for (var i in response.result.drafts) {
+        var getDraft = response.result.drafts[i].message.id;
+        getSubj(getDraft);
+      }
+    }
   },
         function(err) { console.error("Execute error", err); });
 }
