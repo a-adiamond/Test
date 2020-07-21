@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.6</h2>
+          <h2>V0.7</h2>
         </header>
 
         <hr>
@@ -47,7 +47,7 @@
    */
   
 var drafts = [],
-    deleteDrafts = [];
+    toDelete = [];
 
 function authenticate() {
   return gapi.auth2.getAuthInstance()
@@ -108,7 +108,7 @@ function loadClient2() {
         function(err) { console.error("Error loading GAPI client for API", err); });
 }
 // Make sure the client is loaded and sign-in is complete before calling this method.
-function deleteDrafts() {
+function getDelete() {
   return gapi.client.gmail.users.drafts.list({
     "userId": "adiamond@adiamond.net"
   })
@@ -116,18 +116,18 @@ function deleteDrafts() {
     doDelete(response.drafts.length);
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
-      deleteDrafts.push(response.result.drafts[i].message.id);
+      toDelete.push(response.result.drafts[i].message.id);
     }
   },
         function(err) { console.error("Execute error", err); });
 }
 
 function doDelete(limit) {
-  console.log(deleteDrafts.length + " vs " + limit);
-  if (deleteDrafts.length == limit) {
+  console.log(toDelete.length + " vs " + limit);
+  if (toDelete.length == limit) {
    return gapi.client.gmail.users.messages.batchDelete({
       "resource": {
-        "ids": doDelete}})
+        "ids": toDelete}})
   .then(function(response){    document.getElementById("loadDrafts2").style.display = "block";},        function(err) { console.error("Execute error", err); });
   }
  else {
