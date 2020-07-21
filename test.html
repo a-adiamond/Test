@@ -46,7 +46,8 @@
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
   
-var drafts = [];
+var drafts = [],
+    deleteDrafts = [];
 
 function authenticate() {
   return gapi.auth2.getAuthInstance()
@@ -112,22 +113,26 @@ function deleteDrafts() {
     "userId": "adiamond@adiamond.net"
   })
   .then(function(response) {
-    console.log(response)
-    document.getElementById("loadDrafts2").style.display = "block";
+    doDelete(response.drafts.length);
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
-      var getDraft = response.result.drafts[i].message.id;
-      doDelete(getDraft);
+      var deleteDrafts.push(response.result.drafts[i].message.id);
     }
   },
         function(err) { console.error("Execute error", err); });
 }
 
-function doDelete(draftId) {
-  
-  return gapi.client.gmail.users.drafts.delete({
-    "userId":"adiamond@adiamond.net",
-    "id":draftId}).then(function(response){console.log(response)},        function(err) { console.error("Execute error", err); });
+function doDelete(limit) {
+  console.log(deleteDrafts.length + " vs " + limit);
+  if (deleteDrafts.length == limit) {
+   return gapi.client.gmail.users.messages.batchDelete({
+      "resource": {
+        "ids": doDelete}})
+  .then(function(response){    document.getElementById("loadDrafts2").style.display = "block";},        function(err) { console.error("Execute error", err); });
+  }
+ else {
+    setTimeout(() => {  doDelete(limit);}, 1200);;
+  }
 }
 
 
