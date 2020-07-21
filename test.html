@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.8</h2>
+          <h2>V0.9</h2>
         </header>
 
         <hr>
@@ -126,6 +126,7 @@ function doDelete(limit) {
   console.log(toDelete.length + " vs " + limit);
   if (toDelete.length == limit) {
    return gapi.client.gmail.users.messages.batchDelete({
+     "userId":"adiamond@adiamond.net",
       "resource": {
         "ids": toDelete}})
   .then(function(response){    document.getElementById("loadDrafts2").style.display = "block";},        function(err) { console.error("Execute error", err); });
