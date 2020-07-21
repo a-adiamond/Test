@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.9.3</h2>
+          <h2>V0.9.4</h2>
         </header>
 
         <hr>
@@ -184,7 +184,7 @@ function getNewDrafts() {
 function getSubj(draftId) {
   return gapi.client.gmail.users.messages.get({
     "userId": "adiamond@adiamond.net",
-    "id": "173736f61d632f5f",
+    "id": draftId,
     "format": "metadata",
     "metadataHeaders": ["Subject"]
   })
