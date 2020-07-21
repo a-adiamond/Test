@@ -45,142 +45,145 @@
    * See instructions for running APIs Explorer code samples locally:
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
+  function myFunction() {
   
   var drafts = [];
-
-function authenticate() {
-  return gapi.auth2.getAuthInstance()
-  .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
-  .then(function(response) { if (response.Ot.yu == "deancasbigbangmod@gmail.com") {loadClient();} else {console.error("Invalid login");}
-                           }, 
-        function(err) { console.error("Error signing in", err); });
-}
-function loadClient() {
-  gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
-  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
-  .then(function() {
-    document.getElementById("loadDrafts").style.display = "block";},
-        function(err) { console.error("Error loading GAPI client for API", err); });
-}
-// Make sure the client is loaded and sign-in is complete before calling this method.
-function execute() {
-  return gapi.client.gmail.users.drafts.list({
-    "userId": "deancasbigbangmod@gmail.com"
-  })
-  .then(function(response) {
-    // Handle the results here (response.result has the parsed body).
-    for (var i in response.result.drafts) {
-      var getDraft = response.result.drafts[i].message.id;
-      getRaw(getDraft);
-    }
-  },
-        function(err) { console.error("Execute error", err); });
-}
-
-function getRaw(draftId) {
-  return gapi.client.gmail.users.messages.get({
-    "userId":"deancasbigbangmod@gmail.com",
-    "id":draftId,
-    "format":"raw"})
-  .then(function(response) {
-    drafts.push(Base64.decode(response.result.raw));
-  },
-        function(err) { console.error("Execute error", err); });
-}
-
-
-
-
-function authenticate2() {
-  return gapi.auth2.getAuthInstance()
-  .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
-  .then(function(response) { if (response.Ot.yu == "adiamond@adiamond.net") {loadClient2();} else {console.error("Invalid login");}
-                           }, 
-        function(err) { console.error("Error signing in", err); });
-}
-function loadClient2() {
-  gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
-  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
-  .then(function() {
-    document.getElementById("deleteDrafts").style.display = "block";},
-        function(err) { console.error("Error loading GAPI client for API", err); });
-}
-// Make sure the client is loaded and sign-in is complete before calling this method.
-function deleteDrafts() {
-  return gapi.client.gmail.users.drafts.list({
-    "userId": "adiamond@adiamond.net"
-  })
-  .then(function(response) {
-    document.getElementById("loadDrafts2").style.display = "block";
-    // Handle the results here (response.result has the parsed body).
-    for (var i in response.result.drafts) {
-      var getDraft = response.result.drafts[i].message.id;
-      delete(getDraft);
+  
+  function authenticate() {
+    return gapi.auth2.getAuthInstance()
+    .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
+    .then(function(response) { if (response.Ot.yu == "deancasbigbangmod@gmail.com") {loadClient();} else {console.error("Invalid login");}
+                             }, 
+          function(err) { console.error("Error signing in", err); });
+  }
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
+    .then(function() {
+      document.getElementById("loadDrafts").style.display = "block";},
+          function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute() {
+    return gapi.client.gmail.users.drafts.list({
+      "userId": "deancasbigbangmod@gmail.com"
+    })
+    .then(function(response) {
+      // Handle the results here (response.result has the parsed body).
+      for (var i in response.result.drafts) {
+        var getDraft = response.result.drafts[i].message.id;
+        getRaw(getDraft);
+      }
     },
           function(err) { console.error("Execute error", err); });
   }
- }
-
- function delete(draftId) {
-   
-  return gapi.client.gmail.users.drafts.delete({
-    "userId":"adiamond@adiamond.net",
-    "id":draftId)});
- }
-   
- 
-function execute2() {
-  if (drafts.length>0){
-    var base64EncodedEmail = Base64.encode(drafts.pop());
-    return gapi.client.gmail.users.drafts.create({
-      'userId': 'adiamond@adiamond.net',
-      'resource': {
-        'message': {
-          'raw': base64EncodedEmail
-        }
-      }
-    })
-    .then(function(response){copyDraft()},
+  
+  function getRaw(draftId) {
+    return gapi.client.gmail.users.messages.get({
+      "userId":"deancasbigbangmod@gmail.com",
+      "id":draftId,
+      "format":"raw"})
+    .then(function(response) {
+      drafts.push(Base64.decode(response.result.raw));
+    },
           function(err) { console.error("Execute error", err); });
   }
-  else {
-    document.getElementById("main_content").style.display="none";
-    getNewDrafts();
+  
+  
+  
+  
+  function authenticate2() {
+    return gapi.auth2.getAuthInstance()
+    .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
+    .then(function(response) { if (response.Ot.yu == "adiamond@adiamond.net") {loadClient2();} else {console.error("Invalid login");}
+                             }, 
+          function(err) { console.error("Error signing in", err); });
   }
-}
-  
-  
-function getNewDrafts() {
-  return gapi.client.gmail.users.drafts.list({
-    "userId": "adiamond@adiamond.net"
-  })
-  .then(function(response) {
-    // Handle the results here (response.result has the parsed body).
-    for (var i in response.result.drafts) {
-      var getDraft = response.result.drafts[i].message.id;
-      getSubj(getDraft);
-    }
-  },
-        function(err) { console.error("Execute error", err); });
-}
-
-function getSubj(draftId) {
-  return gapi.client.gmail.users.messages.get({
-      "userId": "adiamond@adiamond.net",
-      "id": "173736f61d632f5f",
-      "format": "metadata",
-      "metadataHeaders": ["Subject"]
+  function loadClient2() {
+    gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
+    .then(function() {
+      document.getElementById("deleteDrafts").style.display = "block";},
+          function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function deleteDrafts() {
+    return gapi.client.gmail.users.drafts.list({
+      "userId": "adiamond@adiamond.net"
     })
-  .then(function(response) {
-    document.getElementById("disp").innerText += draftId + " " + response.payload.headers.value;
-  },
+    .then(function(response) {
+      document.getElementById("loadDrafts2").style.display = "block";
+      // Handle the results here (response.result has the parsed body).
+      for (var i in response.result.drafts) {
+        var getDraft = response.result.drafts[i].message.id;
+        delete(getDraft);
+      }
+    },
         function(err) { console.error("Execute error", err); });
-}
+    }
+          
+          function delete(draftId) {
+      
+      return gapi.client.gmail.users.drafts.delete({
+        "userId":"adiamond@adiamond.net",
+        "id":draftId)});
+    }
+    
+    
+    function execute2() {
+      if (drafts.length>0){
+        var base64EncodedEmail = Base64.encode(drafts.pop());
+        return gapi.client.gmail.users.drafts.create({
+          'userId': 'adiamond@adiamond.net',
+          'resource': {
+            'message': {
+              'raw': base64EncodedEmail
+            }
+          }
+        })
+        .then(function(response){copyDraft()},
+              function(err) { console.error("Execute error", err); });
+      }
+      else {
+        document.getElementById("main_content").style.display="none";
+        getNewDrafts();
+      }
+    }
+    
+    
+    function getNewDrafts() {
+      return gapi.client.gmail.users.drafts.list({
+        "userId": "adiamond@adiamond.net"
+      })
+      .then(function(response) {
+        // Handle the results here (response.result has the parsed body).
+        for (var i in response.result.drafts) {
+          var getDraft = response.result.drafts[i].message.id;
+          getSubj(getDraft);
+        }
+      },
+            function(err) { console.error("Execute error", err); });
+    }
+    
+    function getSubj(draftId) {
+      return gapi.client.gmail.users.messages.get({
+        "userId": "adiamond@adiamond.net",
+        "id": "173736f61d632f5f",
+        "format": "metadata",
+        "metadataHeaders": ["Subject"]
+      })
+      .then(function(response) {
+        document.getElementById("disp").innerText += draftId + " " + response.payload.headers.value;
+      },
+            function(err) { console.error("Execute error", err); });
+    }
+    
+    
+    gapi.load("client:auth2", function() {
+      gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
+    });
+  }
 
-
-gapi.load("client:auth2", function() {
-  gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
-});
 </script>
 
         
