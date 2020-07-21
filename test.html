@@ -123,7 +123,6 @@ function getDelete() {
 }
 
 function doDelete(limit) {
-  console.log(toDelete.length + " vs " + limit);
   if (toDelete.length == limit) {
    return gapi.client.gmail.users.messages.batchDelete({
      "userId":"adiamond@adiamond.net",
