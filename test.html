@@ -116,7 +116,7 @@ function deleteDrafts() {
     doDelete(response.drafts.length);
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
-      var deleteDrafts.push(response.result.drafts[i].message.id);
+      var deleteDrafts.push(response.result.drafts[i]message.id);
     }
   },
         function(err) { console.error("Execute error", err); });
