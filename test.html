@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.4</h2>
+          <h2>V0.5</h2>
         </header>
 
         <hr>
@@ -112,6 +112,7 @@ function deleteDrafts() {
     "userId": "adiamond@adiamond.net"
   })
   .then(function(response) {
+    console.log(response)
     document.getElementById("loadDrafts2").style.display = "block";
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
@@ -126,7 +127,7 @@ function doDelete(draftId) {
   
   return gapi.client.gmail.users.drafts.delete({
     "userId":"adiamond@adiamond.net",
-    "id":draftId});
+    "id":draftId}).then(function(response){console.log(response)},        function(err) { console.error("Execute error", err); });
 }
 
 
