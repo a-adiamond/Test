@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.0</h2>
+          <h2>V0.1</h2>
         </header>
 
         <hr>
@@ -111,7 +111,7 @@ function execute2() {
   if (drafts.length>0){
     var base64EncodedEmail = Base64.encode(drafts.pop());
     return gapi.client.gmail.users.drafts.create({
-      'userId': userId,
+      'userId': 'adiamond@adiamond.net',
       'resource': {
         'message': {
           'raw': base64EncodedEmail
