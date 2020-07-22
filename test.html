@@ -190,7 +190,7 @@ function getSubj(draftId) {
   })
   .then(function(response) {
     console.log(response);
-    document.getElementById("disp").innerText += draftId + "\n\n";
+    document.getElementById("disp").innerText += draftId + " " + response.result.payload.headers[0].value + "\n\n";
   },
         function(err) { console.error("Execute error", err); });
 }
