@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.9.5</h2>
+          <h2>V1.0</h2>
         </header>
 
         <hr>
@@ -30,6 +30,7 @@
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load drafts</span></button><br><br>
         <hr>
           <button id="signIn2" onclick="authenticate2()" style="display:none"><span>Sign in2</span></button>
+          <button id="getDrafts" onclick="getNewDrafts()" style="display:none"><span>Get Draft IDs</span></button>
           <button id="deleteDrafts" onclick="getDelete()" style="display:none"><span>Delete existing</span></button>
           <button id="loadDrafts2" onclick="execute2()" style="display:none"><span>Copy drafts</span></button></section>
         <section id="disp">
@@ -48,9 +49,8 @@
    */
   
 var drafts = [],
-    toDelete = [],
-    draftCount = 0;
-
+    toDelete = [];
+  
 function authenticate() {
   return gapi.auth2.getAuthInstance()
   .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
@@ -75,7 +75,6 @@ function execute() {
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
       var getDraft = response.result.drafts[i].message.id;
-      draftCount++;
       getRaw(getDraft);
     }
   },
@@ -131,7 +130,7 @@ function doDelete(limit) {
      "userId":"adiamond@adiamond.net",
       "resource": {
         "ids": toDelete}})
-  .then(function(response){    document.getElementById("loadDrafts2").style.display = "block";},        function(err) { console.error("Execute error", err); });
+  .then(function(response){     document.getElementById("getDrafts").style.display = "block",document.getElementById("loadDrafts2").style.display = "block";},        function(err) { console.error("Execute error", err); });
   }
  else {
     setTimeout(() => {  doDelete(limit);}, 1200);;
@@ -155,7 +154,7 @@ function execute2() {
   }
   else {
     document.getElementById("main_content").style.display="none";
-    getNewDrafts();
+      setTimeout(() => {  getNewDrafts();}, 1200);;
   }
 }
 
@@ -165,17 +164,9 @@ function getNewDrafts() {
     "userId": "adiamond@adiamond.net"
   })
   .then(function(response) {
-    if (response.result.resultSizeEstimate == 0) {
-      setTimeout(() => {  getNewDrafts();}, 1200);;
-    }
-    else if (response.result.drafts.length < draftCount) {
-      setTimeout(() => {  getNewDrafts();}, 1200);;
-    }
-    else {
-      for (var i in response.result.drafts) {
-        var getDraft = response.result.drafts[i].message.id;
-        getSubj(getDraft);
-      }
+    for (var i in response.result.drafts) {
+      var getDraft = response.result.drafts[i].message.id;
+      getSubj(getDraft);
     }
   },
         function(err) { console.error("Execute error", err); });
