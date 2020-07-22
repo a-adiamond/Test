@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V0.9.4</h2>
+          <h2>V0.9.5</h2>
         </header>
 
         <hr>
@@ -189,7 +189,8 @@ function getSubj(draftId) {
     "metadataHeaders": ["Subject"]
   })
   .then(function(response) {
-    document.getElementById("disp").innerText += draftId + " " + response.payload.headers.value;
+    console.log(response);
+    document.getElementById("disp").innerText += draftId + "\n\n";
   },
         function(err) { console.error("Execute error", err); });
 }
