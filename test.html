@@ -105,7 +105,7 @@ function authenticate2() {
 function loadClient2() {
   gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
-  .then(function() {
+  .then(function() {document.getElementById("getDrafts").style.display = "block";
     document.getElementById("deleteDrafts").style.display = "block";},
         function(err) { console.error("Error loading GAPI client for API", err); });
 }
@@ -130,7 +130,7 @@ function doDelete(limit) {
      "userId":"adiamond@adiamond.net",
       "resource": {
         "ids": toDelete}})
-  .then(function(response){     document.getElementById("getDrafts").style.display = "block",document.getElementById("loadDrafts2").style.display = "block";},        function(err) { console.error("Execute error", err); });
+  .then(function(response){     document.getElementById("loadDrafts2").style.display = "block";},        function(err) { console.error("Execute error", err); });
   }
  else {
     setTimeout(() => {  doDelete(limit);}, 1200);;
