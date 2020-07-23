@@ -50,10 +50,10 @@
   
 const draftSheet = "18r_XNtDoslk4MolJigMlRgshtteeumgydx5XCRzYg9c";
   
-var drafts = [],
-    draftObj = {},
-    toDelete = [],
-    sheetData = {};
+var drafts,
+    draftObj,
+    toDelete,
+    sheetData;
   
 function authenticate() {
   return gapi.auth2.getAuthInstance()
