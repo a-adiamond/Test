@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.6</h2><h3>Now with spreadsheets?</h3>
+          <h2>V1.7</h2><h3>Now with spreadsheets!</h3>
         </header>
 
         <hr>
@@ -180,7 +180,13 @@ function execute2() {
         }
       }
     })
-    .then(function(response){sheetData[removed].copy=response.result.message.id;execute2()},
+    .then(function(response){
+      if (sheetData[removed]) {
+        sheetData[removed].copy=response.result.message.id;
+      }
+      else {
+        sheetData[removed] = {"copy":response.result.message.id,"name":""};
+      };execute2()},
           function(err) { console.error("Execute error", err); });
   }
   else {
