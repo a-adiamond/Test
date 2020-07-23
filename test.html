@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.1</h2><h3>For V2 - selection to update existing drafts so I don't have to change messageId, add new drafts</h3>
+          <h2>V1.2</h2><h3>Now with spreadsheets?</h3>
         </header>
 
         <hr>
@@ -50,12 +50,14 @@
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
   
+const draftSheet = "18r_XNtDoslk4MolJigMlRgshtteeumgydx5XCRzYg9c";
+  
 var drafts = [],
     toDelete = [];
   
 function authenticate() {
   return gapi.auth2.getAuthInstance()
-  .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
+  .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive"})
   .then(function(response) { if (response.Ot.yu == "deancasbigbangmod@gmail.com") {loadClient();} else {console.error("Invalid login");}
                            }, 
         function(err) { console.error("Error signing in", err); });
@@ -93,6 +95,23 @@ function getRaw(draftId) {
   },
         function(err) { console.error("Execute error", err); });
 }
+  
+function loadSheet() {
+  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/sheets/v4/rest")
+    .then(function() { console.log("GAPI client loaded for API"); },
+      function(err) { console.error("Error loading GAPI client for API", err); });
+}
+  
+  function getSheet() {
+    return gapi.client.sheets.spreadsheets.get({
+      "spreadsheetId": draftSheet
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response);
+              },
+              function(err) { console.error("Execute error", err); });
+  }
 
 
 
