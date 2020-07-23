@@ -206,6 +206,7 @@ function updateSheet() {
   return gapi.client.sheets.spreadsheets.values.update({
       "spreadsheetId": draftSheet,
       "range": "a2:c30",
+      "valueInputOption": "RAW",
       "resource": {
         "majorDimension": "columns",
         "range": "a2:c30",
