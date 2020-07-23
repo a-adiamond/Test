@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.5</h2><h3>Now with spreadsheets?</h3>
+          <h2>V1.6</h2><h3>Now with spreadsheets?</h3>
         </header>
 
         <hr>
@@ -81,6 +81,8 @@ function execute() {
       getRaw(getDraft);
     }
         setTimeout(() => {  loadSheet();}, 1200);;
+        setTimeout(() => {  getSheet();}, 2400);;
+
   },
         function(err) { console.error("Execute error", err); });
 }
@@ -99,7 +101,7 @@ function getRaw(draftId) {
   
 function loadSheet() {
   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/sheets/v4/rest")
-    .then(function() { getSheet() },
+    .then(function() {},
       function(err) { console.error("Error loading GAPI client for API", err); });
 }
   
@@ -178,42 +180,33 @@ function execute2() {
         }
       }
     })
-    .then(function(response){console.log(removed);console.log(response);execute2()},
+    .then(function(response){sheetData[removed].copy=response.result.message.id;execute2()},
           function(err) { console.error("Execute error", err); });
   }
   else {
     document.getElementById("main_content").style.display="none";
-      //setTimeout(() => {  getNewDrafts();}, 1200);;
+    setTimeout(() => {  loadSheet();}, 1200);;
+    setTimeout(() => {  updateSheet();}, 2400);;
   }
 }
-/*
-
-function getNewDrafts() {
-  return gapi.client.gmail.users.drafts.list({
-    "userId": "adiamond@adiamond.net"
-  })
-  .then(function(response) {
-    for (var i in response.result.drafts) {
-      var getDraft = response.result.drafts[i].message.id;
-      getSubj(getDraft);
-    }
-  },
-        function(err) { console.error("Execute error", err); });
+  
+function updateSheet() {
+  var newValues = [][];
+  var i = 0;
+  for (id in sheetData) {
+    newValues[i][0] = sheetData.id.name;
+    newValues[i][1] = id;
+    newValues[i][2] = sheetData.id.copy;
+    i++
+  }
+  return gapi.client.sheets.spreadsheets.values.update({
+      "spreadsheetId": draftSheet,
+      "range": "a2:c30",
+      "resource": {
+        "majorDimension": "columns",
+        "range": "a2:c30",
+        "values": newValues}}).then(function(response){console.log("Maybe?");},function(err) {console.error(err);});
 }
-
-function getSubj(draftId) {
-  return gapi.client.gmail.users.messages.get({
-    "userId": "adiamond@adiamond.net",
-    "id": draftId,
-    "format": "metadata",
-    "metadataHeaders": ["Subject"]
-  })
-  .then(function(response) {
-    console.log(response);
-    document.getElementById("disp").innerText += draftId + " " + response.result.payload.headers[0].value + "\n\n";
-  },
-        function(err) { console.error("Execute error", err); });
-}*/
 
 gapi.load("client:auth2", function() {
   gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
