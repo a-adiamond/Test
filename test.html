@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.3</h2><h3>Now with spreadsheets?</h3>
+          <h2>V1.4</h2><h3>Now with spreadsheets?</h3>
         </header>
 
         <hr>
@@ -53,7 +53,8 @@
 const draftSheet = "18r_XNtDoslk4MolJigMlRgshtteeumgydx5XCRzYg9c";
   
 var drafts = [],
-    toDelete = [];
+    toDelete = [],
+    sheetData = {};
   
 function authenticate() {
   return gapi.auth2.getAuthInstance()
@@ -75,12 +76,12 @@ function execute() {
     "userId": "deancasbigbangmod@gmail.com"
   })
   .then(function(response) {
-      document.getElementById("signIn2").style.borderColor = "#20b2aa";
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
       var getDraft = response.result.drafts[i].message.id;
       getRaw(getDraft);
     }
+        setTimeout(() => {  loadSheet();}, 1200);;
   },
         function(err) { console.error("Execute error", err); });
 }
@@ -98,7 +99,7 @@ function getRaw(draftId) {
   
 function loadSheet() {
   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/sheets/v4/rest")
-    .then(function() { console.log("GAPI client loaded for API"); },
+    .then(function() { getSheet() },
       function(err) { console.error("Error loading GAPI client for API", err); });
 }
   
@@ -109,14 +110,18 @@ function loadSheet() {
       "majorDimension": "COLUMNS"
     })
         .then(function(response) {
-                // Handle the results here (response.result has the parsed body).
-                console.log("Response", response);
+              buildSheet(response.result.values);
+              document.getElementById("signIn2").style.borderColor = "#20b2aa";
               },
               function(err) { console.error("Execute error", err); });
   }
 
 
-
+function buildSheet(values) {
+  for (var i = 0; i < values[1].length; i++) {
+    sheetData[values[1][i]] = {"name":values[0][i],"copy":values[2][i]};
+  } 
+}
 
 function authenticate2() {
   return gapi.auth2.getAuthInstance()
