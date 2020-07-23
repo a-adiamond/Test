@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.4.65654</h2><h3>Now with spreadsheets?</h3>
+          <h2>V1.5</h2><h3>Now with spreadsheets?</h3>
         </header>
 
         <hr>
@@ -31,10 +31,8 @@
         <hr>
           <button id="signIn2" onclick="authenticate2()"><span>Sign in2</span></button>
           <button id="getDrafts" onclick="getNewDrafts()" style="display:none"><span>Get Draft IDs</span></button>
-          <button id="updateDrafts" onclick="getUpdate()" style="display:none"><span>Update existing</span></button>          
-          <button id="importDrafts" onclick="getImport()" style="display:none"><span>Import new drafts</span></button>          
-          <button id="deleteDrafts" onclick="getDelete()" style="display:none"><span>Delete all existing</span></button>
-          <button id="loadDrafts2" onclick="execute2()" style="display:none"><span>Import all drafts</span></button></section>
+          <button id="deleteDrafts" onclick="getDelete()" style="display:none"><span>Delete existing</span></button>
+          <button id="loadDrafts2" onclick="execute2()" style="display:none"><span>Import drafts</span></button></section>
         <section id="disp">
         </section>
       </div>
@@ -136,9 +134,7 @@ function loadClient2() {
   gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
   .then(function() {document.getElementById("getDrafts").style.display = "block";
-    document.getElementById("deleteDrafts").style.display = "block";
-    document.getElementById("updateDrafts").style.display = "block";
-    document.getElementById("importSelected").style.display = "block";},
+    document.getElementById("deleteDrafts").style.display = "block";},
         function(err) { console.error("Error loading GAPI client for API", err); });
 }
 // Make sure the client is loaded and sign-in is complete before calling this method.
@@ -170,13 +166,6 @@ function doDelete(limit) {
 }
 
 
-function getUpdate() {
-  document.getElementById("main_content").style.display="none";    
-  for (id in sheetData) {
-    updateDraft(id);
-  }
-}
-
 function execute2() {
   if (drafts.length>0){
     var removed = drafts.pop();
@@ -189,15 +178,15 @@ function execute2() {
         }
       }
     })
-    .then(function(response){console.log(response);execute2()},
+    .then(function(response){console.log(removed);console.log(response);execute2()},
           function(err) { console.error("Execute error", err); });
   }
   else {
     document.getElementById("main_content").style.display="none";
-      setTimeout(() => {  getNewDrafts();}, 1200);;
+      //setTimeout(() => {  getNewDrafts();}, 1200);;
   }
 }
-
+/*
 
 function getNewDrafts() {
   return gapi.client.gmail.users.drafts.list({
@@ -224,33 +213,7 @@ function getSubj(draftId) {
     document.getElementById("disp").innerText += draftId + " " + response.result.payload.headers[0].value + "\n\n";
   },
         function(err) { console.error("Execute error", err); });
-}
-  
-/*function getSubj2(draftId) {
-  return gapi.client.gmail.users.messages.get({
-    "userId": "adiamond@adiamond.net",
-    "id": draftId,
-    "format": "metadata",
-    "metadataHeaders": ["Subject"]
-  })  .then(function(response) {
-      drafts[draftId].subj = response.result.payload.headers[0].value;},
-        function(err) { console.error("Execute error", err); });
 }*/
-
-
-
-function updateDraft(draftId){
-  return gapi.client.gmail.users.drafts.update({
-    'userId': 'adiamond@adiamond.net',
-    'id': sheetData.draftId.copy,
-    'resource': {
-      'id': sheetData.draftId.copy,
-      'message': {
-        'raw': Base64.encode(draftObj.draftId)
-      }
-    },
-    'send': false
-  }).then(function(response){console.log(response);});}
 
 gapi.load("client:auth2", function() {
   gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
