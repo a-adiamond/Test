@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.8</h2><h3>Now with spreadsheets!</h3>
+          <h2>V1.8.fffff</h2><h3>Now with spreadsheets!</h3>
         </header>
 
         <hr>
@@ -200,7 +200,7 @@ function updateSheet() {
   var newValues = [];
   var i = 0;
   for (id in sheetData) {
-    newValues[i] = [sheetData.id.name,id,sheetData.id.copy];
+    newValues[i] = [sheetData[id].name,id,sheetData[id].copy];
     i++
   }
   return gapi.client.sheets.spreadsheets.values.update({
