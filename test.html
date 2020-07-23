@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.4</h2><h3>Now with spreadsheets?</h3>
+          <h2>V1.4.65654</h2><h3>Now with spreadsheets?</h3>
         </header>
 
         <hr>
@@ -53,6 +53,7 @@
 const draftSheet = "18r_XNtDoslk4MolJigMlRgshtteeumgydx5XCRzYg9c";
   
 var drafts = [],
+    draftObj = {},
     toDelete = [],
     sheetData = {};
   
@@ -92,7 +93,8 @@ function getRaw(draftId) {
     "id":draftId,
     "format":"raw"})
   .then(function(response) {
-    drafts.push({"id":draftId,"raw":Base64.decode(response.result.raw)});
+    drafts.push(draftId);
+    draftObj[draftId] = Base64.decode(response.result.raw);
   },
         function(err) { console.error("Execute error", err); });
 }
@@ -167,32 +169,18 @@ function doDelete(limit) {
   }
 }
 
-/*  
+
 function getUpdate() {
-  document.getElementById("main_content").style.display="none");
-  document.getElementById("disp").innerHTML = '<table id="updateTable"><tr><th >Draft</th><th></th></tr></table><button onclick="updateSelected()"><span>Continue</span></button>'
-
-    
-    
-  for (id in draftIds) {
-    
-            cell1.innerText = "{{"+match[1]+"}}";
-        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"sendVars['"+match[1]+"'] = samples.records()[0].fields[this.value];updateVars();\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
-
-    
-    
-        var option = document.createElement("option");
-        option.value = id;
-        option.text = drafts[id]["subj"];
-        draftEl.add(option);
-      }
-  
-
-}*/
+  document.getElementById("main_content").style.display="none";    
+  for (id in sheetData) {
+    updateDraft(id);
+  }
+}
 
 function execute2() {
   if (drafts.length>0){
-    var base64EncodedEmail = Base64.encode(drafts.pop().raw);
+    var removed = drafts.pop();
+    var base64EncodedEmail = Base64.encode(draftObj[removed]);
     return gapi.client.gmail.users.drafts.create({
       'userId': 'adiamond@adiamond.net',
       'resource': {
@@ -201,7 +189,7 @@ function execute2() {
         }
       }
     })
-    .then(function(response){execute2()},
+    .then(function(response){console.log(response);execute2()},
           function(err) { console.error("Execute error", err); });
   }
   else {
@@ -250,19 +238,19 @@ function getSubj(draftId) {
 }*/
 
 
-/*  *******
-  function updateDraft(){
-  var request = gapi.client.gmail.users.drafts.update({
-    'userId': userId,
-    'id': draftId,
+
+function updateDraft(draftId){
+  return gapi.client.gmail.users.drafts.update({
+    'userId': 'adiamond@adiamond.net,
+    'id': sheetData.draftId.copy,
     'resource': {
-      'id': draftId,
+      'id': sheetData.draftId.copy,
       'message': {
-        'raw': base64UpdatedEmail
+        'raw': Base64.encode(draftObj.draftId)
       }
     },
-    'send': send
-  });*/
+    'send': false
+  }).then(function(response){console.log(response);});}
 
 gapi.load("client:auth2", function() {
   gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
