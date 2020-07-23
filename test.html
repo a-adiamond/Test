@@ -241,7 +241,7 @@ function getSubj(draftId) {
 
 function updateDraft(draftId){
   return gapi.client.gmail.users.drafts.update({
-    'userId': 'adiamond@adiamond.net,
+    'userId': 'adiamond@adiamond.net',
     'id': sheetData.draftId.copy,
     'resource': {
       'id': sheetData.draftId.copy,
