@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.0</h2><h3>For V2 - selection to update existing drafts so I don't have to change messageId, add new drafts</h3>
+          <h2>V1.1</h2><h3>For V2 - selection to update existing drafts so I don't have to change messageId, add new drafts</h3>
         </header>
 
         <hr>
@@ -29,10 +29,12 @@
           <button id="signIn" onclick="authenticate()"><span>Sign in</span></button>
           <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load drafts</span></button><br><br>
         <hr>
-          <button id="signIn2" onclick="authenticate2()" style="display:none"><span>Sign in2</span></button>
+          <button id="signIn2" onclick="authenticate2()"><span>Sign in2</span></button>
           <button id="getDrafts" onclick="getNewDrafts()" style="display:none"><span>Get Draft IDs</span></button>
-          <button id="deleteDrafts" onclick="getDelete()" style="display:none"><span>Delete existing</span></button>
-          <button id="loadDrafts2" onclick="execute2()" style="display:none"><span>Copy drafts</span></button></section>
+          <button id="updateDrafts" onclick="getUpdate()" style="display:none"><span>Update existing</span></button>          
+          <button id="importDrafts" onclick="getImport()" style="display:none"><span>Import new drafts</span></button>          
+          <button id="deleteDrafts" onclick="getDelete()" style="display:none"><span>Delete all existing</span></button>
+          <button id="loadDrafts2" onclick="execute2()" style="display:none"><span>Import all drafts</span></button></section>
         <section id="disp">
         </section>
       </div>
@@ -71,7 +73,7 @@ function execute() {
     "userId": "deancasbigbangmod@gmail.com"
   })
   .then(function(response) {
-      document.getElementById("signIn2").style.display = "block";
+      document.getElementById("signIn2").style.border-color = "#20b2aa";
     // Handle the results here (response.result has the parsed body).
     for (var i in response.result.drafts) {
       var getDraft = response.result.drafts[i].message.id;
@@ -87,7 +89,7 @@ function getRaw(draftId) {
     "id":draftId,
     "format":"raw"})
   .then(function(response) {
-    drafts.push(Base64.decode(response.result.raw));
+    drafts.push({"id":draftId,"raw":Base64.decode(response.result.raw)});
   },
         function(err) { console.error("Execute error", err); });
 }
@@ -106,7 +108,10 @@ function loadClient2() {
   gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
   .then(function() {document.getElementById("getDrafts").style.display = "block";
-    document.getElementById("deleteDrafts").style.display = "block";},
+    document.getElementById("deleteDrafts").style.display = "block";
+    document.getElementById("updateDrafts").style.display = "block";
+    document.getElementById("importSelected").style.display = "block";},
+        },
         function(err) { console.error("Error loading GAPI client for API", err); });
 }
 // Make sure the client is loaded and sign-in is complete before calling this method.
@@ -137,10 +142,32 @@ function doDelete(limit) {
   }
 }
 
+/*  
+function getUpdate() {
+  document.getElementById("main_content").style.display="none");
+  document.getElementById("disp").innerHTML = '<table id="updateTable"><tr><th >Draft</th><th></th></tr></table><button onclick="updateSelected()"><span>Continue</span></button>'
+
+    
+    
+  for (id in draftIds) {
+    
+            cell1.innerText = "{{"+match[1]+"}}";
+        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"sendVars['"+match[1]+"'] = samples.records()[0].fields[this.value];updateVars();\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
+
+    
+    
+        var option = document.createElement("option");
+        option.value = id;
+        option.text = drafts[id]["subj"];
+        draftEl.add(option);
+      }
+  
+
+}*/
 
 function execute2() {
   if (drafts.length>0){
-    var base64EncodedEmail = Base64.encode(drafts.pop());
+    var base64EncodedEmail = Base64.encode(drafts.pop().raw);
     return gapi.client.gmail.users.drafts.create({
       'userId': 'adiamond@adiamond.net',
       'resource': {
@@ -185,7 +212,32 @@ function getSubj(draftId) {
   },
         function(err) { console.error("Execute error", err); });
 }
+  
+/*function getSubj2(draftId) {
+  return gapi.client.gmail.users.messages.get({
+    "userId": "adiamond@adiamond.net",
+    "id": draftId,
+    "format": "metadata",
+    "metadataHeaders": ["Subject"]
+  })  .then(function(response) {
+      drafts[draftId].subj = response.result.payload.headers[0].value;},
+        function(err) { console.error("Execute error", err); });
+}*/
 
+
+/*  *******
+  function updateDraft(){
+  var request = gapi.client.gmail.users.drafts.update({
+    'userId': userId,
+    'id': draftId,
+    'resource': {
+      'id': draftId,
+      'message': {
+        'raw': base64UpdatedEmail
+      }
+    },
+    'send': send
+  });*/
 
 gapi.load("client:auth2", function() {
   gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
