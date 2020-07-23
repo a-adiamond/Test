@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond copy drafts</h1>
-          <h2>V1.2</h2><h3>Now with spreadsheets?</h3>
+          <h2>V1.3</h2><h3>Now with spreadsheets?</h3>
         </header>
 
         <hr>
@@ -103,8 +103,10 @@ function loadSheet() {
 }
   
   function getSheet() {
-    return gapi.client.sheets.spreadsheets.get({
-      "spreadsheetId": draftSheet
+    return gapi.client.sheets.spreadsheets.values.get({
+      "spreadsheetId": "18r_XNtDoslk4MolJigMlRgshtteeumgydx5XCRzYg9c",
+      "range": "a2:c30",
+      "majorDimension": "COLUMNS"
     })
         .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
