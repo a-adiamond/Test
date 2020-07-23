@@ -197,12 +197,10 @@ function execute2() {
 }
   
 function updateSheet() {
-  var newValues;
+  var newValues = [];
   var i = 0;
   for (id in sheetData) {
-    newValues[i][0] = sheetData.id.name;
-    newValues[i][1] = id;
-    newValues[i][2] = sheetData.id.copy;
+    newValues[i] = [sheetData.id.name,id,sheetData.id.copy];
     i++
   }
   return gapi.client.sheets.spreadsheets.values.update({
