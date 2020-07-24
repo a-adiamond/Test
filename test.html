@@ -121,7 +121,7 @@ function loadSheet() {
 
 function buildSheet(values) {
   for (var i = 0; i < values[1].length; i++) {
-    sheetData[values[1][i]] = {"name":values[0][i],"copy":values[2][i]};
+    sheetData[values[1][i]] = {"name":values[0][i],"copy":values[2][i],"raw":Base64.encode(draftObj[values[1][i]])};
   } 
 }
 
@@ -200,16 +200,16 @@ function updateSheet() {
   var newValues = [];
   var i = 0;
   for (id in sheetData) {
-    newValues[i] = [sheetData[id].name,id,sheetData[id].copy];
+    newValues[i] = [sheetData[id].name,id,sheetData[id].copy,sheetData[id].raw];
     i++
   }
   return gapi.client.sheets.spreadsheets.values.update({
       "spreadsheetId": draftSheet,
-      "range": "a2:c30",
+      "range": "a2:d30",
       "valueInputOption": "RAW",
       "resource": {
         "majorDimension": "rows",
-        "range": "a2:c30",
+        "range": "a2:d30",
         "values": newValues}}).then(function(response){console.log("Maybe?");},function(err) {console.error(err);});
 }
 
