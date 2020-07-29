@@ -186,7 +186,7 @@
                     "id":draftId,
                     "format":"raw"})
     .then(function(response) {
-      drafts[draftId]["raw"] = Base64.decode(response.result.raw);
+      drafts[draftId]["raw"] = Base64.decode(response.result.raw).replace(/=[\r\n]+/gm, "");
     },
           function(err) { console.error("Execute error", err); });
   }
