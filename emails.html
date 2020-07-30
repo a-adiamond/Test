@@ -102,7 +102,8 @@
       table,
       sendRecords,
       sendVars,
-      varOptions = "";
+      varOptions = "",
+      totalSend;
   const samples = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
@@ -347,12 +348,15 @@
   
   function continueVars() {
     varForm.style.display="none";
-    document.getElementById("confirmationScreen").innerHTML=document.getElementById("confirmationScreen").innerHTML.split("{{#}}").join(sendRecords.length)
+    totalSend = sendRecords.length;
+    document.getElementById("confirmationScreen").innerHTML=document.getElementById("confirmationScreen").innerHTML.split("{{#}}").join(sendRecords.length);
     document.getElementById("confirmationScreen").style.display="block";
   }
   
   function prepEmail() {
     if (sendRecords.length > 0) {
+      var remSend = totalSend - sendRecords.length;
+      document.getElementById('processing').innerHTML = "<h1>Processing, please hold. . . " + remSend + "/" + totalSend + " sent</h1>";
       var test = drafts[draftEl.value].raw;
       for (var i in sendVars) {
         test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
