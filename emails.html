@@ -356,7 +356,7 @@
   function prepEmail() {
     if (sendRecords.length > 0) {
       var remSend = totalSend - sendRecords.length;
-      document.getElementById('processing').innerHTML = "<h1>Processing, please hold. . . " + remSend + "/" + totalSend + " sent</h1>";
+      document.getElementById('processing').innerHTML = "<h1>Processing, please hold. . . <span style='color:#aa2222'>" + remSend + "/" + totalSend + " sent</span></h1>";
       var test = drafts[draftEl.value].raw;
       for (var i in sendVars) {
         test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
