@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.2</h2>
+          <h2>V1.3</h2>
         </header>
 
         <hr>
@@ -326,8 +326,10 @@
     subjPre.innerHTML = drafts[draftEl.value].subj;
     bodyPre.innerHTML = drafts[draftEl.value].bodyHTML;
     for (var i in sendVars) {
-      subjPre.innerHTML = subjPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
-      bodyPre.innerHTML = bodyPre.innerHTML.split("{{"+i+"}}").join(sendVars[i]);
+      var matchString = "{{"+i+"}}";
+      var matchReg = new RegExp(matchString,"g");
+      subjPre.innerHTML = subjPre.innerHTML.replace(matchReg,sendVars[i]);
+      bodyPre.innerHTML = bodyPre.innerHTML.replace(matchReg,sendVars[i]);
     }
     if (JSON.stringify(sendVars).includes("{{") && JSON.stringify(sendVars).includes("}}")) {
       document.getElementById("continueVars").style.display="none";
