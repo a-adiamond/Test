@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.3</h2>
+          <h2>V1.4</h2>
         </header>
 
         <hr>
@@ -351,7 +351,7 @@
   function continueVars() {
     varForm.style.display="none";
     totalSend = sendRecords.length;
-    document.getElementById("confirmationScreen").innerHTML=document.getElementById("confirmationScreen").innerHTML.split("{{#}}").join(sendRecords.length);
+    document.getElementById("confirmationScreen").innerHTML=document.getElementById("confirmationScreen").innerHTML.replace("{{#}}",sendRecords.length);
     document.getElementById("confirmationScreen").style.display="block";
   }
   
@@ -361,9 +361,11 @@
       document.getElementById('processing').innerHTML = "<h1>Processing, please hold. . . <span style='color:#aa2222'>" + remSend + "/" + totalSend + " sent</span></h1>";
       var test = drafts[draftEl.value].raw;
       for (var i in sendVars) {
-        test = test.split("{{"+i+"}}").join(sendRecords[0].fields[document.getElementById(i).value]);
+        var matchString = "{{"+i+"}}";
+        var matchReg = new RegExp(matchString,"g");
+        test = test.replace(matchReg,sendRecords[0].fields[document.getElementById(i).value]);
       }
-      test = test.split("From: The DCBB <deancasbigbangmod@gmail.com>").join("From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+      test = test.replace("From: The DCBB <deancasbigbangmod@gmail.com>","From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
       sendEmail(Base64.encode(test));
     }
     else {
