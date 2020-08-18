@@ -17,48 +17,70 @@
       <div class="inner" id="head">
         <header>
           <h1>Habitica Stuff</h1>
-          <h2>V0.0.1</h2>
+          <h2>V0.0.2</h2>
         </header>
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
         <span>Bulk buy armoire? </span><input type="number" id="buyArmoire" onsubmit="bulkBuyArmoire(0)"><button style="float:none; display:inline" onclick="bulkBuyArmoire(0)"><span>Buy</span></button>
+        <button style="float:none" onclick="inn()"><span>Inn y/n</span></button>
       </section>
     </div>
   </body>
   <script>
-  
-  function bulkBuyArmoire(iter) {
+    
     
     var habId = "eb5f51e6-cd0a-4590-b20c-5322bff97cc0";
     var habToken = "7b77d868-365d-484f-87fa-44ca42418238";
     var ntimes = document.getElementById("buyArmoire").value;
     
-    var url = "https://habitica.com/api/v3/user/buy-armoire";
+    var url;
     var sleepTime = 200;
     var response;
     
-    //set paramaters
-    var paramsTemplate = {
-      "method" : "post",
-      "headers" : {
-        "x-api-user" : habId, 
-        "x-api-key" : habToken
-      }
-    };
-    var params = paramsTemplate;
+    function inn() {
+      url = "https://habitica.com/api/v3/user/sleep";
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+        }
+      };
+      xhr.open('POST',url);
+      xhr.setRequestHeader("x-api-user", habId);
+      xhr.setRequestHeader("x-api-key", habToken);
+      xhr.setRequestHeader("x-client" : "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+      xhr.send();
+    }
+   
+    function bulkBuyArmoire(iter) {
     
-    if (iter < ntimes) {
-      response = fetch(url, params);
-      var result = JSON.parse(response);
-      console.log(result.message);
-      if (result.data.armoire.type == 'food') {
-        console.log("You gained " + result.data.armoire.dropText + ".")
-      } else {
-        console.log("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".")    
-      }
-      setTimeout(() => {  bulkBuyArmoire(iter+1);}, sleepTime)    }
-  }
+/*      url = "https://habitica.com/api/v3/user/buy-armoire";
+      //set paramaters
+      var paramsTemplate = {
+        "method" : "post",
+        "headers" : {
+        "x-api-user" : habId, 
+        "x-api-key" : habToken,
+        "x-client" : "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal"
+        }
+      };
+      var params = paramsTemplate;
+    
+      if (iter < ntimes) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST',url);
+        response = fetch(url, params);
+        var result = JSON.parse(response);
+        console.log(result.message);
+        if (result.data.armoire.type == 'food') {
+          console.log("You gained " + result.data.armoire.dropText + ".")
+        }
+        else {
+          console.log("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".")    
+        }
+        setTimeout(() => {  bulkBuyArmoire(iter+1);}, sleepTime)    }*/
+    }
   
   </script>
 </html>
