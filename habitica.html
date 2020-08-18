@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Habitica Stuff</title>
+  </head>
+  <body>
+    <div id="container">
+      <div class="inner" id="head">
+        <header>
+          <h1>Habitica Stuff</h1>
+          <h2>V0.0.0</h2>
+        </header>
+      </div>
+      <hr>
+      <section id="main_content">
+        <span>Bulk buy armoire? </span><input type="number" id="buyArmoire" onsubmit="bulkBuyArmoire()"><button onclick="bulkBuyArmoire()"><span>Buy</span></button>
+      </section>
+    </div>
+  </body>
+  <script>
+  
+  function bulkBuyArmoire() {
+    
+    var habId = "eb5f51e6-cd0a-4590-b20c-5322bff97cc0";
+    var habToken = "7b77d868-365d-484f-87fa-44ca42418238";
+    var ntimes = document.getElementById("number").value;
+    
+    var url = "https://habitica.com/api/v3/user/buy-armoire";
+    var sleepTime = 50;
+    var response;
+    
+    //set paramaters
+    var paramsTemplate = {
+      "method" : "post",
+      "headers" : {
+        "x-api-user" : habId, 
+        "x-api-key" : habToken
+      }
+    };
+    var params = paramsTemplate;
+    
+    for (var i = 0; i < ntimes; i++) { 
+      response = UrlFetchApp.fetch(url, params);
+      var result = JSON.parse(response);
+      console.log(result.message);
+      if (result.data.armoire.type == 'food') {
+        console.log("You gained " + result.data.armoire.dropText + ".")
+      } else {
+        console.log("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".")    
+      }
+      Utilities.sleep(sleepTime);// pause in the loop for 200 milliseconds; //This is to avoid the next buy being swallowed up from servers too busy.
+    }
+  }
+  
+  </script>
+</html>
+
