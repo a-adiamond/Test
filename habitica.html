@@ -22,8 +22,8 @@
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
-        <span style="font-size:xx-large">Bulk buy armoire </span><input type="number" id="buyArmoire" onsubmit="bulkBuyArmoire(0)"><button style="float:none; display:inline" onclick="bulkBuyArmoire(0)"><span>Buy</span></button>
-        <span style="font-size:xx-large">Inn <button style="float:none; display:inline" onclick="inn()"><span id="innButt">Check in</span></button>
+        <span style="font-size:xx-large">Bulk buy armoire </span><input type="number" id="buyArmoire" style="font-size:xx-large; width:72px" onsubmit="bulkBuyArmoire(0)"><button style="float:none;display:inline;vertical-align: super;" onclick="bulkBuyArmoire(0)">  <span>Buy</span></button><br>
+        <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: super;" onclick="inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
   </body>
@@ -42,7 +42,7 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
+          console.log(this.responseText.data.preferences.sleep);
         }
       };
       xhr.open('GET',url);
