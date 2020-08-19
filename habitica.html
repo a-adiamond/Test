@@ -87,7 +87,7 @@
       if (document.getElementById("buyArmoire").value > document.getElementById("buyArmoire").max) {
         document.getElementById("buyArmoire").value = document.getElementById("buyArmoire").max;
       }
-      else if (Number.isFinite(document.getElementById("buyArmoire").value) && document.getElementById("buyArmoire").value < 0) {
+      else if (Number.isFinite(parseInt(document.getElementById("buyArmoire").value)) && parseInt(document.getElementById("buyArmoire").value) < 0) {
         document.getElementById("buyArmoire").value = 0;
       }
     }
