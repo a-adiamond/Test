@@ -17,7 +17,7 @@
       <div class="inner" id="head">
         <header>
           <h1>Habitica Stuff</h1>
-          <h2>V0.0.3</h2>
+          <h2>V0.0.4</h2>
         </header>
       </div>
       <hr>
@@ -33,7 +33,7 @@
     var habId = "eb5f51e6-cd0a-4590-b20c-5322bff97cc0";
     var habToken = "7b77d868-365d-484f-87fa-44ca42418238";
     var ntimes = document.getElementById("buyArmoire").value;
-    var debug;
+    var habStats;
     
     var url;
     var sleepTime = 200;
@@ -43,7 +43,10 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          debug = this.responseText;
+          habStats = JSON.parse(this.responseText);
+          if (habStats.data.preferences.sleep == true) {
+            document.getElementById("innButt").innerText = "Check Out");
+          }
         }
       };
       xhr.open('GET',url);
@@ -59,7 +62,12 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
+          if (JSON.parse(this.responseText).data == true) {
+            document.getElementById("innButt").innerText = "Check Out");
+          }
+          else {
+            document.getElementById("innButt").innerText = "Check In");
+          }
         }
       };
       xhr.open('POST',url);
