@@ -33,6 +33,7 @@
     var habId = "eb5f51e6-cd0a-4590-b20c-5322bff97cc0";
     var habToken = "7b77d868-365d-484f-87fa-44ca42418238";
     var ntimes = document.getElementById("buyArmoire").value;
+    var debug;
     
     var url;
     var sleepTime = 200;
@@ -42,7 +43,7 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText.data.preferences.sleep);
+          debug = this.responseText;
         }
       };
       xhr.open('GET',url);
