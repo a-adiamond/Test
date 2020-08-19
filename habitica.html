@@ -22,7 +22,7 @@
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
-        <span style="font-size:xx-large">Bulk buy armoire </span><input type="number" id="buyArmoire" min="1" max="100" style="font-size:xx-large; width:72px" oninput="checkVal()">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="bulkBuyArmoire(0)"><span>Buy</span></button><br>
+        <span style="font-size:xx-large">Bulk Armoire </span><input type="number" id="buyArmoire" max="100" style="font-size:xx-large; width:72px" oninput="checkVal()">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="bulkBuyArmoire(0)"><span>Buy</span></button><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
@@ -67,6 +67,7 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+          habStats.data.preferences.sleep = JSON.parse(this.responseText).data;
           if (JSON.parse(this.responseText).data == true) {
             document.getElementById("innButt").innerText = "Check Out";
           }
@@ -83,10 +84,7 @@
     }
     
     function checkVal() {
-      if (document.getElementById("buyArmoire").value < document.getElementById("buyArmoire").min) {
-        document.getElementById("buyArmoire").value = document.getElementById("buyArmoire").min;
-      }
-      else if (document.getElementById("buyArmoire").value > document.getElementById("buyArmoire").max) {
+      if (document.getElementById("buyArmoire").value > document.getElementById("buyArmoire").max) {
         document.getElementById("buyArmoire").value = document.getElementById("buyArmoire").max;
       }
     }
