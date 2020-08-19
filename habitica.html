@@ -45,7 +45,7 @@
         if (this.readyState == 4 && this.status == 200) {
           habStats = JSON.parse(this.responseText);
           if (habStats.data.preferences.sleep == true) {
-            document.getElementById("innButt").innerText = "Check Out");
+            document.getElementById("innButt").innerText = "Check Out";
           }
         }
       };
@@ -63,10 +63,10 @@
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           if (JSON.parse(this.responseText).data == true) {
-            document.getElementById("innButt").innerText = "Check Out");
+            document.getElementById("innButt").innerText = "Check Out";
           }
           else {
-            document.getElementById("innButt").innerText = "Check In");
+            document.getElementById("innButt").innerText = "Check In";
           }
         }
       };
