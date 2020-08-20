@@ -102,11 +102,11 @@
             habStats.data.stats.gp -= 100;
             document.getElementById("buyArmoire").max -= 1;
             debug = JSON.parse(this.responseText);
-            if (result.data.armoire.type == 'food') {
+            if (debug.data.armoire.type == 'food') {
              console.log("+ " + debug.data.armoire.dropText);
             }
             else {
-             console.log("+ " + result.data.armoire.value + " " + debug.data.armoire.type);
+             console.log("+ " + debug.data.armoire.value + " " + debug.data.armoire.type);
             }
             console.log(iter+1 + "/" + ntimes + " bought.");
           }
