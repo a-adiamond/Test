@@ -94,7 +94,7 @@
     }
    
     function armoire(ntimes, iter) {
-      if (Number.isFinite(ntimes) && ntimes >= 1 && iter < ntimes)
+      if (Number.isFinite(ntimes) && ntimes >= 1 && iter < ntimes) {
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
