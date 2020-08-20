@@ -106,17 +106,17 @@
              console.log("+ " + debug.data.armoire.dropText);
             }
             else {
-              console.log("+ " + result.data.armoire.value + " " + debug.data.armoire.type);
+             console.log("+ " + result.data.armoire.value + " " + debug.data.armoire.type);
             }
             console.log(iter+1 + "/" + ntimes + " bought.");
           }
-        }
-      };
-      xhr.open('POST',url);
-      xhr.setRequestHeader("x-api-user", habId);
-      xhr.setRequestHeader("x-api-key", habToken);
-      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
-      xhr.send();
+        };
+        xhr.open('POST',url);
+        xhr.setRequestHeader("x-api-user", habId);
+        xhr.setRequestHeader("x-api-key", habToken);
+        xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+        xhr.send();
+      }
     }
         
   
