@@ -86,8 +86,10 @@
     }
     
     function checkVal(val) {
-      if (val.match(/^([0-9]+)$/) && val > document.getElementById("buyArmoire").max) {
-        document.getElementById("buyArmoire").value = document.getElementById("buyArmoire").max;
+      if (val.match(/^([0-9]+)$/) {
+        if (val > document.getElementById("buyArmoire").max) {
+          document.getElementById("buyArmoire").value = document.getElementById("buyArmoire").max;
+        }
       }
       else if (val.match(/^([0-9]+)\.$/)) {
         document.getElementById("buyArmoire").value = parseInt(val).toString();
