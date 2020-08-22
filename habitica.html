@@ -87,7 +87,7 @@
     
     function checkVal(val) {
       if (val.match(/^([0-9]+)$/)) {
-        if (val > document.getElementById("buyArmoire").max) {
+        if (parseInt(val) > parseInt(document.getElementById("buyArmoire").max)) {
           document.getElementById("buyArmoire").value = document.getElementById("buyArmoire").max;
         }
       }
