@@ -37,7 +37,7 @@
     var ntimes;
     
     var url;
-    var sleepTime = 200;
+    var sleepTime = 2000;
     
     function getStats() {
       document.getElementById("buyArmoire").addEventListener("focusin", function() {if (parseInt(document.getElementById("buyArmoire").value) == 0) {document.getElementById("buyArmoire").value="";}});
@@ -117,7 +117,7 @@
              console.log("+ " + debug.data.armoire.value + " " + debug.data.armoire.type);
             }
             console.log(iter+1 + "/" + ntimes + " bought.");
-            if (iter == 1) {
+            if (iter == 0) {
               setTimeout(() => {armoire(iter+1);}, sleepTime);
             }
           }
