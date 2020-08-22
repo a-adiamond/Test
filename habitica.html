@@ -22,7 +22,7 @@
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
-        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; this.color='#ababab'; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
+        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; this.style.color = '#ababab'; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
@@ -103,8 +103,8 @@
    
     function armoire(iter) {
       if (ntimes == 0) {
-        document.getElementById("buyButt").disabled == false;
-        document.getElementById("buyButt").color == "#303030";
+        document.getElementById("buyButt").disabled = false;
+        document.getElementById("buyButt").style.color = "#303030";
       }
       else if (iter < ntimes) {
         url = "https://habitica.com/api/v3/user/buy-armoire";
@@ -131,8 +131,8 @@
         xhr.send();
       }
       else if (iter = ntimes) {
-        document.getElementById("buyButt").disabled == false;
-        document.getElementById("buyButt").color == "#303030";
+        document.getElementById("buyButt").disabled = false;
+        document.getElementById("buySpan").style.color = "#303030";
       }
     }
         
