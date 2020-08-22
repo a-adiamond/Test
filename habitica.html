@@ -22,7 +22,7 @@
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
-        <span style="font-size:xx-large">Bulk Armoire </span><input type="number" id="buyArmoire" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal()">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; document.getElementById('buyArmoire').value = ''; armoire(parseInt(document.getElementById('buyArmoire').value),0)"><span>Buy</span></button><br>
+        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" default="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = ''; armoire(0)"><span>Buy</span></button><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
@@ -34,6 +34,7 @@
     var habToken = "7b77d868-365d-484f-87fa-44ca42418238";
     var habStats;
     var debug;
+    var ntimes;
     
     var url;
     var sleepTime = 200;
@@ -84,17 +85,20 @@
       xhr.send();
     }
     
-    function checkVal() {
-      if (document.getElementById("buyArmoire").value > document.getElementById("buyArmoire").max) {
+    function checkVal(val) {
+      if (val.match(/^([0-9]+)$/) && val > document.getElementById("buyArmoire").max) {
         document.getElementById("buyArmoire").value = document.getElementById("buyArmoire").max;
       }
-      else if (Number.isFinite(parseInt(document.getElementById("buyArmoire").value)) && parseInt(document.getElementById("buyArmoire").value) < 0) {
-        document.getElementById("buyArmoire").value = 0;
+      else if (val.match(/^([0-9]+)\.$/)) {
+        document.getElementById("buyArmoire").value = parseInt(val).toString;
+      }
+      else {
+        document.getElementById("buyArmoire").value = "";
       }
     }
    
     function armoire(ntimes, iter) {
-      if (Number.isFinite(ntimes) && ntimes >= 1 && iter < ntimes) {
+      if (ntimes >= 1 && iter < ntimes) {
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
