@@ -22,7 +22,7 @@
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
-        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
+        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; this.color='#ababab'; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
@@ -102,7 +102,11 @@
     }
    
     function armoire(iter) {
-      if (ntimes >= 1 && iter < ntimes) {
+      if (ntimes == 0) {
+        document.getElementById("buyButt").disabled == false;
+        document.getElementById("buyButt").color == "#303030";
+      }
+      else if (iter < ntimes) {
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
@@ -117,9 +121,7 @@
              console.log("+ " + debug.data.armoire.value + " " + debug.data.armoire.type);
             }
             console.log(iter+1 + "/" + ntimes + " bought.");
-            if (iter == 0) {
-              setTimeout(() => {armoire(iter+1);}, sleepTime);
-            }
+            setTimeout(() => {armoire(iter+1);}, sleepTime);
           }
         };
         xhr.open('POST',url);
@@ -127,6 +129,10 @@
         xhr.setRequestHeader("x-api-key", habToken);
         xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
         xhr.send();
+      }
+      else if (iter = ntimes) {
+        document.getElementById("buyButt").disabled == false;
+        document.getElementById("buyButt").color == "#303030";
       }
     }
         
