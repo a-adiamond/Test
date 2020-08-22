@@ -22,7 +22,7 @@
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
-        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" default="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = ''; armoire(0)"><span>Buy</span></button><br>
+        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" defaultValue="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
@@ -40,6 +40,8 @@
     var sleepTime = 200;
     
     function getStats() {
+      document.getElementById("buyArmoire").addEventListener("focusin", function() {if (parseInt(document.getElementById("buyArmoire").value) == 0) {document.getElementById("buyArmoire").value="";}});
+      document.getElementById("buyArmoire").addEventListener("focusout", function() {if (document.getElementById("buyArmoire").value == "") {document.getElementById("buyArmoire").value="0";}});
       url = "https://habitica.com/api/v3/user";
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
@@ -99,7 +101,7 @@
       }
     }
    
-    function armoire(ntimes, iter) {
+    function armoire(iter) {
       if (ntimes >= 1 && iter < ntimes) {
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
@@ -115,6 +117,9 @@
              console.log("+ " + debug.data.armoire.value + " " + debug.data.armoire.type);
             }
             console.log(iter+1 + "/" + ntimes + " bought.");
+            if (iter == 1) {
+              setTimeout(() => {armoire(iter+1);}, sleepTime);
+            }
           }
         };
         xhr.open('POST',url);
