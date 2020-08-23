@@ -60,7 +60,7 @@
                   
     
     var url;
-    var sleepTime = 200;
+    var sleepTime = 100;
     
     function getStats() {
       document.getElementById("buyArmoire").addEventListener("focusin", function() {if (parseInt(document.getElementById("buyArmoire").value) == 0) {document.getElementById("buyArmoire").value="";}});
@@ -133,8 +133,8 @@
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
-          debug = JSON.parse(this.responseText);
           if (this.readyState == 4 && this.status == 200) {
+            debug = JSON.parse(this.responseText);
             habStats.data.stats.gp -= 100;
             document.getElementById("buyArmoire").max -= 1;
             if (debug.data.armoire.type == 'food') {
@@ -147,7 +147,7 @@
             setTimeout(() => {armoire(iter+1);}, sleepTime);
           }
           else if (this.readyState == 4) {
-            console.log(this.status + " " + Json.stringify(debug));
+            console.log(this.status + " " + this.responseText);
           }
         }
         xhr.open('POST',url);
@@ -170,6 +170,17 @@
         console.log("Gained: " + JSON.stringify(gained));
         document.getElementById("buyButt").disabled = false;
         document.getElementById("buyButt").style.color = "#303030";
+        gained = {"experience":0,
+                  "Meat":0,
+                  "Milk":0,
+                  "Potatoe":0,
+                  "Strawberry":0,
+                  "Chocolate":0,
+                  "Fish":0,
+                  "RottenMeat":0,
+                  "CottonCandyPink":0,
+                  "CottonCandyBlue":0,
+                  "Honey":0};
       }
     }
         
