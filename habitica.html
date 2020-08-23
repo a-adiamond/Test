@@ -133,10 +133,10 @@
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
+          debug = JSON.parse(this.responseText);
           if (this.readyState == 4 && this.status == 200) {
             habStats.data.stats.gp -= 100;
             document.getElementById("buyArmoire").max -= 1;
-            debug = JSON.parse(this.responseText);
             if (debug.data.armoire.type == 'food') {
              gained[debug.data.armoire.dropKey]++;
             }
@@ -146,7 +146,10 @@
             console.log(iter+1 + "/" + ntimes + " bought.");
             setTimeout(() => {armoire(iter+1);}, sleepTime);
           }
-        };
+          else if (this.readyState == 4) {
+            console.log(this.status + " " + Json.stringify(debug));
+          }
+        }
         xhr.open('POST',url);
         xhr.setRequestHeader("x-api-user", habId);
         xhr.setRequestHeader("x-api-key", habToken);
