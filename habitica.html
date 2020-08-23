@@ -37,7 +37,7 @@
     var ntimes;
     
     var url;
-    var sleepTime = 2000;
+    var sleepTime = 200;
     
     function getStats() {
       document.getElementById("buyArmoire").addEventListener("focusin", function() {if (parseInt(document.getElementById("buyArmoire").value) == 0) {document.getElementById("buyArmoire").value="";}});
@@ -114,12 +114,13 @@
             habStats.data.stats.gp -= 100;
             document.getElementById("buyArmoire").max -= 1;
             debug = JSON.parse(this.responseText);
-            if (debug.data.armoire.type == 'food') {
+            console.log(debug.data.armoire);
+/*            if (debug.data.armoire.type == 'food') {
              console.log("+ " + debug.data.armoire.dropText);
             }
             else {
              console.log("+ " + debug.data.armoire.value + " " + debug.data.armoire.type);
-            }
+            }*/
             console.log(iter+1 + "/" + ntimes + " bought.");
             setTimeout(() => {armoire(iter+1);}, sleepTime);
           }
@@ -132,7 +133,7 @@
       }
       else if (iter = ntimes) {
         document.getElementById("buyButt").disabled = false;
-        document.getElementById("buySpan").style.color = "#303030";
+        document.getElementById("buyButt").style.color = "#303030";
       }
     }
         
