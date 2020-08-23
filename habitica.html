@@ -35,6 +35,11 @@
     var habStats;
     var debug;
     var ntimes;
+    var gained = {"experience":0,
+                  "Meat":0,
+                  "RottenMeat":0,
+                  "Fish":0};
+                  
     
     var url;
     var sleepTime = 200;
@@ -114,13 +119,12 @@
             habStats.data.stats.gp -= 100;
             document.getElementById("buyArmoire").max -= 1;
             debug = JSON.parse(this.responseText);
-            console.log(debug.data.armoire);
-/*            if (debug.data.armoire.type == 'food') {
-             console.log("+ " + debug.data.armoire.dropText);
+            if (debug.data.armoire.type == 'food') {
+             console.log("+ " + debug.data.armoire.dropKey);
             }
             else {
-             console.log("+ " + debug.data.armoire.value + " " + debug.data.armoire.type);
-            }*/
+             console.log("+ " + debug.data.armoire.type);
+            }
             console.log(iter+1 + "/" + ntimes + " bought.");
             setTimeout(() => {armoire(iter+1);}, sleepTime);
           }
