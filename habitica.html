@@ -37,8 +37,15 @@
     var ntimes;
     var gained = {"experience":0,
                   "Meat":0,
+                  "Milk":0,
+                  "Potatoe":0,
+                  "Strawberry":0,
+                  "Chocolate":0,
+                  "Fish":0,
                   "RottenMeat":0,
-                  "Fish":0};
+                  "CottonCandyPink":0,
+                  "CottonCandyBlue":0,
+                  "Honey":0};
                   
     
     var url;
@@ -120,10 +127,10 @@
             document.getElementById("buyArmoire").max -= 1;
             debug = JSON.parse(this.responseText);
             if (debug.data.armoire.type == 'food') {
-             console.log("+ " + debug.data.armoire.dropKey);
+             gained[debug.data.armoire.dropKey]++;
             }
             else {
-             console.log("+ " + debug.data.armoire.type);
+             gained[debug.data.armoire.type] += debug.data.armoire.value;
             }
             console.log(iter+1 + "/" + ntimes + " bought.");
             setTimeout(() => {armoire(iter+1);}, sleepTime);
@@ -136,6 +143,7 @@
         xhr.send();
       }
       else if (iter = ntimes) {
+        console.log("Gained: " + JSON.stringify(gained));
         document.getElementById("buyButt").disabled = false;
         document.getElementById("buyButt").style.color = "#303030";
       }
