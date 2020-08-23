@@ -46,6 +46,17 @@
                   "CottonCandyPink":0,
                   "CottonCandyBlue":0,
                   "Honey":0};
+    const names = {"experience":["Experience","Experience"],
+                  "Meat":["Meat","Meats"],
+                  "Milk":["Milk","Milks"],
+                  "Potatoe":["Potato","Potatoes"],
+                  "Strawberry":["Strawberry","Strawberries"],
+                  "Chocolate":["Chocolate","Chocolates"],
+                  "Fish":["Fish","Fish"],
+                  "RottenMeat":["Rotten Meat","Rotten Meats"],
+                  "CottonCandyPink":["Pink Cotton Candy","Pink Cotton Candies"],
+                  "CottonCandyBlue":["Pink Cotton Candy","Pink Cotton Candies"],
+                  "Honey":["Honey","Honeys"]};
                   
     
     var url;
@@ -143,6 +154,16 @@
         xhr.send();
       }
       else if (iter = ntimes) {
+        var gainList = "";
+        for (var armTyp in gained) {
+          if (gained[armTyp] == 1) {
+            gainList += "\n - " + gained[armTyp] + " " + names[armTyp][0];
+          }
+          else if (gained[armTyp] > 1) {
+            gainList += "\n - " + gained[armTyp] + " " + names[armTyp][1];
+          }
+        }
+        alert("You gained the following:"+gainList);
         console.log("Gained: " + JSON.stringify(gained));
         document.getElementById("buyButt").disabled = false;
         document.getElementById("buyButt").style.color = "#303030";
