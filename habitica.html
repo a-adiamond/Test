@@ -22,8 +22,8 @@
       </div>
       <hr>
       <section id="main_content" style="width:fit-content; margin:auto">
-        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="this.disabled = true; this.style.color = '#ababab'; ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
-        <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="inn()"><span id="innButt">Check in</span></button>
+        <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="disableButt(this.id); ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
+        <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
   </body>
@@ -60,7 +60,7 @@
                   
     
     var url;
-    var sleepTime = 5;
+    var sleepTime = 2000; // 2 seconds
     
     function getStats() {
       document.getElementById("buyArmoire").addEventListener("focusin", function() {if (parseInt(document.getElementById("buyArmoire").value) == 0) {document.getElementById("buyArmoire").value="";}});
@@ -74,7 +74,7 @@
             document.getElementById("innButt").innerText = "Check Out";
           }
           if (habStats.data.stats.gp < 100) {
-            document.getElementById("buyButt").disabled = true;
+            disableButt("buyButt");
           }
           else {
             document.getElementById("buyArmoire").max = Math.trunc(habStats.data.stats.gp / 100);
@@ -94,6 +94,7 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+          setTimeout(() => {enableButt("innButt");}, sleepTime);
           habStats.data.preferences.sleep = JSON.parse(this.responseText).data;
           if (JSON.parse(this.responseText).data == true) {
             document.getElementById("innButt").innerText = "Check Out";
@@ -108,6 +109,16 @@
       xhr.setRequestHeader("x-api-key", habToken);
       xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
       xhr.send();
+    }
+    
+    function enableButt(button) {
+      document.getElementById(button).disabled = false;
+      document.getElementById(button).style.color = "#303030";
+    }
+    
+    function disableButt(button) {
+      document.getElementById(button).disabled = true;
+      document.getElementById(button).style.color = "#ababab";
     }
     
     function checkVal(val) {
@@ -126,8 +137,7 @@
    
     function armoire(iter) {
       if (ntimes == 0) {
-        document.getElementById("buyButt").disabled = false;
-        document.getElementById("buyButt").style.color = "#303030";
+        enableButt("buyButt");
       }
       else if (iter < ntimes) {
         url = "https://habitica.com/api/v3/user/buy-armoire";
@@ -168,8 +178,7 @@
         }
         alert("You gained the following:"+gainList);
         console.log("Gained: " + JSON.stringify(gained));
-        document.getElementById("buyButt").disabled = false;
-        document.getElementById("buyButt").style.color = "#303030";
+        enableButt("buyButt");
         gained = {"experience":0,
                   "Meat":0,
                   "Milk":0,
