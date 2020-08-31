@@ -161,13 +161,13 @@
         enableButt("buyButt");
       }
       else if (iter < ntimes) {
-        buyEl.innerText = "Buying " + iter+1 + "/" + ntimes "...";
+        buyEl.innerText = "Buying " + iter+1 + "/" + ntimes + "...";
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
             debug = JSON.parse(this.responseText);
-            buyEl.innerText = "Bought " + iter+1 + "/" + ntimes ": " + debug.message;
+            buyEl.innerText = "Bought " + iter+1 + "/" + ntimes + ": " + debug.message;
             habStats.data.stats.gp -= 100;
             document.getElementById("buyArmoire").max -= 1;
             if (debug.data.armoire.type == 'food') {
