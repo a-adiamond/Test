@@ -96,7 +96,7 @@
               var cell1 = row.insertCell(0);
               var cell2 = row.insertCell(1);
               cell1.innerText = notifs[i][1];
-              cell2.innerHTML = "<button onclick=\"markRead('"+notifs[i][0]+"')\"><span>Mark read</span></button>";
+              cell2.innerHTML = "<button onclick=\"varEl.rows["+i+"].style.display = 'none';markRead('"+notifs[i][0]+"')\"><span>Mark read</span></button>";
             }
           }
         }
@@ -226,7 +226,7 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          debug = JSON.parse(this.responseText).data;
+          debug = JSON.parse(this.responseText);
           console.log(debug);
         }
       };
