@@ -83,7 +83,7 @@
           }
           if (habStats.notifications) {
             for (var i in habStats.notifications) {
-              var notif = habStats.notifications.i;
+              var notif = habStats.notifications[i];
               if (notif.type == "GROUP_INVITE_ACCEPTED") {
                 notifs.push([notif.id, notif.data.bodyText]);
               }
