@@ -17,7 +17,7 @@
       <div class="inner" id="head">
         <header>
           <h1>Habitica Stuff</h1>
-          <h2>V0.0.7</h2>
+          <h2>V0.0.8</h2>
         </header>
       </div>
       <hr>
@@ -26,6 +26,7 @@
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
     </div>
+      <div id="display"><table id="notifTable"></table></div>
   </body>
   <script>
     
@@ -57,7 +58,8 @@
                   "CottonCandyPink":["Pink Cotton Candy","Pink Cotton Candies"],
                   "CottonCandyBlue":["Blue Cotton Candy","Blue Cotton Candies"],
                   "Honey":["Honey","Honeys"]};
-                  
+    var notifs = [],
+        varEl = document.getElementById("notifTable");
     
     var url;
     var sleepTime = 1500; // 1.5 seconds
@@ -78,6 +80,23 @@
           }
           else {
             document.getElementById("buyArmoire").max = Math.trunc(habStats.data.stats.gp / 100);
+          }
+          if (habStats.notifications) {
+            for (var i in habStats.notifications) {
+              var notif = habStats.notifications[i];
+              if (notif.type == "GROUP_INVITE_ACCEPTED") {
+                notifs.push({notif.id : notif.data.bodyText});
+              }
+              else if (notif.type == "NEW_CHAT_MESSAGE") {
+                notifs.push([notif.id,"New message in " + notif.data.group.name]);
+              }
+            }
+            for (var i in notifs) {
+              var row = varEl.insertRow(varEl.rows.length);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerText = notifs[i][1];
+              cell2.innerHTML = "<button onchange=\"markRead("+notifs[i][0]+")\"><span>Mark read</span><button>";
           }
         }
       };
@@ -199,6 +218,10 @@
                   "CottonCandyBlue":0,
                   "Honey":0};
       }
+    }
+      
+    function markRead(id) {
+      console.log("Mark " + id + " read.");
     }
         
   
