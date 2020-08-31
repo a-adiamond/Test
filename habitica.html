@@ -21,7 +21,7 @@
         </header>
       </div>
       <hr>
-      <section id="main_content" style="width:fit-content; margin:auto">
+      <section id="main_content" style="width:fit-content; margin-left:30%">
         <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="disableButt(this.id); ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><span id="buyInfo"></span><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
