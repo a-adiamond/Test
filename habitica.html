@@ -63,7 +63,7 @@
         notifEl = document.getElementById("notifTable");
     
     var url;
-    var sleepTime = 1000; // 1 seconds
+    var sleepTime = 1500; // 1.5 seconds
     
     function getStats() {
       document.getElementById("buyArmoire").addEventListener("focusin", function() {if (parseInt(document.getElementById("buyArmoire").value) == 0) {document.getElementById("buyArmoire").value="";}});
@@ -161,26 +161,27 @@
         enableButt("buyButt");
       }
       else if (iter < ntimes) {
-        buyEl.innerText = "Buying " + iter+1 + "/" + ntimes + "...";
+        buyEl.innerText = "Buying " + (iter+1) + "/" + ntimes + "...";
         url = "https://habitica.com/api/v3/user/buy-armoire";
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
             debug = JSON.parse(this.responseText);
-            buyEl.innerText = "Bought " + iter+1 + "/" + ntimes + ": " + debug.message;
             habStats.data.stats.gp -= 100;
             document.getElementById("buyArmoire").max -= 1;
             if (debug.data.armoire.type == 'food') {
+             buyEl.innerText = "Bought " + (iter+1) + "/" + ntimes + ": " + debug.data.armoire.dropText;
              gained[debug.data.armoire.dropKey]++;
             }
             else {
+             buyEl.innerText = "Bought " + (iter+1) + "/" + ntimes + ": " + debug.data.armoire.type;
              gained[debug.data.armoire.type] += debug.data.armoire.value;
             }
             if (iter + 1 == ntimes) {
               armoire(iter+1);
             }
             else if (iter % 9 == 0) { // extra long pause after every 10 to keep the load down
-              setTimeout(() => {armoire(iter+1);}, 2000);
+              setTimeout(() => {armoire(iter+1);}, 5000);
             }
             else {
               setTimeout(() => {armoire(iter+1);}, sleepTime);
