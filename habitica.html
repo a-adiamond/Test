@@ -25,8 +25,8 @@
         <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="disableButt(this.id); ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span>Buy</span></button><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
-    </div>
-      <div id="display"><table id="notifTable"></table></div>
+        <section id="display"><table id="notifTable"></table></section>
+        </div>
   </body>
   <script>
     
@@ -222,14 +222,12 @@
     }
       
     function markRead(id) {
-
-        
-    function inn() {
       url = "https://habitica.com/api/v3/notifications/"+id+"/read";
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           debug = JSON.parse(this.responseText).data;
+          console.log(debug);
         }
       };
       xhr.open('POST',url);
@@ -237,8 +235,6 @@
       xhr.setRequestHeader("x-api-key", habToken);
       xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
       xhr.send();
-    }
-    
     }
         
   
