@@ -83,7 +83,6 @@
           }
           if (habStats.notifications) {
             for (var i in habStats.notifications) {
-              console.log(habStats.notifications[i]);
               var notif = habStats.notifications[i];
               if (notif.type == "GROUP_INVITE_ACCEPTED") {
                 notifs.push([notif.id, notif.data.bodyText]);
@@ -97,7 +96,7 @@
               var cell1 = row.insertCell(0);
               var cell2 = row.insertCell(1);
               cell1.innerText = notifs[i][1];
-              cell2.innerHTML = "<button onchange=\"markRead("+notifs[i][0]+")\"><span>Mark read</span><button>";
+              cell2.innerHTML = "<button onclick=\"markRead("+notifs[i][0]+")\"><span>Mark read</span></button>";
             }
           }
         }
