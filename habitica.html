@@ -83,12 +83,11 @@
           }
           if (habStats.notifications) {
             for (var i in habStats.notifications) {
-              var notif = habStats.notifications[i];
-              if (notif.type == "GROUP_INVITE_ACCEPTED") {
-                notifs.push({notif.id : notif.data.bodyText});
+              if (habStats.notifications[i].type == "GROUP_INVITE_ACCEPTED") {
+                notifs.push([habStats.notifications[i].id, habStats.notifications[i].data.bodyText]);
               }
-              else if (notif.type == "NEW_CHAT_MESSAGE") {
-                notifs.push([notif.id,"New message in " + notif.data.group.name]);
+              else if (habStats.notifications[i].type == "NEW_CHAT_MESSAGE") {
+                notifs.push([habStats.notifications[i].id,"New message in " + habStats.notifications[i].data.group.name]);
               }
             }
             for (var i in notifs) {
