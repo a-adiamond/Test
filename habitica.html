@@ -17,7 +17,7 @@
       <div class="inner" id="head">
         <header>
           <h1>Habitica Stuff</h1>
-          <h2>V0.0.8.3</h2>
+          <h2>V0.0.9</h2>
         </header>
       </div>
       <hr>
@@ -222,7 +222,23 @@
     }
       
     function markRead(id) {
-      console.log("Mark " + id + " read.");
+
+        
+    function inn() {
+      url = "https://habitica.com/api/v3/notifications/"+id+"/read";
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          debug = JSON.parse(this.responseText).data;
+        }
+      };
+      xhr.open('POST',url);
+      xhr.setRequestHeader("x-api-user", habId);
+      xhr.setRequestHeader("x-api-key", habToken);
+      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+      xhr.send();
+    }
+    
     }
         
   
