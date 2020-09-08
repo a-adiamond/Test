@@ -48,6 +48,7 @@
                   "CottonCandyPink":0,
                   "CottonCandyBlue":0,
                   "Honey":0};
+    var gainedGear = [];
     const names = {"experience":["Experience","Experience"],
                   "Meat":["Meat","Meats"],
                   "Milk":["Milk","Milks"],
@@ -58,7 +59,7 @@
                   "RottenMeat":["Rotten Meat","Rotten Meats"],
                   "CottonCandyPink":["Pink Cotton Candy","Pink Cotton Candies"],
                   "CottonCandyBlue":["Blue Cotton Candy","Blue Cotton Candies"],
-                  "Honey":["Honey","Honeys"]};
+                  "Honey":["Honey","Honeys"]}
     var notifs = [],
         notifEl = document.getElementById("notifTable");
     
@@ -174,6 +175,11 @@
              buyEl.innerText = "Bought " + (iter+1) + "/" + ntimes + ": " + debug.data.armoire.dropText;
              gained[debug.data.armoire.dropKey]++;
             }
+            else if (debug.data.armoire.type == 'gear') {
+             buyEl.innerText = "Bought " + (iter+1) + "/" + ntimes + ": " + debug.data.armoire.dropText;
+             gainedGear.push(debug.data.armoire.dropText);
+            }
+
             else {
              buyEl.innerText = "Bought " + (iter+1) + "/" + ntimes + ": " + debug.data.armoire.type;
              gained[debug.data.armoire.type] += debug.data.armoire.value;
@@ -209,6 +215,9 @@
             gainList += "\n - " + gained[armTyp] + " " + names[armTyp][1];
           }
         }
+        if (gainedGear.length>0) {
+          gainList += "\n - " + gainedGear.join(", ");
+        }
         alert("You gained the following:"+gainList);
         console.log("Gained: " + JSON.stringify(gained));
         enableButt("buyButt");
@@ -223,6 +232,7 @@
                   "CottonCandyPink":0,
                   "CottonCandyBlue":0,
                   "Honey":0};
+      gainedGear = [];
       }
     }
       
