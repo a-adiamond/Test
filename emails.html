@@ -177,10 +177,10 @@
   }
   
   function buildVarOptions() {
+    varOptions+="<option value=\"manual\">ENTER LITERAL TEXT</option>"
     for (var i in samples.fields()){
       varOptions+="<option value=\"" + samples.fields()[i] + "\">" + samples.fields()[i] + "</option>";
     }
-    varOptions+="<option value=\"manual\">Enter text</option>"
   }
   
   function updatePreview() {
