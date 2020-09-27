@@ -387,7 +387,7 @@
         var matchString = "{{"+i+"}}";
         var matchReg = new RegExp(matchString,"g");
         var repl = document.getElementById(i).value;
-        if (sendVars[i].match(/\(literal\:(.*)\)/) {
+        if (sendVars[i].match(/\(literal\:(.*)\)/)) {
           test = test.replace(matchReg,repl);
         }
         else {
