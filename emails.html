@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.5.3</h2>
+          <h2>V1.5.4</h2>
         </header>
 
         <hr>
@@ -180,6 +180,7 @@
     for (var i in samples.fields()){
       varOptions+="<option value=\"" + samples.fields()[i] + "\">" + samples.fields()[i] + "</option>";
     }
+    varOptions+="<option value=\"manual\">Enter text</option>"
   }
   
   function updatePreview() {
@@ -228,7 +229,7 @@
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         cell1.innerText = "{{"+match[1]+"}}";
-        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"sendVars['"+match[1]+"'] = samples.records()[0].fields[this.value];updateVars();\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
+        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"if(this.value=='manual'){sendVars['"+match[1]+"'] = 'Testing!';makeText('"+match[1]+"');} else{ sendVars['"+match[1]+"'] = samples.records()[0].fields[this.value];}updateVars();\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
       }
     }
   }
@@ -338,6 +339,10 @@
     cleanRecords();
     recipForm.style.display="none";
     varForm.style.display="block";
+  }
+  
+  function makeText(select) {
+    console.log(document.getElementById(select).outerHTML);
   }
   
   function updateVars() {
