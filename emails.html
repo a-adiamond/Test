@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.5.2</h2>
+          <h2>V1.5.3</h2>
         </header>
 
         <hr>
@@ -134,8 +134,11 @@
                 console.log("Response", response);
                  document.getElementById("signIn").style.display="none";
                  document.getElementById("loadDrafts").style.display = "block";},
-              function(err) { console.error("Execute error", err); });
-  }
+        function(err) { if(err.status=="403") {
+                          alert("Invalid sign-in");}
+                         else {
+                          alert(err.status + ": " + err.result.error.message);});
+    }
     
     
   
