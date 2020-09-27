@@ -137,7 +137,8 @@
         function(err) { if(err.status=="403") {
                           alert("Invalid sign-in");}
                          else {
-                          alert(err.status + ": " + err.result.error.message);});
+                          alert(err.status + ": " + err.result.error.message);}
+                      });
     }
     
     
