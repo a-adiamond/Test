@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.5.1</h2>
+          <h2>V1.5.2</h2>
         </header>
 
         <hr>
@@ -114,18 +114,31 @@
   function authenticate() {
     return gapi.auth2.getAuthInstance()
         .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
-        .then(function(response) { debug = response; loadClient();/*if (response.rt.$t == "deancasbigbangmod@gmail.com") {loadClient();} else {console.error("Invalid login");}*/
+        .then(function(response) { debug = response; loadClient();
         }, 
               function(err) { console.error("Error signing in", err); });
   }
+  
   function loadClient() {
     gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
     return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
-        .then(function() {
-                 document.getElementById("signIn").style.display="none";
-                 document.getElementById("loadDrafts").style.display = "block";},
+        .then(function(response) { debug = response; confirmAuth();},
               function(err) { console.error("Error loading GAPI client for API", err); });
   }
+  
+  function confirmAuth() {
+    gapi.client.gmail.users.getProfile({
+      "userId": "deancasbigbangmod@gmail.com"
+    })
+        .then(function(response) {
+                console.log("Response", response);
+                 document.getElementById("signIn").style.display="none";
+                 document.getElementById("loadDrafts").style.display = "block";},
+              function(err) { console.error("Execute error", err); });
+  }
+    
+    
+  
   // Make sure the client is loaded and sign-in is complete before calling this method.
   function execute() {
     return gapi.client.gmail.users.drafts.list({
