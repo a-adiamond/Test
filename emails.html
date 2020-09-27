@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.5.5</h2>
+          <h2>V1.5.6</h2>
         </header>
 
         <hr>
@@ -387,12 +387,11 @@
         var matchString = "{{"+i+"}}";
         var matchReg = new RegExp(matchString,"g");
         var repl = document.getElementById(i).value;
-        var lit = document.getElementById(i).value.match(/\(literal\:(.*)\)/);
-        if (lit) {
-          test = test.replace(matchReg,lit[1]);
+        if (sendVars[i].match(/\(literal\:(.*)\)/) {
+          test = test.replace(matchReg,repl);
         }
         else {
-          test = test.replace(matchReg,sendRecords[0].fields[document.getElementById(i).value]);
+          test = test.replace(matchReg,sendRecords[0].fields[repl]);
         }
       }
       test = test.replace("From: The DCBB <deancasbigbangmod@gmail.com>","From: The DCBB <deancasbigbangmod@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
