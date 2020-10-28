@@ -18,7 +18,7 @@
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
             <h2>V0.0.9</h2></div>
-          <div style="display: inline-block;float: right;"><p>Show notifications</p><p>Show habits</p></div> 
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habits()">Show habits</button></p></div> 
         </header>
       </div>
       <hr>
@@ -26,7 +26,7 @@
         <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="disableButt(this.id); ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span >Buy</span></button><span id="buyInfo"></span><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" id="buttonInn" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
-        <section id="display"><table id="notifTable"></table></section>
+        <section id="display"><table id="notifTable" style="display:none"></table><table id="habTable" style="display:none"></table></section>
         </div>
   </body>
   <script>
@@ -267,6 +267,33 @@
       xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
       xhr.send();
     }
+    
+    function notif() {
+      var butttt = document.getElementById("buttonNotif"),
+          tabbbb = document.getElementById("notifTable");
+      if (tabbbb.style.display == "none") {
+        tabbbb.style.display = "block";
+        butttt.innerText = "Hide notifications";
+      }
+      else {
+        tabbbb.style.display = "none";
+        butttt.innerText = "Show notifications";
+      }
+    }
+    
+    function habits() {
+      var butttt = document.getElementById("buttonHabit"),
+          tabbbb = document.getElementById("habTable");
+      if (tabbbb.style.display == "none") {
+        tabbbb.style.display = "block";
+        butttt.innerText = "Hide habits";
+      }
+      else {
+        tabbbb.style.display = "none";
+        butttt.innerText = "Show habits";
+      }
+    }
+        
         
   
   </script>
