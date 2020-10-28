@@ -134,10 +134,10 @@
             cell1.innerText = habits.data[i].text;
             cell2.innerHTML = '<input type="text" id="'+habits.data[i].id+'" value="0" min="0" max="100" style="width:24px">'
             if (habits.data[i].up == true) {
-              cell3.innerHTML = '<button onclick="doHab(\'up\',\''+habits.data[i].id+'\',0)">⬆️</button>';
+              cell3.innerHTML = '<button style="line-height: 2px" onclick="doHab(\'up\',\''+habits.data[i].id+'\',0)">⬆️</button>';
             }
             if (habits.data[i].down == true) {
-              cell4.innerHTML = '<button onclick="doHab(\'down\',\''+habits.data[i].id+'\',0)">⬇️</button>';
+              cell4.innerHTML = '<button style="line-height: 2px" onclick="doHab(\'down\',\''+habits.data[i].id+'\',0)">⬇️</button>';
             }
           }
         }   
@@ -329,11 +329,12 @@
     function doHab(dir, id, iter) {
       if (iter < parseInt(document.getElementById(id).value)) {
         console.log(iter);
-/*        habtab('hide');
+        habtab('hide');
         url = "https://habitica.com/api/v3/tasks/"+id+"/score/"+dir;
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {*/
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(JSON.parse(this.responseText));
             if (iter + 1 == parseInt(document.getElementById(id).value)) {
               doHab(dir,id,iter+1);
             }
@@ -343,13 +344,13 @@
             else {
               setTimeout(() => {doHab(dir,id,iter+1);}, sleepTime);
             }
-          /*}
+          }
         };
         xhr.open('POST',url);
         xhr.setRequestHeader("x-api-user", habId);
         xhr.setRequestHeader("x-api-key", habToken);
         xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
-        xhr.send();*/
+        xhr.send();
       }
       else {
         document.getElementById(id).value = 0;
