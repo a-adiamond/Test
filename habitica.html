@@ -4,9 +4,6 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -26,7 +23,7 @@
         <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="disableButt(this.id); ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span >Buy</span></button><span id="buyInfo"></span><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" id="buttonInn" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
-        <section id="display"><table id="notifTable" style="display:none"></table><table id="habTable" style="display:none"></table></section>
+        <section id="display"><table id="notifTable" style="margin:auto;display:none"></table><table id="habTable" style="margin:auto;display:none"></table></section>
         </div>
   </body>
   <script>
@@ -134,10 +131,10 @@
             cell1.innerText = habits.data[i].text;
             cell2.innerHTML = '<input type="text" name="'+habits.data[i].text+'" id="'+habits.data[i].id+'" value="0" min="0" max="100" style="width:24px">'
             if (habits.data[i].up == true) {
-              cell3.innerHTML = '<button style="line-height: 2px" onclick="doHab(\'up\',\''+habits.data[i].id+'\',0)">⬆️</button>';
+              cell3.innerHTML = '<button onclick="doHab(\'up\',\''+habits.data[i].id+'\',0)">⬆️</button>';
             }
             if (habits.data[i].down == true) {
-              cell4.innerHTML = '<button style="line-height: 2px" onclick="doHab(\'down\',\''+habits.data[i].id+'\',0)">⬇️</button>';
+              cell4.innerHTML = '<button onclick="doHab(\'down\',\''+habits.data[i].id+'\',0)">⬇️</button>';
             }
           }
         }   
@@ -334,7 +331,6 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-            console.log(JSON.parse(this.responseText));
             if (iter + 1 == parseInt(document.getElementById(id).value)) {
               doHab(dir,id,iter+1);
             }
@@ -354,7 +350,6 @@
       }
       else {
         document.getElementById(id).value = 0;
-        console.log("Did it "+iter+" times");
         buyEl.innerText = "";
         habtab('show');
       }
