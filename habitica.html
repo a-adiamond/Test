@@ -17,8 +17,8 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.0.9</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habits()">Show habits</button></p></div> 
+            <h2>V0.0.9.5</h2></div>
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif();habtab('hide')">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab();notif('hide')">Show habits</button></p></div> 
         </header>
       </div>
       <hr>
@@ -94,6 +94,9 @@
               }
               else if (notif.type == "NEW_CHAT_MESSAGE") {
                 notifs.push([notif.id,"New message in " + notif.data.group.name]);
+              }
+              else if (notif.type == "UNALLOCATED_STATS_POINTS") {
+                notifs.push([notif.id,notif.data.points + " unallocated stat points"]);
               }
             }
             for (var i in notifs) {
@@ -268,10 +271,10 @@
       xhr.send();
     }
     
-    function notif() {
+    function notif(state) {
       var butttt = document.getElementById("buttonNotif"),
           tabbbb = document.getElementById("notifTable");
-      if (tabbbb.style.display == "none") {
+      if (tabbbb.style.display == "none" || state == "show") {
         tabbbb.style.display = "block";
         butttt.innerText = "Hide notifications";
       }
@@ -281,10 +284,10 @@
       }
     }
     
-    function habits() {
+    function habtab(state) {
       var butttt = document.getElementById("buttonHabit"),
           tabbbb = document.getElementById("habTable");
-      if (tabbbb.style.display == "none") {
+      if (tabbbb.style.display == "none" || state == "show") {
         tabbbb.style.display = "block";
         butttt.innerText = "Hide habits";
       }
