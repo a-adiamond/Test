@@ -15,7 +15,7 @@
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
             <h2>V0.1.1</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p></div> 
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonParty">Pet Quests Page</button></p></div> 
         </header>
       </div>
       <hr>
@@ -34,6 +34,7 @@
     var xhrResults;
     var habStats;
     var habits;
+    var party;
     var debug;
     var ntimes;
     var buyEl = document.getElementById("buyInfo");
@@ -137,6 +138,7 @@
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           habits = JSON.parse(this.responseText);
+          getParty();
           for (var i in habits.data) {
             var row = habEl.insertRow(habEl.rows.length);
             var cell1 = row.insertCell(0);
@@ -152,6 +154,28 @@
               cell4.innerHTML = '<button onclick="doHab(\'down\',\''+habits.data[i].id+'\',0)">⬇️</button>';
             }
           }
+        }   
+      };
+      xhr.open('GET',url);
+      xhr.setRequestHeader("x-api-user", habId);
+      xhr.setRequestHeader("x-api-key", habToken);
+      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+      xhr.send();
+    }
+    
+    
+    function getParty() {
+      
+      url = "https://habitica.com/api/v3/groups/party/members";
+      var questUrl = 'https://habiticapartytools.surge.sh/?users=';
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          party = JSON.parse(this.responseText);
+          for (var i in party.data) {
+            partyQuest += xhrResults.data[i]._id + '|';
+          }
+          document.getElementById('buttonQuest').onclick = function(){window.open(partyQuest.slice(0,-1))};
         }   
       };
       xhr.open('GET',url);
