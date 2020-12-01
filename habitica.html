@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1</h2></div>
+            <h2>V0.1.1</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p></div> 
         </header>
       </div>
@@ -31,6 +31,7 @@
     
     var habId = "eb5f51e6-cd0a-4590-b20c-5322bff97cc0";
     var habToken = "7b77d868-365d-484f-87fa-44ca42418238";
+    var xhrResults;
     var habStats;
     var habits;
     var debug;
@@ -65,6 +66,20 @@
     
     var url;
     var sleepTime = 1500; // 1.5 seconds
+    
+    function testXHR(xurl, method) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          xhrResults = JSON.parse(this.responseText);
+        }
+      };
+      xhr.open(method,xurl);
+      xhr.setRequestHeader("x-api-user", habId);
+      xhr.setRequestHeader("x-api-key", habToken);
+      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+      xhr.send();
+    }
     
     function getStats() {
       document.getElementById("buyArmoire").addEventListener("focusin", function() {if (parseInt(document.getElementById("buyArmoire").value) == 0) {document.getElementById("buyArmoire").value="";}});
