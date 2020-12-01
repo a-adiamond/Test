@@ -173,7 +173,7 @@
         if (this.readyState == 4 && this.status == 200) {
           party = JSON.parse(this.responseText);
           for (var i in party.data) {
-            questUrl += xhrResults.data[i]._id + '|';
+            questUrl += party.data[i]._id + '|';
           }
           document.getElementById('buttonQuest').onclick = function(){window.open(questUrl.slice(0,-1))};
         }   
