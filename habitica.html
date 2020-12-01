@@ -173,9 +173,9 @@
         if (this.readyState == 4 && this.status == 200) {
           party = JSON.parse(this.responseText);
           for (var i in party.data) {
-            partyQuest += xhrResults.data[i]._id + '|';
+            questUrl += xhrResults.data[i]._id + '|';
           }
-          document.getElementById('buttonQuest').onclick = function(){window.open(partyQuest.slice(0,-1))};
+          document.getElementById('buttonQuest').onclick = function(){window.open(questUrl.slice(0,-1))};
         }   
       };
       xhr.open('GET',url);
