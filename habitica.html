@@ -68,24 +68,14 @@
     var url;
     var sleepTime = 1500; // 1.5 seconds
     
-    function testOtherXHR(xurl, method,user) {
+    function testXHR(method, xurl, specs) {
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           xhrResults = JSON.parse(this.responseText);
-        }
-      };
-      xhr.open(method,xurl);
-      xhr.setRequestHeader("x-api-user", user);
-      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
-      xhr.send();
-    }
-    
-    function testXHR(xurl, method) {
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          xhrResults = JSON.parse(this.responseText);
+          if (specs) {
+            xhrResults = xhrResults.data[specs];
+          }
         }
       };
       xhr.open(method,xurl);
