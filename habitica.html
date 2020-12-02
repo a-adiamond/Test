@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.1</h2></div>
+            <h2>V0.1.2</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest">Pet Quests Page</button></p></div> 
         </header>
       </div>
@@ -68,13 +68,20 @@
     var url;
     var sleepTime = 1500; // 1.5 seconds
     
-    function testXHR(method, xurl, specs) {
+    function testXHR(method, xurl, spec, subspecs) {
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           xhrResults = JSON.parse(this.responseText);
-          if (specs) {
-            xhrResults = xhrResults.data[specs];
+          if (spec) {
+            xhrResults = xhrResults.data[spec];
+            if (subspecs) {
+              var temp = {};
+              for (var i in subspecs) {
+                temp[subspecs[i]] = xhrResults[subspecs[i]];
+              }
+              xhrResults = temp;
+            }
           }
         }
       };
