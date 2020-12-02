@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.5</h2></div>
+            <h2>V0.1.5.1</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Show Quest Queue</button></p></div> 
         </header>
       </div>
@@ -228,9 +228,12 @@
       
     function getPets(iter) {
       url = "https://habitica.com/api/v3/members/"+party[iter];
+      console.log(iter + "/" + party.length + ": " + party[iter]);
       if (iter < party.length) {
-        console.log(iter + "/" + party.length + ": " + party[iter]);
         setTimeout(() => {getPets(iter+1);}, sleepTime);
+      }
+      else {
+        console.log("Done at" + iter);
       }
     }
 
