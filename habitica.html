@@ -38,8 +38,8 @@
     var debug;
     var ntimes;
     var quests;
-    var questPets = [];
-    var questPotions = [];
+    var questPets = {};
+    var questPotions = {};
     var buyEl = document.getElementById("buyInfo");
     var gained = {"experience":0,
                   "Meat":0,
@@ -161,10 +161,10 @@
           getParty();
           for (var i in quests) {
             if (quests[i].category == "hatchingPotion") {
-              questPotions.push({quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1) : 0});
+              questPotions[quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1)] = 0;
             }
             else if (quests[i].category == "pet") {
-              questPets.push({quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1) : 0});
+              questPets[quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1)] = 0;
             }
           }
         }
