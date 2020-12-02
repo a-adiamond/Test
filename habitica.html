@@ -79,7 +79,7 @@
           if (specs) {
             xhrResults = xhrResults.data;
             var temp = {};
-            if Array.isArray(specs) {
+            if (Array.isArray(specs)) {
               for (spec in specs) {
                 temp[spec] = xhrResults[spec];
               }
