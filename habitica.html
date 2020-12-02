@@ -80,15 +80,15 @@
             xhrResults = xhrResults.data;
             var temp = {};
             if (Array.isArray(specs)) {
-              for (spec in specs) {
-                temp[spec] = xhrResults[spec];
+              for (var i in specs) {
+                temp[specs[i]] = xhrResults[specs[i]];
               }
             }
             else {
               xhrResults = xhrResults[specs];
               if (subspecs) {
-                for (subspec in subspecs) {
-                  temp[subspec] = xhrResults[subspec];
+                for (var j in subspecs) {
+                  temp[subspecs[j]] = xhrResults[subspecs[j]];
                 }
               }
             }
@@ -123,7 +123,8 @@
             document.getElementById("buyArmoire").max = Math.trunc(habStats.data.stats.gp / 100);
           }
           if (habStats.notifications) {
-            for (notif in habStats.notifications) {
+            for (var i in habStats.notifications) {
+              var notif = habStats.notifications[i];
               if (notif.type == "GROUP_INVITE_ACCEPTED") {
                 notifs.push([notif.id, notif.data.bodyText]);
               }
@@ -207,8 +208,8 @@
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           party = JSON.parse(this.responseText);
-          for (member in party.data) {
-            questUrl += member._id + '|';
+          for (var i in party.data) {
+            questUrl += party.data[i]._id + '|';
           }
           document.getElementById('buttonQuest').onclick = function(){window.open(questUrl.slice(0,-1))};
         }   
