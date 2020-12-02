@@ -228,19 +228,10 @@
       
     function getPets(iter) {
       url = "https://habitica.com/api/v3/members/"+party[iter];
-      console.log(iter + "/" + party.length + ": " + party[iter]);
-      if (iter < party.length) {
-        setTimeout(() => {getPets(iter+1);}, sleepTime);
-      }
-      else {
-        console.log("Done at" + iter);
-      }
-    }
-
-/*      var xhr = new XMLHttpRequest();
+      var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          if (iter < party.length) {
+          if (iter < party.length - 1) {
             setTimeout(() => {getPets(iter+1);}, sleepTime);
           }
           else {
@@ -278,7 +269,7 @@
       xhr.setRequestHeader("x-api-key", habToken);
       xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
       xhr.send();
-    }*/
+    }
     
     function inn() {
       url = "https://habitica.com/api/v3/user/sleep";
