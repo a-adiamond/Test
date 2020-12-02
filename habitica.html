@@ -15,7 +15,7 @@
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
             <h2>V0.1.5</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="questtab()">Show Quest Queue</button></p></div> 
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Show Quest Queue</button></p></div> 
         </header>
       </div>
       <hr>
@@ -231,6 +231,12 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+          if (iter < party.length) {
+            setTimeout(() => {getPets(iter+1);}, sleepTime);
+          }
+          else {
+            setTimeout(() => {showQuests();}, sleepTime);
+          }
           var temp = JSON.parse(this.responseText).data.items;
           for (quest in questPets) {
             for (pet in temp.pets) {
@@ -423,7 +429,7 @@
       }
     }
     
-    function questtab() {
+    function showQuests() {
     }
     
     function habtab(state) {
