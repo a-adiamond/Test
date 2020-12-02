@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.4</h2></div>
+            <h2>V0.1.5</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="questtab()">Show Quest Queue</button></p></div> 
         </header>
       </div>
@@ -161,10 +161,10 @@
           getParty();
           for (var i in quests) {
             if (quests[i].category == "hatchingPotion") {
-              questPotions[quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1)] = 0;
+              questPotions[quests[i].drop.items[0].key] = 0;
             }
             else if (quests[i].category == "pet") {
-              questPets[quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1)] = 0;
+              questPets[quests[i].drop.items[0].key] = 0;
             }
           }
         }
@@ -231,11 +231,31 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          var temp = JSON.parse(this.responseText).data;
-          
-          // go through temp.pets and temp.mounts, += 1 to questpets/potions if they match. THIS WILL TAKE FOREVER
-          
-          
+          var temp = JSON.parse(this.responseText).data.items;
+          for (quest in questPets) {
+            for (pet in temp.pets) {
+              if (pet.match(quest) && temp.pets[pet] == 5) {
+                questPets[quest]++;
+              }
+            }
+            for (pet in temp.mounts) {
+              if (pet.match(quest) && temp.mounts[pet] == 5) {
+                questPets[quest]++;
+              }
+            }
+          }
+          for (quest in questPotions) {
+            for (pet in temp.pets) {
+              if (pet.match(quest) && temp.pets[pet] == 5) {
+                questPotions[quest]++;
+              }
+            }
+            for (pet in temp.mounts) {
+              if (pet.match(quest) && temp.mounts[pet] == 5) {
+                questPotions[quest]++;
+              }
+            }
+          }
         }   
       };
       xhr.open('GET',url);
