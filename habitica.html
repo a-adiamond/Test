@@ -14,8 +14,8 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.3</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest">Pet Quests Page</button></p></div> 
+            <h2>V0.1.4</h2></div>
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="questtab()">Show Quest Queue</button></p></div> 
         </header>
       </div>
       <hr>
@@ -34,12 +34,12 @@
     var xhrResults;
     var habStats;
     var habits;
-    var party;
+    var party = [];
     var debug;
     var ntimes;
     var quests;
-    var questPets;
-    var questPotions;
+    var questPets = [];
+    var questPotions = [];
     var buyEl = document.getElementById("buyInfo");
     var gained = {"experience":0,
                   "Meat":0,
@@ -157,7 +157,16 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          quests = JSON.parse(this.responseText);
+          quests = JSON.parse(this.responseText).data.quests;
+          getParty();
+          for (var i in quests) {
+            if (quests[i].category == "hatchingPotion") {
+              questPotions.push({quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1) : 0});
+            }
+            else if (quests[i].category == "pet") {
+              questPets.push({quests[i].key.charAt(0).toUpperCase() + quests[i].key.slice(1) : 0});
+            }
+          }
         }
       };
       xhr.open('GET',url);
@@ -168,13 +177,12 @@
     }   
     
     function getHabits() {
-      
       url = "https://habitica.com/api/v3/tasks/user?type=habits";
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           habits = JSON.parse(this.responseText);
-          getParty();
+          getQuests();
           for (var i in habits.data) {
             var row = habEl.insertRow(habEl.rows.length);
             var cell1 = row.insertCell(0);
@@ -201,17 +209,14 @@
     
     
     function getParty() {
-      
       url = "https://habitica.com/api/v3/groups/party/members";
-      var questUrl = 'https://habiticapartytools.surge.sh/?users=';
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          party = JSON.parse(this.responseText);
-          for (var i in party.data) {
-            questUrl += party.data[i]._id + '|';
+          var temp = JSON.parse(this.responseText);
+          for (var i in temp.data) {
+            party.push(temp.data[i]._id);
           }
-          document.getElementById('buttonQuest').onclick = function(){window.open(questUrl.slice(0,-1))};
         }   
       };
       xhr.open('GET',url);
@@ -221,6 +226,24 @@
       xhr.send();
     }
       
+    function getPets(iter) {
+      url = "https://habitica.com/api/v3/members/"+party[iter];
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var temp = JSON.parse(this.responseText).data;
+          
+          // go through temp.pets and temp.mounts, += 1 to questpets/potions if they match. THIS WILL TAKE FOREVER
+          
+          
+        }   
+      };
+      xhr.open('GET',url);
+      xhr.setRequestHeader("x-api-user", habId);
+      xhr.setRequestHeader("x-api-key", habToken);
+      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+      xhr.send();
+    }
     
     function inn() {
       url = "https://habitica.com/api/v3/user/sleep";
@@ -378,6 +401,9 @@
         tabbbb.style.display = "none";
         butttt.innerText = "Show notifications";
       }
+    }
+    
+    function questtab() {
     }
     
     function habtab(state) {
