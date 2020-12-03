@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.5.2</h2></div>
+            <h2>V0.1.6</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Show Quest Queue</button></p></div> 
         </header>
       </div>
@@ -39,6 +39,7 @@
     var debug;
     var ntimes;
     var quests;
+    var questKeys = {};
     var questPets = {};
     var questPotions = {};
     var buyEl = document.getElementById("buyInfo");
@@ -163,9 +164,11 @@
           for (var i in quests) {
             if (quests[i].category == "hatchingPotion" || (quests[i].category == "timeTravelers" && quests[i].drop.items[0].type == "hatchingPotions")) {
               questPotions[quests[i].drop.items[0].key] = 0;
+              questKeys[quests[i].drop.items[0].key] = i;
             }
             else if (quests[i].category == "pet" || (quests[i].category == "timeTravelers" && quests[i].drop.items[0].type == "eggs")) {
               questPets[quests[i].drop.items[0].key] = 0;
+              questKeys[quests[i].drop.items[0].key] = i;
             }
           }
         }
@@ -461,6 +464,7 @@
     
     function questtab() {
       buyEl.innerText = "";
+      // make table
       console.log(queue.slice(0,10));
     }
     
