@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.7.2</h2></div>
+            <h2>V0.1.7.3</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Get Quest Queue</button></p></div> 
         </header>
       </div>
@@ -262,7 +262,7 @@
                 personPets += temp.eggs[pet];
               }
             }
-            if (personPets > 20) {
+            if (personPets > 20 || (quest == "Robot" && personPets > 0)) {
               questPets[quest] += 20;
             }
             else {
@@ -286,7 +286,7 @@
                 personPotions += temp.hatchingPotions[pet];
               }
             }
-            if (personPotions > 18) {
+            if (personPotions > 18 || (quest == "Windup" && personPotions > 0)) {
               questPotions[quest] += 18;
             }
             else if (quest == "Dessert" && personPotions > 9) {
