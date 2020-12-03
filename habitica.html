@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.5.1</h2></div>
+            <h2>V0.1.5.2</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Show Quest Queue</button></p></div> 
         </header>
       </div>
@@ -35,6 +35,7 @@
     var habStats;
     var habits;
     var party = [];
+    var queue = [];
     var debug;
     var ntimes;
     var quests;
@@ -160,10 +161,10 @@
           quests = JSON.parse(this.responseText).data.quests;
           getParty();
           for (var i in quests) {
-            if (quests[i].category == "hatchingPotion") {
+            if (quests[i].category == "hatchingPotion" || quests[i].drop.items[0].type == "hatchingPotions") {
               questPotions[quests[i].drop.items[0].key] = 0;
             }
-            else if (quests[i].category == "pet") {
+            else if (quests[i].category == "pet" || quests[i].drop.items[0].type == "Eggs") {
               questPets[quests[i].drop.items[0].key] = 0;
             }
           }
@@ -430,6 +431,33 @@
     }
     
     function showQuests() {
+      for (quest in questPets) {
+        var perc = [0,quest];
+        if (quest == "BearCub-Polar") {
+          perc[0] = questPets[quest] / 2;
+        }
+        else {
+          perc[0] = questPets[quest] / 20;
+        }
+        perc[0] = Math.round(perc[0]*10000/party.length)/100;
+        queue.push(perc);
+      }
+      for (quest in questPotions) {
+        var perc = [0,quest];
+        if (quest == "Dessert") {
+          perc[0] = questPotions[quest] / 9;
+        }
+        else {
+          perc[0] = questPotions[quest] / 18;
+        }
+        perc[0] = Math.round(perc[0]*10000/party.length)/100;
+        queue.push(perc);
+      }
+      setTimeout(() => {questtab();}, sleepTime);
+    }
+    
+    function questtab() {
+      console.log(queue.slice(0,9));
     }
     
     function habtab(state) {
