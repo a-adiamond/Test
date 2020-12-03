@@ -68,7 +68,9 @@
                   "Honey":["Honey","Honeys"]}
     var notifs = [],
         notifEl = document.getElementById("notifTable"),
-        habEl = document.getElementById("habTable");
+        habEl = document.getElementById("habTable"),
+        petEl = document.getElementById("questTable");
+
     
     var url;
     var sleepTime = 1500; // 1.5 seconds
@@ -474,8 +476,16 @@
     
     function questtab() {
       buyEl.innerText = "";
-      // make table
-      console.log(queue.slice(0,10));
+      for (var i = 0; i < 10; i++) {
+        var row = petEl.insertRow(petEl.rows.length);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerText = quests[questKeys[queue[i][1]]].drop.items[0].text;
+        cell2.innerText = quests[questKeys[queue[i][1]]].text;
+        cell3.innerText = quests[i][0]+"%";  
+      }
+      petEl.style.display = "revert";
     }
     
     function habtab(state) {
