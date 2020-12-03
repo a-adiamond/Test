@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.6</h2></div>
+            <h2>V0.1.6.2</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Show Quest Queue</button></p></div> 
         </header>
       </div>
@@ -254,7 +254,11 @@
                 questPets[quest]++;
               }
             }
-            // add eggs (temp.eggs value) & potions (hatchingPotions)
+            for (pet in temp.eggs) {
+              if (pet.match(quest) && temp.eggs[pet] > 0) {
+                questPets[quest] += temp.eggs[pet];
+              }
+            }
           }
           for (quest in questPotions) {
             for (pet in temp.pets) {
@@ -265,6 +269,11 @@
             for (pet in temp.mounts) {
               if (pet.match(quest) && temp.mounts[pet] == true) {
                 questPotions[quest]++;
+              }
+            }
+            for (pet in temp.hatchingPotions) {
+              if (pet.match(quest) && temp.hatchingPotions[pet] > 0) {
+                questPotions[quest] += temp.hatchingPotions[pet];
               }
             }
           }
