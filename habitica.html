@@ -289,6 +289,9 @@
             if (personPotions > 18) {
               questPotions[quest] += 18;
             }
+            else if (quest == "Dessert" && personPotions > 9) {
+              questPotions[quest] += 9;
+            }
             else {
               questPotions[quest] += personPotions;
             }
