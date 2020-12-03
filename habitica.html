@@ -14,8 +14,8 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.6.2</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Show Quest Queue</button></p></div> 
+            <h2>V0.1.7</h2></div>
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Get Quest Queue</button></p></div> 
         </header>
       </div>
       <hr>
@@ -246,37 +246,51 @@
           }
           var temp = JSON.parse(this.responseText).data.items;
           for (quest in questPets) {
+            var personPets = 0;
             for (pet in temp.pets) {
               if (pet.match(quest) && temp.pets[pet] == 5) {
-                questPets[quest]++;
+                personPets++;
               }
             }
             for (pet in temp.mounts) {
               if (pet.match(quest) && temp.mounts[pet] == true) {
-                questPets[quest]++;
+                personPets++;
               }
             }
             for (pet in temp.eggs) {
               if (pet.match(quest) && temp.eggs[pet] > 0) {
-                questPets[quest] += temp.eggs[pet];
+                personPets += temp.eggs[pet];
               }
+            }
+            if (personPets > 20) {
+              questPets[quest] += 20;
+            }
+            else {
+              questPets[quest] += personPets;
             }
           }
           for (quest in questPotions) {
+            var personPotions = 0;
             for (pet in temp.pets) {
               if (pet.match(quest) && temp.pets[pet] == 5) {
-                questPotions[quest]++;
+                personPotions++;
               }
             }
             for (pet in temp.mounts) {
               if (pet.match(quest) && temp.mounts[pet] == true) {
-                questPotions[quest]++;
+                personPotions++;
               }
             }
             for (pet in temp.hatchingPotions) {
               if (pet.match(quest) && temp.hatchingPotions[pet] > 0) {
-                questPotions[quest] += temp.hatchingPotions[pet];
+                personPotions += temp.hatchingPotions[pet];
               }
+            }
+            if (personPets > 18) {
+              questPets[quest] += 18;
+            }
+            else {
+              questPets[quest] += personPets;
             }
           }
         }   
@@ -481,7 +495,7 @@
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
-        cell1.innerText = quests[questKeys[queue[i][1]]].drop.items[0].text;
+        cell1.innerText = quests[questKeys[queue[i][1]]].drop.items[0].text.split(" Hatching ").join(" ").split(" (Egg)")[0];
         cell2.innerText = quests[questKeys[queue[i][1]]].text;
         cell3.innerText = queue[i][0]+"%";  
       }
