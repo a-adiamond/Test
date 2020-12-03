@@ -23,7 +23,7 @@
         <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="disableButt(this.id); ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span >Buy</span></button><span id="buyInfo"></span><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" id="buttonInn" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
-        <section id="display"><table id="notifTable" style="margin:auto;display:none"></table><table id="habTable" style="margin:auto;display:none"></table></section>
+        <section id="display"><table id="notifTable" style="margin:auto;display:none"></table><table id="habTable" style="margin:auto;display:none"></table><table id="questTable" style="margin:auto;display:none"></table></section>
         </div>
   </body>
   <script>
@@ -228,6 +228,7 @@
     }
       
     function getPets(iter) {
+      buyEl.innerText = "Getting pet & mount data for party member " + (iter+1) + "/" + party.length;
       url = "https://habitica.com/api/v3/members/"+party[iter];
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
@@ -431,6 +432,7 @@
     }
     
     function showQuests() {
+      buyEl.innerText = "Calculating...";
       for (quest in questPets) {
         var perc = [0,quest];
         if (quest == "BearCub-Polar") {
@@ -458,6 +460,7 @@
     }
     
     function questtab() {
+      buyEl.innerText = "";
       console.log(queue.slice(0,10));
     }
     
