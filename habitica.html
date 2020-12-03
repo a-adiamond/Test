@@ -453,11 +453,12 @@
         perc[0] = Math.round(perc[0]*10000/party.length)/100;
         queue.push(perc);
       }
+      setTimeout(() => {queue.sort(function(a, b){return a[0]-b[0]});}, sleepTime/3);
       setTimeout(() => {questtab();}, sleepTime);
     }
     
     function questtab() {
-      console.log(queue.slice(0,9));
+      console.log(queue.slice(0,10));
     }
     
     function habtab(state) {
