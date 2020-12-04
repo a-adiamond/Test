@@ -517,14 +517,15 @@
         }
         else {
           cell5.id = questKeys[queue[i][1]];
-          cell5.innerHTML = "Don't have <button onclick='buyQuest(\""+this.id+"\")'>Buy?</button>";
+          cell5.innerHTML = "Don't have <button onclick='buyQuest(\""+questKeys[queue[i][1]]+"\")'>Buy?</button>";
         }
       }
       petEl.style.display = "revert";
     }
     
     function buyQuest(quest) {
-      document.getElementById(quest).innerText = "Pretend you bought " + quest;
+      console.log(quest);
+      document.getElementById(quest).innerHTML = "Pretend you bought " + quest;
     } 
     
     function habtab(state) {
