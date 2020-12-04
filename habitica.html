@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.7.4</h2></div>
+            <h2>V0.1.7.5</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Get Quest Queue</button></p></div> 
         </header>
       </div>
@@ -504,7 +504,7 @@
         cell2.innerText = quests[questKeys[queue[i][1]]].text;
         cell3.innerText = queue[i][0]+"%";  
         if (quests[questKeys[queue[i][1]]].boss) {
-          cell4.innerHTML = "&nbsp; " + quests[questKeys[queue[i][1]]].boss.hp + "hp &nbsp;";
+          cell4.innerHTML = "&nbsp; " + quests[questKeys[queue[i][1]]].boss.hp + " &nbsp;";
         }
         else {
           cell4.innerHTML = "&nbsp; Collection &nbsp;";
@@ -516,11 +516,15 @@
           cell5.innerText = "Have";
         }
         else {
-          cell5.innerText = "Don't have";
+          cell5.innerHTML = "Don't have <button onclick='buyQuest("+questKeys[queue[i][1]]+",cell5)'>Buy?</button>";
         }
       }
       petEl.style.display = "revert";
     }
+    
+    function buyQuest(quest, cell) {
+      cell.innerText = "Pretend you bought " + quest;
+    } 
     
     function habtab(state) {
       var butttt = document.getElementById("buttonHabit"),
