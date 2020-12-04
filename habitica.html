@@ -498,9 +498,16 @@
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
         cell1.innerText = quests[questKeys[queue[i][1]]].drop.items[0].text.split(" Hatching ").join(" ").split(" (Egg)")[0];
         cell2.innerText = quests[questKeys[queue[i][1]]].text;
         cell3.innerText = queue[i][0]+"%";  
+        if (quests[questKeys[queue[i][1]]].boss) {
+          cell4.innerText = quests[questKeys[queue[i][1]]].boss.hp + "hp";
+        }
+        else {
+          cell4.innerText = "Collection";
+        }
       }
       petEl.style.display = "revert";
     }
