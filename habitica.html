@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.7.5</h2></div>
+            <h2>V0.1.7.5.1</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Get Quest Queue</button></p></div> 
         </header>
       </div>
@@ -516,13 +516,14 @@
           cell5.innerText = "Have";
         }
         else {
-          cell5.innerHTML = "Don't have <button onclick='buyQuest("+questKeys[queue[i][1]]+",cell5)'>Buy?</button>";
+          cell5.innerHTML = "Don't have <button onclick='buyQuest(\""+questKeys[queue[5][1]]+"\","+cell5+")'>Buy?</button>";
         }
       }
       petEl.style.display = "revert";
     }
     
-    function buyQuest(quest, cell) {
+    function buyQuest(quest,cell) {
+      console.log(quest + cell);
       cell.innerText = "Pretend you bought " + quest;
     } 
     
