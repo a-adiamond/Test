@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.7.5.1</h2></div>
+            <h2>V0.1.7.5.2</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Get Quest Queue</button></p></div> 
         </header>
       </div>
@@ -525,7 +525,26 @@
     
     function buyQuest(quest) {
       console.log(quest);
-      document.getElementById(quest).innerHTML = "Pretend you bought " + quest;
+     
+      url = "https://habitica.com/api/v3/user/purchase/quest/"+quest;
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            console.log(JSON.parse(this.responseText));
+            document.getElementById(quest).innerHTML = "Pretend you bought " + quest;
+          }
+          else {
+            console.log(JSON.parse(this.responseText));
+            document.getElementById(quest).innerHTML = "Couldn't buy " + quest;
+          }
+        }
+      };
+      xhr.open('POST',url);
+      xhr.setRequestHeader("x-api-user", habId);
+      xhr.setRequestHeader("x-api-key", habToken);
+      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+      xhr.send();
     } 
     
     function habtab(state) {
