@@ -526,7 +526,7 @@
     function buyQuest(quest) {
       console.log(quest);
      
-      url = "https://habitica.com/api/v3/user/purchase/quest/"+quest;
+      url = "https://habitica.com/api/v3/user/purchase/quests/"+quest;
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4) {
