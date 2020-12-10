@@ -14,8 +14,8 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.7.5.2</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="getPets(0)">Get Quest Queue</button></p></div> 
+            <h2>V0.1.7.6/h2></div>
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
         </header>
       </div>
       <hr>
@@ -233,6 +233,8 @@
     }
       
     function getPets(iter) {
+      habtab('hide');
+      notif('hide');
       buyEl.innerText = "Getting pet & mount data for party member " + (iter+1) + "/" + party.length;
       url = "https://habitica.com/api/v3/members/"+party[iter];
       var xhr = new XMLHttpRequest();
@@ -456,6 +458,7 @@
         tabbbb.style.display = "revert";
         butttt.innerText = "Hide notifications";
         habtab('hide');
+        queuetab('hide');
       }
       else {
         tabbbb.style.display = "none";
@@ -493,6 +496,7 @@
     
     function questtab() {
       buyEl.innerText = "";
+      var butttt = document.getElementById("buttonQuest");
       for (var i in queue) {
         var row = petEl.insertRow(petEl.rows.length);
         var cell1 = row.insertCell(0);
@@ -521,22 +525,30 @@
         }
       }
       petEl.style.display = "revert";
+      butttt.innerText = "Hide quest queue";
+      butttt.onclick = function(event) {queuetab();}
+      enableButt("buttonQuest");
     }
     
     function buyQuest(quest) {
       console.log(quest);
-     
-      url = "https://habitica.com/api/v3/user/purchase/quests/"+quest;
+      if (quests[quest].category == "timeTravelers") {
+        url = "https://habitica.com/api/v3/user/purchase-hourglass/quests/"+quest;
+      }
+      else {
+        url = "https://habitica.com/api/v3/user/purchase/quests/"+quest;
+      }
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4) {
           if (this.status == 200) {
             console.log(JSON.parse(this.responseText));
-            document.getElementById(quest).innerHTML = "Pretend you bought " + quest;
+            habStats.data.items.quests[quest]++;
+            document.getElementById(quest).innerHTML = "Have";
           }
           else {
             console.log(JSON.parse(this.responseText));
-            document.getElementById(quest).innerHTML = "Couldn't buy " + quest;
+            document.getElementById(quest).innerHTML = "Couldn't buy!";
           }
         }
       };
@@ -546,6 +558,25 @@
       xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
       xhr.send();
     } 
+    
+    function queuetab(state) {
+      var butttt = document.getElementById("buttonQuest"),
+          tabbbb = document.getElementById("questTable");
+      if (state == "hide" && buttt.innerText = "Hide quest queue") {
+        tabbbb.style.display = "none";
+        butttt.innerText = "Show quest queue";
+      }
+      else if (state == "show" || tabbbb.style.display == "none") {
+        tabbbb.style.display = "revert";
+        butttt.innerText = "Hide quest queue";
+        notif('hide');
+        habtab('hide');
+      }
+      else if (buttt.innerText = "Hide quest queue") {
+        tabbbb.style.display = "none";
+        butttt.innerText = "Show quest queue";
+      }
+    }
     
     function habtab(state) {
       var butttt = document.getElementById("buttonHabit"),
@@ -558,6 +589,7 @@
         tabbbb.style.display = "revert";
         butttt.innerText = "Hide habits";
         notif('hide');
+        queuetab('hide');
       }
       else {
         tabbbb.style.display = "none";
