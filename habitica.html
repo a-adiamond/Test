@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.7.6</h2></div>
+            <h2>V0.1.8</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
         </header>
       </div>
@@ -600,7 +600,10 @@
     function queuetab(state) {
       var butttt = document.getElementById("buttonQuest"),
           tabbbb = document.getElementById("questTable");
-      if (state == "hide" && butttt.innerText == "Hide quest queue") {
+      if (butttt.innerText = "Get quest queue") {
+        //nothing
+      }
+      else if (state == "hide") {
         tabbbb.style.display = "none";
         butttt.innerText = "Show quest queue";
       }
