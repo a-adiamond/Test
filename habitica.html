@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.8</h2></div>
+            <h2>V0.1.9</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
         </header>
       </div>
@@ -194,16 +194,17 @@
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
             cell1.innerText = habits.data[i].text;
-            cell2.innerHTML = '<input type="text" name="'+habits.data[i].text+'" id="'+habits.data[i].id+'" value="0" min="0" max="100" style="width:24px">'
             if (habits.data[i].up == true) {
-              cell3.innerHTML = '<button onclick="doHab(\'up\',\''+habits.data[i].id+'\',0)">⬆️</button>';
+              cell2.innerHTML = '<input type="text" name="'+habits.data[i].text+' up" id="'+habits.data[i].id+'" value="0" min="0" max="100" style="width:24px">⬆️';
             }
             if (habits.data[i].down == true) {
-              cell4.innerHTML = '<button onclick="doHab(\'down\',\''+habits.data[i].id+'\',0)">⬇️</button>';
+              cell3.innerHTML = '<input type="text" name="'+habits.data[i].text+' down" id="'+habits.data[i].id+'" value="0" min="0" max="100" style="width:24px">⬇️';
             }
           }
+          var row = habEl.insertRow(habEl.rows.length);
+          var cell1 = row.insertCell(0);
+          cell1.innerHTML = '<button>Score habits</button>';
         }   
       };
       xhr.open('GET',url);
