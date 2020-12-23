@@ -518,7 +518,7 @@
           cell5.innerText = "In progress";
         }
         else if (habStats.data.items.quests[questKeys[queue[i][1]]] > 0) {
-          if (habStats.data.party.quest.key == "cheetah") { //test, replace with null
+          if (habStats.data.party.quest.key == null) {
             cell5.innerHTML = "Have <button onclick='startQuest(\""+questKeys[queue[i][1]]+"\")'>Start?</button>";
           }
           else {
