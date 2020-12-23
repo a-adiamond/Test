@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.9.2.6</h2></div>
+            <h2>V0.1.9.3</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
         </header>
       </div>
@@ -642,58 +642,75 @@
     function scoreHab() {
       disableButt("buttonHabit");
       document.getElementById("habTable").style.display = "none";
-      doHab(0,"u",0);
+      doHab(0,"u",0,0);
     }
       
     
-    function doHab(hab, dir, iter) {
+    function doHab(hab, dir, iter, total) {
       if (hab < habits.data.length) {
         var habid = habits.data[hab].id;
         var box = document.getElementById(habid+dir);
         if (box) {
           if (box.value > 0) {
             if (iter < box.value) {
-              console.log("Scoring " + box.name + " " + (iter+1) + "/" + box.value + " times");
-              doHab(hab,dir,iter+1);
+              var upDown = box.name.split(" ");
+              upDown = upDown[upDown.length - 1];
+              buyEl.innerText = "Scoring " + box.name + " " + (iter+1) + "/" + box.value + " times";
+              url = "https://habitica.com/api/v3/tasks/"+habid+"/score/"+upDown;
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  if (total % 10 == 9) { // extra long pause after every 10 to keep the load down
+                    setTimeout(() => {doHab(hab,dir,iter+1,total+1);}, 5000);
+                  }
+                  else {
+                    setTimeout(() => {doHab(hab,dir,iter+1,total+1);}, sleepTime);
+                  }
+                }
+              };
+              xhr.open('POST',url);
+              xhr.setRequestHeader("x-api-user", habId);
+              xhr.setRequestHeader("x-api-key", habToken);
+              xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+              xhr.send();
             }
             else {
               box.value = 0;
               if (dir == "u") {
-                doHab(hab,"d",0);
+                doHab(hab,"d",0,total);
               }
               else {
-                doHab(hab+1,"u",0);
+                doHab(hab+1,"u",0,total);
               }
             }
           }
           else {
             if (dir == "u") {
-              doHab(hab,"d",0);
+              doHab(hab,"d",0,total);
             }
             else {
-              doHab(hab+1,"u",0);
+              doHab(hab+1,"u",0,total);
             }
           }
         }
         else {
           if (dir == "u") {
-            doHab(hab,"d",0);
+            doHab(hab,"d",0,total);
           }
           else {
-            doHab(hab+1,"u",0);
+            doHab(hab+1,"u",0,total);
           }
         }
       }
       else {
         enableButt("buttonHabit");
         document.getElementById("habTable").style.display = "revert";
-        
+        buyEl.innerText = "";
       }
     }
 /*      
       
       if (iter < parseInt(document.getElementById(id).value)) {
-        buyEl.innerText = "Scoring habit " + document.getElementById(id).name + " " + (iter+1) + "/" + document.getElementById(id).value + " times";
         habtab('hide');
         url = "https://habitica.com/api/v3/tasks/"+id+"/score/"+dir;
         var xhr = new XMLHttpRequest();
