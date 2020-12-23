@@ -196,10 +196,10 @@
             var cell3 = row.insertCell(2);
             cell1.innerText = habits.data[i].text;
             if (habits.data[i].up == true) {
-              cell2.innerHTML = '<input type="text" name="'+habits.data[i].text+' up" id="'+habits.data[i].id+'" value="0" min="0" max="100" style="width:24px">⬆️';
+              cell2.innerHTML = '<input type="text" name="'+habits.data[i].text+' up" id="'+habits.data[i].id+'u" value="0" min="0" max="100" style="width:24px">⬆️';
             }
             if (habits.data[i].down == true) {
-              cell3.innerHTML = '<input type="text" name="'+habits.data[i].text+' down" id="'+habits.data[i].id+'" value="0" min="0" max="100" style="width:24px">⬇️';
+              cell3.innerHTML = '<input type="text" name="'+habits.data[i].text+' down" id="'+habits.data[i].id+'d" value="0" min="0" max="100" style="width:24px">⬇️';
             }
           }
           var row = habEl.insertRow(habEl.rows.length);
@@ -639,9 +639,14 @@
       }
     }
     
+    function scoreHab() {
+      disableButt("buttonHabit");
+      document.getElementById("habTable").style.display = "none";
+      
+    
     function doHab(dir, id, iter) {
       if (iter < parseInt(document.getElementById(id).value)) {
-        buyEl.innerText = "Scoring habit " + document.getElementById(id).name + " " + dir + " " + (iter+1) + "/" + document.getElementById(id).value + " times";
+        buyEl.innerText = "Scoring habit " + document.getElementById(id).name + " " + (iter+1) + "/" + document.getElementById(id).value + " times";
         habtab('hide');
         url = "https://habitica.com/api/v3/tasks/"+id+"/score/"+dir;
         var xhr = new XMLHttpRequest();
