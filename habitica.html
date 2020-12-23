@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.9.2</h2></div>
+            <h2>V0.1.9.2.5</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
         </header>
       </div>
@@ -644,11 +644,17 @@
       document.getElementById("habTable").style.display = "none";
       for (var i in habits.data) {
         var habid = habits.data[i].id;
-        if (document.getElementById(habid+"u")){
-          console.log(document.getElementById(habid+"u").name + document.getElementById(habid+"u").value + " times");
+        var up = document.getElementById(habid+"u"),
+            down = document.getElementById(habid+"d");
+        if (up) {
+          if (up.value > 0) {
+            console.log(up.name + " " + up.value + " times");
+          }
         }
-        if (document.getElementById(habid+"d")){
-          console.log(document.getElementById(habid+"d").name + document.getElementById(habid+"d").value + " times");
+        if (down){
+          if (down.value > 0) {
+            console.log(down.name + " " + down.value + " times");
+          }
         }
       }
     }
