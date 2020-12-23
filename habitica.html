@@ -519,14 +519,14 @@
         }
         else if (habStats.data.items.quests[questKeys[queue[i][1]]] > 0) {
           if (habStats.data.party.quest.key == null) {
-            cell5.innerHTML = "Have <button onclick='startQuest(\""+questKeys[queue[i][1]]+"\")'>Start?</button>";
+            cell5.innerHTML = "Have&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='startQuest(\""+questKeys[queue[i][1]]+"\")'>Start?</button>";
           }
           else {
             cell5.innerText = "Have";
           }
         }
         else {
-          cell5.innerHTML = "Don't have <button onclick='buyQuest(\""+questKeys[queue[i][1]]+"\")'>Buy?</button>";
+          cell5.innerHTML = "Don't have&nbsp;&nbsp;<button onclick='buyQuest(\""+questKeys[queue[i][1]]+"\")'>Buy?</button>";
         }
       }
       petEl.style.display = "revert";
@@ -549,7 +549,7 @@
             console.log(JSON.parse(this.responseText));
             habStats.data.items.quests[quest]++;
             if (habStats.data.party.quest.key == null) {
-              document.getElementById(quest).innerHTML = "Have <button onclick='startQuest(\""+questKeys[queue[i][1]]+"\")'>Start?</button>";
+              document.getElementById(quest).innerHTML = "Have&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='startQuest(\""+questKeys[queue[i][1]]+"\")'>Start?</button>";
             }
             else {
               document.getElementById(quest).innerHTML = "Have";
