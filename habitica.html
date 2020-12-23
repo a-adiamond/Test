@@ -517,7 +517,12 @@
           cell5.innerText = "In progress";
         }
         else if (habStats.data.items.quests[questKeys[queue[i][1]]] > 0) {
-          cell5.innerText = "Have";
+          if (habStats.data.party.quest.key == "cheetah") { //test, replace with null
+            cell5.innerHTML = "Have <button onclick='startQuest(\""+questKeys[queue[i][1]]+"\")'>Start?</button>";
+          }
+          else {
+            cell5.innerText = "Have";
+          }
         }
         else {
           cell5.id = questKeys[queue[i][1]];
@@ -531,7 +536,6 @@
     }
     
     function buyQuest(quest) {
-      console.log(quest);
       if (quests[quest].category == "timeTravelers") {
         url = "https://habitica.com/api/v3/user/purchase-hourglass/quests/"+quest;
       }
@@ -544,7 +548,12 @@
           if (this.status == 200) {
             console.log(JSON.parse(this.responseText));
             habStats.data.items.quests[quest]++;
-            document.getElementById(quest).innerHTML = "Have";
+            if (habStats.data.party.quest.key == null) {
+              document.getElementById(quest).innerHTML = "Have <button onclick='startQuest(\""+questKeys[queue[i][1]]+"\")'>Start?</button>";
+            }
+            else {
+              document.getElementById(quest).innerHTML = "Have";
+            }
           }
           else {
             console.log(JSON.parse(this.responseText));
@@ -557,7 +566,32 @@
       xhr.setRequestHeader("x-api-key", habToken);
       xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
       xhr.send();
-    } 
+    }
+    
+    function startQuest(quest) {
+      url = "https://habitica.com/api/v3/groups/party/quests/invite/" + quest;
+      }
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            console.log(JSON.parse(this.responseText));
+            habStats.data.items.quests[quest]--;
+            habStats.data.party.quest.key = quest;
+            document.getElementById(quest).innerHTML = "In progress";
+          }
+          else {
+            console.log(JSON.parse(this.responseText));
+            document.getElementById(quest).innerHTML = "Couldn't start!";
+          }
+        }
+      };
+      xhr.open('POST',url);
+      xhr.setRequestHeader("x-api-user", habId);
+      xhr.setRequestHeader("x-api-key", habToken);
+      xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
+      xhr.send();
+    }
     
     function queuetab(state) {
       var butttt = document.getElementById("buttonQuest"),
