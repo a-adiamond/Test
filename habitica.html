@@ -222,9 +222,8 @@
         if (this.readyState == 4 && this.status == 200) {
           var temp = JSON.parse(this.responseText);
           for (var i in temp.data) {
+            console.log(temp.data[i]);
             party.push(temp.data[i]._id);
-            console.log(i);
-            console.log("party" + party.length + " temp" + temp.data.length);
             if (party.length == temp.data.length) {
               enableButt("buttonQuest");
             }
