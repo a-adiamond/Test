@@ -15,7 +15,7 @@
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
             <h2>V0.1.9.3</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest"  disabled onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
         </header>
       </div>
       <hr>
@@ -223,6 +223,9 @@
           var temp = JSON.parse(this.responseText);
           for (var i in temp.data) {
             party.push(temp.data[i]._id);
+            if (i == temp.data.length) {
+              enableButt("buttonQuest");
+            }
           }
         }   
       };
