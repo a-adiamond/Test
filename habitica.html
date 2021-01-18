@@ -227,7 +227,6 @@
             party.push(temp.data[i].id);
             var row = partyEl.insertRow(partyEl.rows.length);
             var cell1 = row.insertCell(0);
-            console.log("<input type='checkbox' value='"+temp.data[i].id+"' id='party"+i+"' checked><label for='party"+i+"'>"+temp.data[i].profile.name+"</label>");
             cell1.innerHTML = "<input type='checkbox' value='"+temp.data[i].id+"' id='party"+i+"' checked><label for='party"+i+"'>"+temp.data[i].profile.name+"</label>"; 
             if (party.length == temp.data.length) {
               enableButt("buttonQuest");
