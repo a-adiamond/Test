@@ -14,8 +14,8 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.9.4</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest"  disabled onclick="disableButt(this.id);getPets(0)">Get quest queue</button></p></div> 
+            <h2>V0.1.9.5</h2></div>
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" disabled onclick="disableButt(this.id);showParty()">Get party list</button></p></div> 
         </header>
       </div>
       <hr>
@@ -23,7 +23,7 @@
         <span style="font-size:xx-large">Bulk Armoire </span><input type="text" id="buyArmoire" value="0" min="0" max="100" style="font-size:xx-large; width:72px" oninput="checkVal(this.value)">  <button style="float:none;display:inline;vertical-align: super;" id="buyButt" onclick="disableButt(this.id); ntimes = parseInt(document.getElementById('buyArmoire').value); document.getElementById('buyArmoire').value = '0'; armoire(0)"><span >Buy</span></button><span id="buyInfo"></span><br>
         <span style="font-size:xx-large">Inn <button style="float:none;display:inline;vertical-align: middle;" id="buttonInn" onclick="disableButt(this.id); inn()"><span id="innButt">Check in</span></button>
       </section>
-        <section id="display"><table id="notifTable" style="margin:auto;display:none"></table><table id="habTable" style="margin:auto;display:none"></table><table id="questTable" style="margin:auto;display:none"></table></section>
+        <section id="display"><table id="notifTable" style="margin:auto;display:none"></table><table id="habTable" style="margin:auto;display:none"></table><table id="partyTable"style="margin:auto;display:none"></table><table id="questTable" style="margin:auto;display:none"></table></section>
         </div>
   </body>
   <script>
@@ -35,6 +35,7 @@
     var habStats;
     var habits;
     var party = [];
+    var questParty = [];
     var queue = [];
     var debug;
     var ntimes;
@@ -69,7 +70,8 @@
     var notifs = [],
         notifEl = document.getElementById("notifTable"),
         habEl = document.getElementById("habTable"),
-        petEl = document.getElementById("questTable");
+        petEl = document.getElementById("questTable"),
+        partyEl = document.getElementById("partyTable");
 
     
     var url;
@@ -222,8 +224,10 @@
         if (this.readyState == 4 && this.status == 200) {
           var temp = JSON.parse(this.responseText);
           for (var i in temp.data) {
-            console.log(temp.data[i]);
-            party.push(temp.data[i]._id);
+            party.push(temp.data[i].id);
+            var row = partyEl.insertRow(partyEl.rows.length);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = "<input type='checkbox' value='"+temp.data[i].id+"' id='party"+i+"' checked><label for='"+temp.data[i].id+">"+temp.data[i].profile.name+"</label>"; 
             if (party.length == temp.data.length) {
               enableButt("buttonQuest");
             }
@@ -236,16 +240,31 @@
       xhr.setRequestHeader("x-client", "eb5f51e6-cd0a-4590-b20c-5322bff97cc0-Testing-Personal");
       xhr.send();
     }
+    
+    function showParty() {
+      partyEl.style.display = "revert";
+      document.getElementById("buttonQuest").onclick = function(event) {tempParty(0);}
+//      document.getElementById("buttonQuest").onclick = function(event) {getPets(0);}
+//      document.getElementById("buttonQuest").innerText = "Get quest queue";
+    }
+    
+    function tempParty(iter) {
+      var check = document.getElementById("party"+i);
+      console.log(check);
+    }
       
     function getPets(iter) {
-      habtab('hide');
-      notif('hide');
-      buyEl.innerText = "Getting pet & mount data for party member " + (iter+1) + "/" + party.length;
-      url = "https://habitica.com/api/v3/members/"+party[iter];
+      if (iter == 0) {
+        partyEl.style.display = "none";
+        habtab('hide');
+        notif('hide');
+      }
+      buyEl.innerText = "Getting pet & mount data for party member " + (iter+1) + "/" + questParty.length;
+      url = "https://habitica.com/api/v3/members/"+questParty[iter];
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          if (iter < party.length - 1) {
+          if (iter < questParty.length - 1) {
             setTimeout(() => {getPets(iter+1);}, sleepTime);
           }
           else {
@@ -481,7 +500,7 @@
         else {
           perc[0] = questPets[quest] / 20;
         }
-        perc[0] = Math.round(perc[0]*10000/party.length)/100;
+        perc[0] = Math.round(perc[0]*10000/questParty.length)/100;
         queue.push(perc);
       }
       for (quest in questPotions) {
@@ -492,7 +511,7 @@
         else {
           perc[0] = questPotions[quest] / 18;
         }
-        perc[0] = Math.round(perc[0]*10000/party.length)/100;
+        perc[0] = Math.round(perc[0]*10000/questParty.length)/100;
         queue.push(perc);
       }
       setTimeout(() => {queue.sort(function(a, b){return a[0]-b[0]});}, sleepTime/3);
