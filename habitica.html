@@ -249,15 +249,21 @@
     }
     
     function tempParty(iter) {
+      if (iter == 0) {
+        disableButt("buttonQuest");
+      }
       var check = document.getElementById("party"+iter);
       if (check.checked == true) {
         questParty.push(check.value);
+      }
+      else {
+        console.log("skipping " + check.nextSibling.innerText);
       }
       if (iter < party.length-1) {
         tempParty(iter+1);
       }
       else {
-        console.log(questParty);
+        getPets(0);
       }
     }
       
