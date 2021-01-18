@@ -15,7 +15,7 @@
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
             <h2>V0.1.9.5</h2></div>
-          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" disabled onclick="disableButt(this.id);showParty()">Get party list</button></p></div> 
+          <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" disabled onclick="showParty()">Get party list</button></p></div> 
         </header>
       </div>
       <hr>
@@ -227,7 +227,7 @@
             party.push(temp.data[i].id);
             var row = partyEl.insertRow(partyEl.rows.length);
             var cell1 = row.insertCell(0);
-            cell1.innerHTML = "<input type='checkbox' value='"+temp.data[i].id+"' id='party"+i+"' checked><label for='"+temp.data[i].id+">"+temp.data[i].profile.name+"</label>"; 
+            cell1.innerHTML = "<input type='checkbox' value='"+temp.data[i].id+"' id='party"+i+"' checked><label for='party"+i+">"+temp.data[i].profile.name+"</label>"; 
             if (party.length == temp.data.length) {
               enableButt("buttonQuest");
             }
@@ -245,12 +245,15 @@
       partyEl.style.display = "revert";
       document.getElementById("buttonQuest").onclick = function(event) {tempParty(0);}
 //      document.getElementById("buttonQuest").onclick = function(event) {getPets(0);}
-//      document.getElementById("buttonQuest").innerText = "Get quest queue";
+      document.getElementById("buttonQuest").innerText = "Get quest queue";
     }
     
     function tempParty(iter) {
-      var check = document.getElementById("party"+i);
+      var check = document.getElementById("party"+iter);
       console.log(check);
+      if (iter < party.length-1) {
+        tempParty(iter+1);
+      }
     }
       
     function getPets(iter) {
