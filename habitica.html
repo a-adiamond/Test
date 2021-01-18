@@ -14,7 +14,7 @@
       <div class="inner" id="head">
         <header>
           <div style="display: inline-block;"><h1>Habitica Stuff</h1>
-            <h2>V0.1.9.5.1</h2></div>
+            <h2>V0.1.9.5.2</h2></div>
           <div style="display: inline-block;float: right;"><p><button id="buttonNotif" onclick="notif()">Show notifications</button></p><p><button id="buttonHabit" onclick="habtab()">Show habits</button></p><p><button id="buttonQuest" disabled onclick="showParty()">Get party list</button></p></div> 
         </header>
       </div>
@@ -251,9 +251,14 @@
     
     function tempParty(iter) {
       var check = document.getElementById("party"+iter);
-      console.log(check);
+      if (check.checked == true) {
+        questParty.push(check.value);
+      }
       if (iter < party.length-1) {
         tempParty(iter+1);
+      }
+      else {
+        console.log(questParty);
       }
     }
       
