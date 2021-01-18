@@ -243,12 +243,11 @@
     
     function showParty() {
       partyEl.style.display = "revert";
-      document.getElementById("buttonQuest").onclick = function(event) {tempParty(0);}
-//      document.getElementById("buttonQuest").onclick = function(event) {getPets(0);}
+      document.getElementById("buttonQuest").onclick = function(event) {confirmParty(0);}
       document.getElementById("buttonQuest").innerText = "Get quest queue";
     }
     
-    function tempParty(iter) {
+    function confirmParty(iter) {
       if (iter == 0) {
         disableButt("buttonQuest");
       }
@@ -256,11 +255,8 @@
       if (check.checked == true) {
         questParty.push(check.value);
       }
-      else {
-        console.log("skipping " + check.nextSibling.innerText);
-      }
       if (iter < party.length-1) {
-        tempParty(iter+1);
+        confirmParty(iter+1);
       }
       else {
         getPets(0);
