@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCBB Emails</h1>
-          <h2>V1.5.6</h2>
+          <h2>V1.5.7 - 2021</h2>
         </header>
 
         <hr>
@@ -98,18 +98,50 @@
       bodyPre = document.getElementById("previewBody");
   
   var API_KEY = "keyJS9Lnv0F166zj2",
-      baseId = "appf5kgjPnWM3kIJR",
+      baseId = "appJPb36iUyKEfJWH",
       table,
       sendRecords,
       sendVars,
       varOptions = "",
-      totalSend;
+      totalSend,
+      xhrResults;
   const samples = new Airtable.Table({
         name: "Participants",
         baseID: baseId,
         apiKey: API_KEY,
         view: "Diamond Samples"});
   var debug;
+
+  function testXHR(method, xurl, specs, subspecs) {
+    xurl = xurl.replace("BaseId",baseId);  
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        xhrResults = JSON.parse(this.responseText);
+        if (specs) {
+          xhrResults = xhrResults.data;
+          var temp = {};
+          if (Array.isArray(specs)) {
+            for (var i in specs) {
+              temp[specs[i]] = xhrResults[specs[i]];
+            }
+          }
+          else {
+            xhrResults = xhrResults[specs];
+            if (subspecs) {
+              for (var j in subspecs) {
+                temp[subspecs[j]] = xhrResults[subspecs[j]];
+              }
+            }
+          }
+          xhrResults = temp;
+        }
+      }
+    };
+    xhr.open(method,xurl);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + API_KEY);
+    xhr.send();
+  }
   
   function authenticate() {
     return gapi.auth2.getAuthInstance()
