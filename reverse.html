@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCRB Emails</h1>
-          <h2>V0.0.1 - 2022</h2>
+          <h2>V0.1.2 - 2022</h2>
         </header>
 
         <hr>
@@ -295,6 +295,7 @@
     if (table.records().length > 0) {
       document.getElementById("continueRecipient").style.display="block";
       sendRecords = table.records();
+      console.log(sendRecords);
     }
     else {
       document.getElementById("continueRecipient").style.display="none";
@@ -316,6 +317,7 @@
     if (table.records().length > 0) {
       document.getElementById("continueRecipient").style.display="block";
       sendRecords = table.records();
+      console.log(sendRecords);
     }
     else {
       document.getElementById("continueRecipient").style.display="none";
@@ -365,6 +367,7 @@
   
   
   function continueRecipient() {
+    console.log(sendRecords);
     updateVars();
     cleanRecords();
     recipForm.style.display="none";
