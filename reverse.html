@@ -162,7 +162,6 @@
       "userId": "destielreversebang@gmail.com"
     })
         .then(function(response) {
-                console.log("Response", response);
                  document.getElementById("signIn").style.display="none";
                  document.getElementById("loadDrafts").style.display = "block";},
         function(err) { if(err.status=="403") {
@@ -394,6 +393,7 @@
   }
   
   function cleanRecords() {
+    console.log(sendRecords);
     for (var i = 0; i < sendRecords.length; i++){
       if (samples.getRecordByID(sendRecords[i].id)) {
         sendRecords.splice(i,1);
@@ -429,7 +429,7 @@
       sendEmail(Base64.encode(test));
     }
     else {
-      document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><a href='/emails.html' class='button'><span>Send another?</span></a>";
+      document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><a href='/reverse.html' class='button'><span>Send another?</span></a>";
     }
   }
   
