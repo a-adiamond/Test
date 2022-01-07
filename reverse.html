@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>DCRB Emails</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner" id="head">
+
+        <header>
+          <h1>DCRB Emails</h1>
+          <h2>V0.0.0 - 2022</h2>
+        </header>
+
+        <hr>
+
+        <section id="main_content">
+          <button id="signIn" onclick="authenticate()"><span>Sign in</span></button>
+          <button id="loadDrafts" onclick="execute()" style="display:none"><span>Load Drafts</span></button>
+        </section>
+      </div>
+      <section id="draft" style="display: none; padding-left: 5%; padding-right: 5%;">
+        <h1>Which draft?</h1>
+        <div style="width: 40%; float:left;">
+        <select name="draftSelect" id="draftSelect" onchange="updatePreview()">
+        <option value="none" selected disabled hidden></option> 
+        </select><button id="continueDraft" onclick="continueDraft()" style="display:none"><span>Continue</span></button></div>
+        <div style="border: thin solid black; width: 50%;float:right;font-size:smaller" id="previewDraft">Preview will show here</div>
+      </section>
+      <section id="recipient" style="display: none; padding-left: 5%; padding-right: 5%;">
+        <h1>Which group?</h1>
+        <div style="width: 30%; float:left;display:block">
+        <select name="recipientSelect" id="recipientSelect" onchange="loadRecipient()">
+        <option value="none" selected disabled hidden></option>
+        <option value="Authors">Authors</option>
+        <option value="Artists">Artists</option>
+        <option value="ACTIVE participants">All Active Authors and Artists</option>
+        <option value="view">Other Airtable View</option>
+        <option value="individual">Specific Emails</option>
+        <option value="All participants">Everyone who ever registered for anything</option>
+      </select><button id="continueRecipient" onclick="continueRecipient()" style="display:none"><span>Continue</span></button></div>
+      <div id="view" style="width:45%;float:right;padding-right:10%;display:none"><h2>Airtable View name - case must match!</h2>
+        <input type="text" id="viewSelect" onChange="loadView()"><span style="color:red; display:none" id="viewError"> Not a valid view, please try again.</span>
+      </div>
+      <div id="emailForm" style="width:50%;float:right;padding-right:15%;display:none"><h2>Enter email address(es) - separated by spaces, commas, and/or returns.</h2>
+        <textarea type="textarea" id="emailSelect" onChange="loadEmail()" onInput="document.getElementById('continueRecipient').style.display='none'" rows="10" cols="50"></textarea><button><span>Check</span></button><span style="color:red; display:none" id="emailError"> Participant(s) not found, please try again.</span>
+      </div>
+      </section>
+        <section id="vars" style="display: none; padding-left: 5%; padding-right: 5%;">
+        <h1>Select your variables</h1>
+        <div style="width: 30%; float:left;">
+          <table id="varsDiv"><tr><th >Variable</th><th>Airtable Column</th></tr></table>
+          <button id="continueVars" onclick="continueVars()" style="display:none"><span>Continue</span></button></div>
+        <div style="border: thin solid black; width:65%; float:right"><div style="border:thin solid black;width:100%" id="previewSubj">Subject</div><div style="border:thin solid black;width:100%;font-size:smaller" id="previewBody">Preview will show here</div></div>
+      </section>
+      <section id="confirmationScreen" style="display:none">
+        <h1>Send email to {{#}} recipients?</h1>
+        <button id="confirmButton" onclick="prepEmail();document.getElementById('confirmationScreen').style.display='none';document.getElementById('processing').style.display='block';"><span>Send!</span></button>
+      </section>
+    <section id="processing" style="display:none"><h1>Processing, please hold.</h1></section>
+    </div>
+  </body>
+          
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="javascripts/base64.js"></script>
+    <script src="javascripts/Airtable.js"></script>
+<script>
+  /**
+   * Sample JavaScript code for gmail.users.drafts.list
+   * See instructions for running APIs Explorer code samples locally:
+   * https://developers.google.com/explorer-help/guides/code_samples#javascript
+   */
+  
+  var drafts = {};
+  var draftForm = document.getElementById("draft"),
+      draftEl = document.getElementById("draftSelect"),
+      draftPre = document.getElementById("previewDraft"),
+      recipForm = document.getElementById("recipient"),
+      recipEl = document.getElementById("recipientSelect"),
+      viewForm = document.getElementById("view"),
+      viewEl = document.getElementById("viewSelect"),
+      emailForm = document.getElementById("emailForm"),
+      emailEl = document.getElementById("emailSelect"),
+      varForm = document.getElementById("vars"),
+      varEl = document.getElementById("varsDiv"),
+      subjPre = document.getElementById("previewSubj"),
+      bodyPre = document.getElementById("previewBody");
+  
+  var API_KEY = "keyJS9Lnv0F166zj2",
+      baseId = "appZM7G2rkzmGGIEp",
+      table,
+      sendRecords,
+      sendVars,
+      varOptions = "",
+      totalSend,
+      xhrResults;
+  const samples = new Airtable.Table({
+        name: "Participants",
+        baseID: baseId,
+        apiKey: API_KEY,
+        view: "Diamond Samples"});
+  var debug;
+
+  function testXHR(method, xurl, specs, subspecs) {
+    xurl = xurl.replace("BaseId",baseId);  
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        xhrResults = JSON.parse(this.responseText);
+        if (specs) {
+          xhrResults = xhrResults.data;
+          var temp = {};
+          if (Array.isArray(specs)) {
+            for (var i in specs) {
+              temp[specs[i]] = xhrResults[specs[i]];
+            }
+          }
+          else {
+            xhrResults = xhrResults[specs];
+            if (subspecs) {
+              for (var j in subspecs) {
+                temp[subspecs[j]] = xhrResults[subspecs[j]];
+              }
+            }
+          }
+          xhrResults = temp;
+        }
+      }
+    };
+    xhr.open(method,xurl);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + API_KEY);
+    xhr.send();
+  }
+  
+  function authenticate() {
+    return gapi.auth2.getAuthInstance()
+        .signIn({scope: "https://mail.google.com/ https://www.googleapis.com/auth/gmail.settings.sharing https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly"})
+        .then(function(response) { debug = response; loadClient();
+        }, 
+              function(err) { console.error("Error signing in", err); });
+  }
+  
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
+        .then(function(response) { debug = response; confirmAuth();},
+              function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  
+  function confirmAuth() {
+    gapi.client.gmail.users.getProfile({
+      "userId": "destielreversebang@gmail.com"
+    })
+        .then(function(response) {
+                console.log("Response", response);
+                 document.getElementById("signIn").style.display="none";
+                 document.getElementById("loadDrafts").style.display = "block";},
+        function(err) { if(err.status=="403") {
+                          alert("Invalid sign-in");}
+                         else {
+                          alert(err.status + ": " + err.result.error.message);}
+                      });
+    }
+    
+    
+  
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute() {
+    return gapi.client.gmail.users.drafts.list({
+      "userId": "destielreversebang@gmail.com"
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                for (var i in response.result.drafts) {
+                  var getDraft = response.result.drafts[i].message.id;
+                  getInfo(getDraft);
+                }
+                updateList(response.result.drafts.length);
+              },
+              function(err) { console.error("Execute error", err); });
+  }
+  
+  function updateList(limit) {
+    if (Object.keys(drafts).length == limit) {
+      document.getElementById("head").style.display="none";
+      for (id in drafts) {
+        var option = document.createElement("option");
+        option.value = id;
+        option.text = drafts[id]["subj"];
+        draftEl.add(option);
+      }
+      draft.style.display = "block";
+      buildVarOptions();
+    }
+    else {
+      setTimeout(() => {  updateList(limit);}, 800);;
+    }
+  }
+  
+  function buildVarOptions() {
+    varOptions+="<option value=\"manual\">ENTER LITERAL TEXT</option>"
+    for (var i in samples.fields()){
+      varOptions+="<option value=\"" + samples.fields()[i] + "\">" + samples.fields()[i] + "</option>";
+    }
+  }
+  
+  function updatePreview() {
+    draftPre.innerHTML = drafts[draftEl.value].bodyHTML;
+    document.getElementById("continueDraft").style.display="block";
+  }
+  
+  function getInfo(draftId) {
+    return gapi.client.gmail.users.messages.get({
+                    "userId":"destielreversebang@gmail.com",
+                    "id":draftId,
+                    "format":"full"})
+    .then(function(response) {
+      drafts[draftId] = {"subj" : response.result.payload.headers[3].value,
+                        "bodyHTML":Base64.decode(response.result.payload.parts[1].body.data)};
+    },
+          function(err) { console.error("Execute error", err); });
+  }
+
+  function getRaw(draftId) {
+        return gapi.client.gmail.users.messages.get({
+                    "userId":"destielreversebang@gmail.com",
+                    "id":draftId,
+                    "format":"raw"})
+    .then(function(response) {
+      drafts[draftId]["raw"] = Base64.decode(response.result.raw).replace(/=[\r\n]+/gm, "");
+    },
+          function(err) { console.error("Execute error", err); });
+  }
+  
+  function continueDraft() {
+    getRaw(draftEl.value);
+    parseVars();
+    draftForm.style.display="none";
+    recipForm.style.display="block";
+  }
+  
+  function parseVars() { 
+    var regex = /\{\{([\w\s]+)\}\}/g,
+        find = drafts[draftEl.value].subj.concat(drafts[draftEl.value].bodyHTML).matchAll(regex);
+    sendVars = {};
+    for (var match of find) {
+      if (sendVars[match[1]] == undefined) {
+        sendVars[match[1]] = "{{"+match[1]+"}}";
+        var row = varEl.insertRow(varEl.rows.length);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerText = "{{"+match[1]+"}}";
+        cell2.innerHTML = "<select id=\"" + match[1] + "\" onchange=\"if(this.value=='manual'){sendVars['"+match[1]+"'] = '{{enter text}}';makeText('"+match[1]+"');} else{ sendVars['"+match[1]+"'] = samples.records()[0].fields[this.value];}updateVars();\" class=\"tdSelect\"><option value=\"none\" selected=\"\" disabled=\"\" hidden=\"\"></option>"+varOptions+"</select>";
+      }
+    }
+  }
+  
+  function loadRecipient() {
+    document.getElementById("continueRecipient").style.display="none";
+    document.getElementById("viewError").style.display="none";
+    viewForm.style.display="none";
+    emailForm.style.display="none";
+    document.getElementById("emailError").style.display="none";
+    if (recipEl.value == "view") {
+      viewForm.style.display="block";
+    }
+    else if(recipEl.value == "individual") {
+      emailForm.style.display="block";
+      table = new Airtable.Table({
+        name: "Participants",
+        baseID: baseId,
+        apiKey: API_KEY});
+    }
+    else {
+      table = new Airtable.Table({
+        name: "Participants",
+        baseID: baseId,
+        apiKey: API_KEY,
+        view: recipEl.value});
+        setTimeout(() => {checkRecipient();}, 2000);
+    }
+  }
+  
+
+  function checkRecipient() {
+    if (table.records().length > 0) {
+      document.getElementById("continueRecipient").style.display="block";
+      sendRecords = table.records();
+    }
+    else {
+      document.getElementById("continueRecipient").style.display="none";
+    }
+  }
+  
+  function loadView() {
+    document.getElementById("continueRecipient").style.display="none";
+    document.getElementById("viewError").style.display="none";
+      table = new Airtable.Table({
+        name: "Participants",
+        baseID: baseId,
+        apiKey: API_KEY,
+        view: viewEl.value});
+        setTimeout(() => {checkView();}, 2000);
+  }
+
+  function checkView() {
+    if (table.records().length > 0) {
+      document.getElementById("continueRecipient").style.display="block";
+      sendRecords = table.records();
+    }
+    else {
+      document.getElementById("continueRecipient").style.display="none";
+      document.getElementById("viewError").style.display="block";
+    }
+  }
+  
+  
+  function loadEmail() {
+    document.getElementById("continueRecipient").style.display="none";
+    document.getElementById("emailError").style.display="none";
+    sendRecords = [];
+    var emailList = emailEl.value.split(/(?:[,\n\s]+)/g);
+    emailList = emailList.filter(Boolean);
+    var error = 0;
+    if (emailList.length == 0) {
+      error = 1;
+    }
+    else {
+      for (var i in emailList) {
+        if (emailList[i].match(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/) == null) {
+          error = 1;
+        }
+      }
+    }
+    if (error == 1) {
+      document.getElementById("emailError").style.display="block";
+    }
+    else {
+      for (var j in emailList) {
+        sendRecords.push(table.getRecordsByField("Email",emailList[j])[0]);
+      }
+      setTimeout(() => {checkEmail();}, 2000);
+    }
+  }
+ 
+
+  function checkEmail() {
+    if (sendRecords.length > 0) {
+      document.getElementById("continueRecipient").style.display="block";
+    }
+    else {
+      document.getElementById("continueRecipient").style.display="none";
+      document.getElementById("emailError").style.display="block";
+    }
+  }
+  
+  
+  function continueRecipient() {
+    updateVars();
+    cleanRecords();
+    recipForm.style.display="none";
+    varForm.style.display="block";
+  }
+  
+  function makeText(select) {
+    document.getElementById(select).outerHTML = "<input type=\"text\" id=\""+select+"\" oninput=\"sendVars['"+select+"'] = '(literal:' + this.value + ')';updateVars();\">"
+  }
+  
+  function updateVars() {
+    subjPre.innerHTML = drafts[draftEl.value].subj;
+    bodyPre.innerHTML = drafts[draftEl.value].bodyHTML;
+    for (var i in sendVars) {
+      var matchString = "{{"+i+"}}";
+      var matchReg = new RegExp(matchString,"g");
+      subjPre.innerHTML = subjPre.innerHTML.replace(matchReg,sendVars[i]);
+      bodyPre.innerHTML = bodyPre.innerHTML.replace(matchReg,sendVars[i]);
+    }
+    if (JSON.stringify(sendVars).includes("{{") && JSON.stringify(sendVars).includes("}}")) {
+      document.getElementById("continueVars").style.display="none";
+    }
+    else {
+      document.getElementById("continueVars").style.display="block";
+    } 
+  }
+  
+  function cleanRecords() {
+    for (var i = 0; i < sendRecords.length; i++){
+      if (samples.getRecordByID(sendRecords[i].id)) {
+        sendRecords.splice(i,1);
+        i--;
+      }
+    }
+  }
+  
+  function continueVars() {
+    varForm.style.display="none";
+    totalSend = sendRecords.length;
+    document.getElementById("confirmationScreen").innerHTML=document.getElementById("confirmationScreen").innerHTML.replace("{{#}}",sendRecords.length);
+    document.getElementById("confirmationScreen").style.display="block";
+  }
+  
+  function prepEmail() {
+    if (sendRecords.length > 0) {
+      var remSend = totalSend - sendRecords.length;
+      document.getElementById('processing').innerHTML = "<h1>Processing, please hold. . . <span style='color:#aa2222'>" + remSend + "/" + totalSend + " sent</span></h1>";
+      var test = drafts[draftEl.value].raw;
+      for (var i in sendVars) {
+        var matchString = "{{"+i+"}}";
+        var matchReg = new RegExp(matchString,"g");
+        var repl = document.getElementById(i).value;
+        if (sendVars[i].match(/\(literal\:(.*)\)/)) {
+          test = test.replace(matchReg,repl);
+        }
+        else {
+          test = test.replace(matchReg,sendRecords[0].fields[repl]);
+        }
+      }
+      test = test.replace("From: Dean/Cas Reverse Bang <destielreversebang@gmail.com>","From: Dean/Cas Reverse Bang <destielreversebang@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+      sendEmail(Base64.encode(test));
+    }
+    else {
+      document.getElementById('processing').innerHTML = "<h1>Done! Good job you.</h1><a href='/emails.html' class='button'><span>Send another?</span></a>";
+    }
+  }
+  
+  function sendEmail(test) {
+    return gapi.client.gmail.users.messages.send({
+      'userId': "destielreversebang@gmail.com",
+      'resource': {
+        'raw': test    }
+    }) 
+    .then(function(response){sendRecords.shift();prepEmail()},
+          function(err) { console.error("Execute error", err); });
+  }
+  
+  
+  gapi.load("client:auth2", function() {
+    gapi.auth2.init({client_id: "571192319172-stgjv6351t84a3gojdtglptnbp0tv0qs.apps.googleusercontent.com"});
+  });
+</script>
+
+        
+
+</html>
