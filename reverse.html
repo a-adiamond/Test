@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCRB Emails</h1>
-          <h2>V0.1.3 - 2022</h2>
+          <h2>V0.2.1 - 2022</h2>
         </header>
 
         <hr>
@@ -45,6 +45,7 @@
         <option value="Authors">Authors</option>
         <option value="Artists">Artists</option>
         <option value="ACTIVE participants">All Active Authors and Artists</option>
+        <option value="Diamond Test">Test Group</option>
         <option value="view">Other Airtable View</option>
         <option value="individual">Specific Emails</option>
         <option value="All participants">Everyone who ever registered for anything</option>
@@ -430,7 +431,7 @@
           test = test.replace(matchReg,sendRecords[0].fields[repl]);
         }
       }
-      test = test.replace("From: Dean/Cas Reverse Bang <destielreversebang@gmail.com>","From: Dean/Cas Reverse Bang <destielreversebang@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
+      test = test.replace("From: \"Dean/Cas Reverse Bang\" <destielreversebang@gmail.com>","From: Dean/Cas Reverse Bang <destielreversebang@gmail.com>\nTo: "+sendRecords[0].fields['Participant Name']+" <"+sendRecords[0].fields['Email']+">");
       sendEmail(Base64.encode(test));
     }
     else {
