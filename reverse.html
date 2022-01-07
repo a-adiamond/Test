@@ -19,7 +19,7 @@
 
         <header>
           <h1>DCRB Emails</h1>
-          <h2>V0.1.2 - 2022</h2>
+          <h2>V0.1.3 - 2022</h2>
         </header>
 
         <hr>
@@ -327,9 +327,11 @@
   
   
   function loadEmail() {
+    console.log("I'm running loadEmail even though I shouldn't. You did something wrong, this isn't my fault.");
     document.getElementById("continueRecipient").style.display="none";
     document.getElementById("emailError").style.display="none";
     sendRecords = [];
+    console.log(sendRecords);
     var emailList = emailEl.value.split(/(?:[,\n\s]+)/g);
     emailList = emailList.filter(Boolean);
     var error = 0;
