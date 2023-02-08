@@ -26,6 +26,7 @@
 
         <section id="main_content">
           <script src="https://accounts.google.com/gsi/client" async defer></script>
+          <script src="https://raw.githubusercontent.com/auth0/jwt-decode/master/build/jwt-decode.js"></script>
           
             <script>
             window.onload = function () {
@@ -40,18 +41,11 @@
               
               
   function handleCredentialResponse(cred) {
-        console.log("You might be authenticated?");
-    console.log(JSON.stringify(parseJWT(cred)));
+    console.log("You might be authenticated?");
+    console.log(jwtDecode(cred));
+    
   }
               
-  function parseJWT (token) {
-	let base64Url = token.split('.')[1];
-	let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-	let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-	}).join(''));
-	return JSON.parse(jsonPayload);
-}
   </script>
         </section>
       </div>
