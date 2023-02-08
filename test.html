@@ -32,7 +32,7 @@
       google.accounts.id.initialize({
         client_id: '195624362128-hjo30na9litda71fphtfp6t0vv04e934.apps.googleusercontent.com',
         callback: handleCredentialResponse,
-        auto_select: true
+        //auto_select: true
         
       });
       google.accounts.id.prompt();
@@ -40,8 +40,10 @@
               
               
   function handleCredentialResponse(cred) {
-    console.log(JSON.stringify(cred));
-    console.log(parseJWT(cred.credential));
+    var creds = parseJWT(cred.credential);
+    console.log(creds.email);
+//    console.log(JSON.stringify(cred));
+//    console.log(parseJWT(cred.credential));
     
   }
               
