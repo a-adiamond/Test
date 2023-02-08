@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Test</title>
-  </head>
-
-  <body>
-        <div id="g_id_onload"
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <div id="g_id_onload"
      data-client_id="195624362128-hjo30na9litda71fphtfp6t0vv04e934.apps.googleusercontent.com"
      data-context="signin"
      data-ux_mode="popup"
@@ -27,46 +18,4 @@
      data-logo_alignment="left"
      data-width="44">
 </div>
-  </body>
-          
-    <script src="https://apis.google.com/js/api.js"></script>
-<script>
-
-  
-  var drafts = {};
-  
-  function confirmAuth() {
-    gapi.client.gmail.users.getProfile({
-      "userId": "destielreversebang@gmail.com"
-    })
-        .then(function(response) {
-      console.log("I think you're logged in?");
-//                 document.getElementById("signIn").style.display="none";
-  //               document.getElementById("loadDrafts").style.display = "block";},
-        function(err) { if(err.status=="403") {
-                          alert("Invalid sign-in");}
-                         else {
-                          alert(err.status + ": " + err.result.error.message);}
-                      });
-    }
-    
-    
-  
-  // Make sure the client is loaded and sign-in is complete before calling this method.
-  function execute() {
-    return gapi.client.gmail.users.drafts.list({
-      "userId": "destielreversebang@gmail.com"
-    })
-        .then(function(response) {
-                // Handle the results here (response.result has the parsed body).
-                for (var i in response.result.drafts) {
-                  var getDraft = response.result.drafts[i].message.id;
-                  console.log(getDraft);
-                }              },
-              function(err) { console.error("Execute error", err); });
-  }
-</script>
-
-        
-
 </html>
