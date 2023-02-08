@@ -37,7 +37,8 @@
      data-theme="outline"
      data-text="signin"
      data-size="large"
-     data-logo_alignment="left">
+     data-logo_alignment="left"
+     data-width="44">
 </div>
   </body>
           
@@ -52,8 +53,9 @@
       "userId": "destielreversebang@gmail.com"
     })
         .then(function(response) {
-                 document.getElementById("signIn").style.display="none";
-                 document.getElementById("loadDrafts").style.display = "block";},
+      console.log("I think you're logged in?");
+//                 document.getElementById("signIn").style.display="none";
+  //               document.getElementById("loadDrafts").style.display = "block";},
         function(err) { if(err.status=="403") {
                           alert("Invalid sign-in");}
                          else {
