@@ -19,7 +19,7 @@
 
         <header>
           <h1>Diamond Testing</h1>
-          <h2>V0.0.4</h2>
+          <h2>V0.0.5</h2>
         </header>
 
         <hr>
@@ -31,7 +31,9 @@
             window.onload = function () {
       google.accounts.id.initialize({
         client_id: '195624362128-hjo30na9litda71fphtfp6t0vv04e934.apps.googleusercontent.com',
-        callback: handleCredentialResponse
+        callback: handleCredentialResponse,
+        auto_select: true
+        
       });
       google.accounts.id.prompt();
     };
@@ -44,8 +46,9 @@
 <script>
 
   
-  function handleCredentialResponse() {
+  function handleCredentialResponse(cred) {
         console.log("You might be authenticated?");
+    console.log(JSON.stringify(cred);
   }
     
 </script>
