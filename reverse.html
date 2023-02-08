@@ -152,7 +152,7 @@
   }
   
   function loadClient() {
-    gapi.client.setApiKey("AIzaSyCKuhMTZwlwLNjo9AExurJZ0otGgBJGgq0");
+    gapi.client.setApiKey("AIzaSyAQiZuzUNtKf-UORL7NGhK9vVDN57P45tM");
     return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest")
         .then(function(response) { debug = response; confirmAuth();},
               function(err) { console.error("Error loading GAPI client for API", err); });
