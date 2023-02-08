@@ -37,6 +37,12 @@
       });
       google.accounts.id.prompt();
     };
+              
+              
+  function handleCredentialResponse(cred) {
+        console.log("You might be authenticated?");
+    console.log(JSON.stringify(cred));
+  }
   </script>
         </section>
       </div>
@@ -46,10 +52,6 @@
 <script>
 
   
-  function handleCredentialResponse(cred) {
-        console.log("You might be authenticated?");
-    console.log(JSON.stringify(cred);
-  }
     
 </script>
 
