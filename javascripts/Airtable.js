@@ -68,7 +68,7 @@ const Airtable = {
                 constructor() {
 
                     this.endpoint = _props.endpoint
-                    this.bearer = "keyJS9Lnv0F166zj2"
+                    this.bearer = "patW14Sxv6Je2mze7.c0f1afce07e393d9d5e1329418222866aa186b2378c3093272ffc990fc707c5d"
                     this.offset = _props.offset
                     this.status = null
                     this.response = null
